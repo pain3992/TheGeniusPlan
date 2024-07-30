@@ -11,6 +11,7 @@ Content/.DS_Store
 
 # 용량 큰 파일 Ignore <<<<<<<<<<<<<<<
 Content/Characters
+Content/LevelMST
 
 
 # Compiled Object files
