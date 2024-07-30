@@ -2,7 +2,7 @@
 UnrealEngine기반 멀티플레이 전략 게임입니다. TvN '더 지니어스'와 Netflix '데블스 플랜'에 영감을 받았습니다.
 
 # 필수 에셋 다운로드 리스트 (없으면 프로젝트 오류남)
-Content/**Characters** (ThirdPerson에 필요한 에셋, 향후 Player & NPC 모델 추가되면 삭제가능)
+Content/**Characters** (ThirdPerson에 필요한 에셋, 향후 Player & NPC 모델 추가되면 삭제가능) <br/>
 Content/**LevelMST** (메인동 Level)
 
 ## Requirements
