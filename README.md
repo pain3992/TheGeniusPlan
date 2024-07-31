@@ -5,6 +5,10 @@ UnrealEngine기반 멀티플레이 전략 게임입니다. TvN '더 지니어스
 Content/**Characters** (ThirdPerson에 필요한 에셋, 향후 Player & NPC 모델 추가되면 삭제가능) <br/>
 Content/**LevelMST** (메인동 Level, 로비 Level)
 
+# 설계 문서 참고
+Jira 문서 링크 참조 
+[Jira 이슈 링크](https://devilofdev.atlassian.net/browse/THEG-4?atlOrigin=eyJpIjoiMzMwOTJhNWNkMDg5NDYzMTg0YjFkNDcyM2ExNTQ4MWQiLCJwIjoiaiJ9)
+
 ## Requirements
 #### Asset 다운로드
 용량이 큰 에셋들은 LFS로 관리하지 않고 팀 구글드라이브에서 직접 다운로드 합니다. <br/>
