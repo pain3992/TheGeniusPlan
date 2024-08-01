@@ -13,5 +13,8 @@ UCLASS()
 class THEGENIUSPLAN_API ALobbyGameMode : public AGameMode
 {
 	GENERATED_BODY()
-	
+public:
+	ALobbyGameMode();
+	virtual void Logout(AController* Exiting) override;
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 };
