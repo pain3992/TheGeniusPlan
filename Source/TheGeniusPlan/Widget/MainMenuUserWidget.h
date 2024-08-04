@@ -26,6 +26,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
 	TObjectPtr<class AMainMenuHUD> LoginMenuHUD;
+
+	void TestFunction();
 	
 protected:
 	
@@ -43,6 +45,5 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UEditableTextBox> EditableTextPassword;
-
 
 };

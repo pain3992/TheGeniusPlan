@@ -53,3 +53,8 @@ void UMainMenuUserWidget::ClickedSignUp()
 	}
 
 }
+
+void UMainMenuUserWidget::TestFunction()
+{
+	UE_LOG(LogTemp, Error, TEXT("User Clicked LoginButton!"));
+}

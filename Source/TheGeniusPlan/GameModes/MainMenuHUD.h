@@ -17,6 +17,7 @@ enum class WidgetType : uint8
 	MAX UMETA(DisplayName = "MAX")
 };
 
+
 UCLASS()
 class THEGENIUSPLAN_API AMainMenuHUD : public AHUD
 {
@@ -48,7 +49,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
 	TSubclassOf<class UOptionWidget> OptionWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "WidgetClass")
+	TSubclassOf<class UMainMenuUserWidget> MainMenuWidgetClass;
+
 protected:
+	UPROPERTY(BlueprintReadWrite, Category = "WidgetClass")
+	TObjectPtr<class UMainMenuUserWidget> MainMenuWidget;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
 	TObjectPtr<class UMainMenuUserWidget> LoginWidget;
@@ -69,4 +75,9 @@ protected:
 	TObjectPtr<class UOptionWidget> OptionWidget;
 
 	FTimerHandle HUDTimerHandle;
+
+protected:
+
+	virtual void BeginPlay() override;
+
 };

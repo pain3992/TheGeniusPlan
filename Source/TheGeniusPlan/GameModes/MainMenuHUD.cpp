@@ -14,6 +14,8 @@ AMainMenuHUD::AMainMenuHUD()
 	static ConstructorHelpers::FClassFinder<UUserWidget> CLoadingWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_Loading.WG_Loading_C'"));
 	static ConstructorHelpers::FClassFinder<USignupWidget> CSignupWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_Signup.WG_Signup_C'"));
 	static ConstructorHelpers::FClassFinder<UOptionWidget> COptionWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_OptionWidget.WG_OptionWidget_C'"));
+	static ConstructorHelpers::FClassFinder<UMainMenuUserWidget> WG_MainMenuWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_MainMenu.WG_MainMenu_C'"));
+
 
 	if(CLoginWidget.Succeeded() && CGameStartWidget.Succeeded() && CLobbyWidget.Succeeded() && CLoadingWidget.Succeeded() && CSignupWidget.Succeeded() && COptionWidget.Succeeded())
 	{
@@ -23,6 +25,11 @@ AMainMenuHUD::AMainMenuHUD()
 		LoadingWidgetClass = CLoadingWidget.Class;
 		SignupWidgetClass = CSignupWidget.Class;
 		OptionWidgetClass = COptionWidget.Class;
+	}
+
+	if (WG_MainMenuWidget.Succeeded())
+	{
+		MainMenuWidgetClass = WG_MainMenuWidget.Class;
 	}
 
 }
@@ -65,8 +72,6 @@ void AMainMenuHUD::ShowWidget(WidgetType type)
 	default:
 		break;
 	}
-
-}
 
 void AMainMenuHUD::BeginPlay()
 {
@@ -127,6 +132,12 @@ void AMainMenuHUD::BeginPlay()
 		OptionWidget->AddToViewport();
 	}
 
+	MainMenuWidget = Cast<UMainMenuUserWidget>(CreateWidget(GetWorld(), MainMenuWidgetClass));
+
+	if (MainMenuWidget)
+	{
+		MainMenuWidget->AddToViewport();
+	}
 
 	ShowWidget(WidgetType::LoginWidget);
 
