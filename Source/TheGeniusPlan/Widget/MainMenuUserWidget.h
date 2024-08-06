@@ -16,16 +16,33 @@ public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
-	void TestFunction();
+	void ClickedLogin();
+
+	UFUNCTION(BlueprintCallable)
+	void ClickedQuit();
+
+	UFUNCTION(BlueprintCallable)
+	void ClickedSignUp();
+
+	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
+	TObjectPtr<class AMainMenuHUD> LoginMenuHUD;
 	
 protected:
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UButton> Button_Login;
+	TObjectPtr<class UButton> ButtonLogin;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UButton> Button_SignUp;
+	TObjectPtr<class UButton> ButtonSignUp;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UButton> Button_Quit;
+	TObjectPtr<class UButton> ButtonQuit;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UEditableTextBox> EditableTextID;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UEditableTextBox> EditableTextPassword;
+
+
 };

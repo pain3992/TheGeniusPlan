@@ -6,9 +6,6 @@
 #include "GameFramework/GameModeBase.h"
 #include "MainGameMode.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class THEGENIUSPLAN_API AMainGameMode : public AGameModeBase
 {
