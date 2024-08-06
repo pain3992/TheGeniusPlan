@@ -8,9 +8,6 @@
 #include "TheGeniusPlan/GameModes/MainMenuHUD.h"
 #include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
-#include "AudioDevice.h"
-#include "Sound/SoundMix.h"
-#include "Sound/SoundClass.h"
 
 void UOptionWidget::NativeConstruct()
 {
@@ -30,6 +27,8 @@ void UOptionWidget::NativeConstruct()
 	Usersetting = GEngine->GetGameUserSettings();
 	SaveVolume = 1.0f;
 
+	LoadUserSetting();
+
 }
 
 void UOptionWidget::ClickedApplyButton()
@@ -44,13 +43,19 @@ void UOptionWidget::ClickedApplyButton()
 		int Width = FCString::Atoi(*SelectedParts[0]);
 		int Height = FCString::Atoi(*SelectedParts[1]);
 
+		UE_LOG(LogTemp, Warning, TEXT("Width, Height Setting"));
+
 		if(Width > 0 && Height > 0)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Width, Height Not zero"));
+
 			if(Usersetting)
 			{
 				Usersetting->SetScreenResolution(FIntPoint(Width, Height));
 				Usersetting->ApplySettings(true);
 				Usersetting->ConfirmVideoMode();
+
+				UE_LOG(LogTemp, Warning, TEXT("Setting Video"));
 			}
 		}
 	}
@@ -58,8 +63,10 @@ void UOptionWidget::ClickedApplyButton()
 	float Volume = SoundSlider->GetValue();
 	float Gamma = BrightSlider->GetValue();
 
+	float SettingGamma = FMath::Lerp(1.0f, 3.0f, Gamma);
+
 	UGameplayStatics::SetSoundMixClassOverride(GetWorld(), nullptr, nullptr, Volume, 1.0f);
-	GEngine->DisplayGamma = Gamma;
+	GEngine->DisplayGamma = SettingGamma;
 
 	SaveVolume = Volume;
 
@@ -74,7 +81,8 @@ void UOptionWidget::ClickedCanselButton()
 void UOptionWidget::LoadUserSetting()
 {
 	float Gamma = GEngine->GetDisplayGamma();
-	BrightSlider->SetValue(Gamma);
+	float SettingGamma = FMath::Lerp(0.0f, 1.0f, Gamma);
+
+	BrightSlider->SetValue(SettingGamma);
 	SoundSlider->SetValue(SaveVolume);
-	
 }
