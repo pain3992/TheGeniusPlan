@@ -26,6 +26,7 @@ class THEGENIUSPLAN_API AMainMenuHUD : public AHUD
 public:
 	AMainMenuHUD();
 
+
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
@@ -75,9 +76,5 @@ protected:
 	TObjectPtr<class UOptionWidget> OptionWidget;
 
 	FTimerHandle HUDTimerHandle;
-
-protected:
-
-	virtual void BeginPlay() override;
 
 };
