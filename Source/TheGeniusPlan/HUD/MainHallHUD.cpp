@@ -62,7 +62,7 @@ void AMainHallHUD::ShowWidget(MainHallWidgetType type)
     case MainHallWidgetType::HelpWidget:
         MainHallWidget->SetVisibility(ESlateVisibility::Collapsed);
         HelpWidget->SetVisibility(ESlateVisibility::Visible);
-        ShowMouseCursor(true); // Ä¿¼­¸¦ º¸ÀÌµµ·Ï ¼³Á¤
+        ShowMouseCursor(true); // Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         break;
     case MainHallWidgetType::MAX:
         break;
