@@ -6,6 +6,16 @@
 #include "GameFramework/HUD.h"
 #include "MainHallHUD.generated.h"
 
+
+UENUM()
+enum class MainHallWidgetType : uint8
+{
+    NONE UMETA(DisplayName = "NONE"),
+    MainHallWidget UMETA(DisplayName = "MainHallWidget"),
+    HelpWidget UMETA(DisplayName = "HelpWidget"),
+    MAX UMETA(DisplayName = "MAX")
+};
+
 /**
  * 
  */
@@ -15,15 +25,28 @@ class THEGENIUSPLAN_API AMainHallHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+    AMainHallHUD();
+
 	virtual void BeginPlay() override;
 
-protected:
-    // 블루프린트에서 만든 위젯 클래스의 참조를 저장하기 위한 UPROPERTY
-    UPROPERTY(EditAnywhere, Category = "HUD")
-    TSubclassOf<class UUserWidget> HUDWidgetClass;
+    UFUNCTION()
+    void ShowWidget(MainHallWidgetType type);
 
-private:
-    // 화면에 추가된 위젯의 인스턴스를 저장하기 위한 포인터
-    UUserWidget* CurrentWidget;
-	
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
+    TSubclassOf<class UMainHallUserWidget> MainHallWidgetClass;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
+    TSubclassOf<class UHelpUserWidget> HelpWidgetClass;
+
+    // Function to set visibility of HelpWidget
+    void SetHelpWidgetVisibility(ESlateVisibility Visibility);
+    void ShowMouseCursor(bool bShowCursor);
+    void UpdateRankingList();
+
+protected:
+    UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+    TObjectPtr<class UMainHallUserWidget> MainHallWidget;
+
+    UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+    TObjectPtr<class UHelpUserWidget> HelpWidget; 
 };

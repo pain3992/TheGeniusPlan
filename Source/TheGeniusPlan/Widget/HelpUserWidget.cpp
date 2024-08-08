@@ -3,6 +3,7 @@
 
 #include "TheGeniusPlan/Widget/HelpUserWidget.h"
 #include "Components/Button.h"
+#include "TheGeniusPlan/HUD/MainHallHUD.h"
 
 void UHelpUserWidget::NativeConstruct()
 {
@@ -14,7 +15,15 @@ void UHelpUserWidget::NativeConstruct()
 	}
 }
 
+void UHelpUserWidget::SetHUD(AMainHallHUD* InHUD)
+{
+	HUD = InHUD;
+}
+
 void UHelpUserWidget::OnBackButtonClicked()
 {
-	RemoveFromParent();
+    if (HUD)
+    {
+        HUD->ShowWidget(MainHallWidgetType::MainHallWidget);
+    }
 }
