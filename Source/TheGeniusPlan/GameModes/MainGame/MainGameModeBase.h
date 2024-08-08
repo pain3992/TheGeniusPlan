@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
-#include "GeniusGameModeBase.generated.h"
+#include "MainGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class THEGENIUSPLAN_API AGeniusGameModeBase : public AGameMode
+class THEGENIUSPLAN_API AMainGameModeBase : public AGameMode
 {
 	GENERATED_BODY()
 public:
-	AGeniusGameModeBase();
+	AMainGameModeBase();
 
 protected:
 	virtual void BeginPlay() override;

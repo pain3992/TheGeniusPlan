@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "TheGeniusPlan/GameModes/MainGame/GeniusGameModeBase.h"
+#include "TheGeniusPlan/GameModes/MainGame/MainGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
-AGeniusGameModeBase::AGeniusGameModeBase()
+AMainGameModeBase::AMainGameModeBase()
 {
 	TotalRounds = 0;
 	CurrentRound = 0;
@@ -15,19 +15,19 @@ AGeniusGameModeBase::AGeniusGameModeBase()
 	}
 }
 
-void AGeniusGameModeBase::BeginPlay()
+void AMainGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
 	HandleGameStart();
 }
 
-void AGeniusGameModeBase::HandleGameStart()
+void AMainGameModeBase::HandleGameStart()
 {
 	SelectNextGameMode();
 }
 
-void AGeniusGameModeBase::SelectNextGameMode()
+void AMainGameModeBase::SelectNextGameMode()
 {
 	if (PossibleGameModes.Num() > 0)
 	{
@@ -39,19 +39,19 @@ void AGeniusGameModeBase::SelectNextGameMode()
 	}
 }
 
-// void AGeniusGameModeBase::TransitionToNextRound()
+// void AMainGameModeBase::TransitionToNextRound()
 // {
 // }
 //
-// void AGeniusGameModeBase::HandleRoundEnd()
+// void AMainGameModeBase::HandleRoundEnd()
 // {
 // }
 //
-// void AGeniusGameModeBase::CheckForOverallWinner()
+// void AMainGameModeBase::CheckForOverallWinner()
 // {
 // }
 //
 //
-// void AGeniusGameModeBase::EndMatch(int32 WinningPlayerId)
+// void AMainGameModeBase::EndMatch(int32 WinningPlayerId)
 // {
 // }
