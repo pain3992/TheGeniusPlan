@@ -24,10 +24,10 @@ void AMainHallGameMode::PostLogin(APlayerController* NewPlayer)
 	Super::PostLogin(NewPlayer);
 
 	// Ensure the GameState is valid and update player rankings
-	if (AMainHallGameState* GameState = GetGameState<AMainHallGameState>())
-	{
-		GameState->UpdatePlayerRankings();
-	}
+	// if (AMainHallGameState* GameState = GetGameState<AMainHallGameState>())
+	// {
+	// 	GameState->UpdatePlayerRankings();
+	// }
 }
 
 void AMainHallGameMode::Logout(AController* Exiting)
@@ -35,8 +35,8 @@ void AMainHallGameMode::Logout(AController* Exiting)
 	Super::Logout(Exiting);
 
 	// Ensure the GameState is valid and update player rankings
-	if (AMainHallGameState* GameState = GetGameState<AMainHallGameState>())
-	{
-		GameState->UpdatePlayerRankings();
-	}
+	// if (AMainHallGameState* GameState = GetGameState<AMainHallGameState>())
+	// {
+	//	GameState->UpdatePlayerRankings();
+	// }
 }
