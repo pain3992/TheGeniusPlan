@@ -21,8 +21,13 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Button_Back;
 
+public:
+	void SetHUD(class AMainHallHUD* InHUD);
+
 private:
 	UFUNCTION()
 	void OnBackButtonClicked();
-	
+
+	AMainHallHUD* HUD;
+
 };
