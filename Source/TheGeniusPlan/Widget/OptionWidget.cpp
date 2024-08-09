@@ -38,7 +38,7 @@ void UOptionWidget::ClickedApplyButton()
 	FString SelectedOption = ResolutionComboBox->GetSelectedOption();
 
 	TArray<FString> SelectedParts;
-	SelectedOption.ParseIntoArray(SelectedParts, TEXT("x"), true);
+	SelectedOption.ParseIntoArray(SelectedParts, TEXT("X"), true);
 
 	if(SelectedParts.Num() == 2)
 	{

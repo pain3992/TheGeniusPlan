@@ -10,6 +10,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "TheGeniusPlanController.h"
+#include "TheGeniusPlan/ChatComponent.h"
+#include "TheGeniusPlan/Widget/ChatWidget.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -86,6 +89,7 @@ void ATheGeniusPlanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATheGeniusPlanCharacter::Look);
+		EnhancedInputComponent->BindAction(ChatFocusAction, ETriggerEvent::Started, this, &ATheGeniusPlanCharacter::ChatFocus);
 	}
 	else
 	{
@@ -127,4 +131,24 @@ void ATheGeniusPlanCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void ATheGeniusPlanCharacter::ChatFocus(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Error, TEXT("Pressed Enter"));
+	bool bIsEnter = Value.Get<bool>();
+
+	if (bIsEnter)
+	{
+		ATheGeniusPlanController* myController = Cast<ATheGeniusPlanController>(GetController());
+		if (myController->ChatComponent->GetChatVaild())
+		{
+			myController->ChatComponent->ChatWidget->FocusChatWidget();
+			UE_LOG(LogTemp, Error, TEXT("Focus ChatWidget"));
+		}
+
+		UE_LOG(LogTemp, Error, TEXT("Chat is Not Vaild"));
+
+	}
+	
 }
