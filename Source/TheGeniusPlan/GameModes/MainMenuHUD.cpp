@@ -68,6 +68,7 @@ void AMainMenuHUD::ShowWidget(WidgetType type)
 
 }
 
+
 void AMainMenuHUD::BeginPlay()
 {
 	Super::BeginPlay();
@@ -126,7 +127,6 @@ void AMainMenuHUD::BeginPlay()
 		OptionWidget->OptionMenuHUD = this;
 		OptionWidget->AddToViewport();
 	}
-
 
 	ShowWidget(WidgetType::LoginWidget);
 

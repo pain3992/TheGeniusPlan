@@ -8,6 +8,9 @@
 #include "TheGeniusPlan/GameModes/MainMenuHUD.h"
 #include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
+#include "AudioDevice.h"
+#include "Sound/SoundMix.h"
+#include "Sound/SoundClass.h"
 
 void UOptionWidget::NativeConstruct()
 {
@@ -28,7 +31,6 @@ void UOptionWidget::NativeConstruct()
 	SaveVolume = 1.0f;
 
 	LoadUserSetting();
-
 }
 
 void UOptionWidget::ClickedApplyButton()
@@ -36,7 +38,7 @@ void UOptionWidget::ClickedApplyButton()
 	FString SelectedOption = ResolutionComboBox->GetSelectedOption();
 
 	TArray<FString> SelectedParts;
-	SelectedOption.ParseIntoArray(SelectedParts, TEXT("x"), true);
+	SelectedOption.ParseIntoArray(SelectedParts, TEXT("X"), true);
 
 	if(SelectedParts.Num() == 2)
 	{
@@ -54,15 +56,14 @@ void UOptionWidget::ClickedApplyButton()
 				Usersetting->SetScreenResolution(FIntPoint(Width, Height));
 				Usersetting->ApplySettings(true);
 				Usersetting->ConfirmVideoMode();
-
 				UE_LOG(LogTemp, Warning, TEXT("Setting Video"));
+
 			}
 		}
 	}
 
 	float Volume = SoundSlider->GetValue();
 	float Gamma = BrightSlider->GetValue();
-
 	float SettingGamma = FMath::Lerp(1.0f, 3.0f, Gamma);
 
 	UGameplayStatics::SetSoundMixClassOverride(GetWorld(), nullptr, nullptr, Volume, 1.0f);
