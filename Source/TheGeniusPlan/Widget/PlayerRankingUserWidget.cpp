@@ -2,16 +2,50 @@
 
 
 #include "TheGeniusPlan/Widget/PlayerRankingUserWidget.h"
+#include "TheGeniusPlan/Data/PlayerRankingData.h"
+#include "Blueprint/IUserObjectListEntry.h"
+#include "Components/ListView.h"
 #include "Components/TextBlock.h"
 
-void UPlayerRankingUserWidget::UpdateData(const FPlayerRankingData& PlayerRankingData)
+
+void UPlayerRankingUserWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
-    if (Text_PlayerName)
+    if (UPlayerRankingData* PlayerRankingData = Cast<UPlayerRankingData>(ListItemObject))
     {
-        Text_PlayerName->SetText(FText::FromString(PlayerRankingData.PlayerName));
+        SetPlayerName(PlayerRankingData->PlayerName);
+        SetScore(PlayerRankingData->Score);
     }
-    if (Text_Score)
+    else
     {
-        Text_Score->SetText(FText::AsNumber(PlayerRankingData.Score));
+        // 기본 이름과 점수로 설정
+        SetPlayerName(TEXT("Default Player"));
+        SetScore(100);
     }
 }
+
+void UPlayerRankingUserWidget::SetPlayerName(const FString& NewPlayerName)
+{
+    PlayerName = NewPlayerName;
+    if (Text_PlayerName)
+    {
+        Text_PlayerName->SetText(FText::FromString(PlayerName));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Text_PlayerName is nullptr"));
+    }
+}
+
+void UPlayerRankingUserWidget::SetScore(int32 NewScore)
+{
+    Score = NewScore;
+    if (Text_Score)
+    {
+        Text_Score->SetText(FText::AsNumber(Score));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Text_Score is nullptr"));
+    }
+}
+

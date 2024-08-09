@@ -33,7 +33,7 @@ protected:
 
 	uint8 bIsMen;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

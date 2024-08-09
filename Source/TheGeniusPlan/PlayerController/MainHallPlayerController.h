@@ -13,5 +13,7 @@ UCLASS()
 class THEGENIUSPLAN_API AMainHallPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
 	
 };
