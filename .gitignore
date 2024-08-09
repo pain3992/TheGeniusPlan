@@ -5,6 +5,7 @@
 # Visual Studio 2015 user specific files
 .vs/
 .code/
+.vscode/
 .idea/
 .DS_Store
 Content/.DS_Store
