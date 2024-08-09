@@ -14,7 +14,6 @@ void UMainMenuUserWidget::NativeConstruct()
 	if(ButtonLogin)
 	{
 		ButtonLogin->OnClicked.AddDynamic(this, &UMainMenuUserWidget::ClickedLogin);
-<
 	}
 	if(ButtonQuit)
 	{
@@ -25,35 +24,6 @@ void UMainMenuUserWidget::NativeConstruct()
 		ButtonSignUp->OnClicked.AddDynamic(this, &UMainMenuUserWidget::ClickedSignUp);
 
 	}
-}
-
-void UMainMenuUserWidget::ClickedLogin()
-{
-	if (LoginMenuHUD)
-	{
-		LoginMenuHUD->ShowWidget(WidgetType::StartWidget);
-		UE_LOG(LogTemp, Warning, TEXT("HUD is Vaild"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("HUD is Null"));
-
-	}
-
-}
-
-void UMainMenuUserWidget::ClickedQuit()
-{
-	UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, false);
-}
-
-void UMainMenuUserWidget::ClickedSignUp()
-{
-	if(LoginMenuHUD)
-	{
-		LoginMenuHUD->ShowWidget(WidgetType::SignupWidget);
-	}
-
 }
 
 void UMainMenuUserWidget::ClickedLogin()
