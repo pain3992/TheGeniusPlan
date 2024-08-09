@@ -4,10 +4,12 @@
 ### UnrealEngine ###
 # Visual Studio 2015 user specific files
 .vs/
+.vscode/
 .code/
 .vscode/
 .idea/
 .DS_Store
+TheGeniusPlan.code-workspace
 Content/.DS_Store
 
 # 용량 큰 파일 Ignore <<<<<<<<<<<<<<<

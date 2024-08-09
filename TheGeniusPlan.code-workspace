@@ -30,7 +30,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Debug",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -47,7 +47,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Debug",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -67,7 +67,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Debug",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex",
 					"-clean"
 				],
@@ -85,7 +85,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"DebugGame",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -102,7 +102,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"DebugGame",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -122,7 +122,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"DebugGame",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex",
 					"-clean"
 				],
@@ -140,7 +140,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Development",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -157,7 +157,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Development",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -177,7 +177,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Development",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex",
 					"-clean"
 				],
@@ -195,7 +195,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Test",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -212,7 +212,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Test",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -232,7 +232,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Test",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex",
 					"-clean"
 				],
@@ -250,7 +250,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Shipping",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -267,7 +267,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Shipping",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -287,7 +287,7 @@
 					"TheGeniusPlan",
 					"Mac",
 					"Shipping",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex",
 					"-clean"
 				],
@@ -305,7 +305,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"Debug",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -322,7 +322,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"Debug",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -342,7 +342,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"Debug",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex",
 					"-clean"
 				],
@@ -360,7 +360,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"DebugGame",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -377,7 +377,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"DebugGame",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -397,7 +397,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"DebugGame",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex",
 					"-clean"
 				],
@@ -415,7 +415,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"Development",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -432,7 +432,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"Development",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -452,7 +452,7 @@
 					"TheGeniusPlanEditor",
 					"Mac",
 					"Development",
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-waitmutex",
 					"-clean"
 				],
@@ -470,7 +470,7 @@
 			{
 				"name": "Launch TheGeniusPlan (Debug)",
 				"request": "launch",
-				"program": "/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/Binaries/Mac/UnrealGame-Mac-Debug.app/Contents/MacOS/UnrealGame-Mac-Debug",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealGame-Mac-Debug.app/Contents/MacOS/UnrealGame-Mac-Debug",
 				"preLaunchTask": "TheGeniusPlan Mac Debug Build",
 				"args": [
 				],
@@ -480,7 +480,7 @@
 			{
 				"name": "Launch TheGeniusPlan (DebugGame)",
 				"request": "launch",
-				"program": "/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/Binaries/Mac/UnrealGame-Mac-DebugGame.app/Contents/MacOS/UnrealGame-Mac-DebugGame",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealGame-Mac-DebugGame.app/Contents/MacOS/UnrealGame-Mac-DebugGame",
 				"preLaunchTask": "TheGeniusPlan Mac DebugGame Build",
 				"args": [
 				],
@@ -490,7 +490,7 @@
 			{
 				"name": "Launch TheGeniusPlan (Development)",
 				"request": "launch",
-				"program": "/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/Binaries/Mac/UnrealGame.app/Contents/MacOS/UnrealGame",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealGame.app/Contents/MacOS/UnrealGame",
 				"preLaunchTask": "TheGeniusPlan Mac Development Build",
 				"args": [
 				],
@@ -500,7 +500,7 @@
 			{
 				"name": "Launch TheGeniusPlan (Test)",
 				"request": "launch",
-				"program": "/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/Binaries/Mac/UnrealGame-Mac-Test.app/Contents/MacOS/UnrealGame-Mac-Test",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealGame-Mac-Test.app/Contents/MacOS/UnrealGame-Mac-Test",
 				"preLaunchTask": "TheGeniusPlan Mac Test Build",
 				"args": [
 				],
@@ -510,7 +510,7 @@
 			{
 				"name": "Launch TheGeniusPlan (Shipping)",
 				"request": "launch",
-				"program": "/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/Binaries/Mac/UnrealGame-Mac-Shipping.app/Contents/MacOS/UnrealGame-Mac-Shipping",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealGame-Mac-Shipping.app/Contents/MacOS/UnrealGame-Mac-Shipping",
 				"preLaunchTask": "TheGeniusPlan Mac Shipping Build",
 				"args": [
 				],
@@ -523,7 +523,7 @@
 				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor-Mac-Debug.app/Contents/MacOS/UnrealEditor-Mac-Debug",
 				"preLaunchTask": "TheGeniusPlanEditor Mac Debug Build",
 				"args": [
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject"
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject"
 				],
 				"cwd": "/Users/Shared/Epic Games/UE_5.4",
 				"type": "lldb"
@@ -534,7 +534,7 @@
 				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor-Mac-DebugGame.app/Contents/MacOS/UnrealEditor-Mac-DebugGame",
 				"preLaunchTask": "TheGeniusPlanEditor Mac DebugGame Build",
 				"args": [
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject"
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject"
 				],
 				"cwd": "/Users/Shared/Epic Games/UE_5.4",
 				"type": "lldb"
@@ -545,7 +545,7 @@
 				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor",
 				"preLaunchTask": "TheGeniusPlanEditor Mac Development Build",
 				"args": [
-					"/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject"
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject"
 				],
 				"cwd": "/Users/Shared/Epic Games/UE_5.4",
 				"type": "lldb"
@@ -559,7 +559,7 @@
 				"args": [
 					"-projectfiles",
 					"-vscode",
-					"-project=/Users/janghun/Study/EteverseProjects/Upstream/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-project=/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
 					"-game",
 					"-engine",
 					"-dotnet"

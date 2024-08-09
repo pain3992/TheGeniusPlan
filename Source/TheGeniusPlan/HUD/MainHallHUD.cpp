@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "TheGeniusPlan/HUD/MainHallHUD.h"
 #include "BluePrint/UserWidget.h"
 #include "TheGeniusPlan/Widget/MainHallUserWidget.h"
@@ -11,14 +10,14 @@
 
 AMainHallHUD::AMainHallHUD()
 {
-	static ConstructorHelpers::FClassFinder<UMainHallUserWidget> CMainHallWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MainHallContent/Widget/WG_MainHallWidget.WG_MainHallWidget_C'"));
-	static ConstructorHelpers::FClassFinder<UHelpUserWidget> CHelpWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MainHallContent/Widget/WG_Help.WG_Help_C'"));
+    static ConstructorHelpers::FClassFinder<UMainHallUserWidget> CMainHallWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MainHallContent/Widget/WG_MainHallWidget.WG_MainHallWidget_C'"));
+    static ConstructorHelpers::FClassFinder<UHelpUserWidget> CHelpWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MainHallContent/Widget/WG_Help.WG_Help_C'"));
 
-	if (CMainHallWidget.Succeeded() && CHelpWidget.Succeeded())
-	{
-		MainHallWidgetClass = CMainHallWidget.Class;
-		HelpWidgetClass = CHelpWidget.Class;
-	}
+    if (CMainHallWidget.Succeeded() && CHelpWidget.Succeeded())
+    {
+        MainHallWidgetClass = CMainHallWidget.Class;
+        HelpWidgetClass = CHelpWidget.Class;
+    }
 }
 
 void AMainHallHUD::BeginPlay()
@@ -32,18 +31,17 @@ void AMainHallHUD::BeginPlay()
     if (MainHallWidget)
     {
         MainHallWidget->AddToViewport();
-        MainHallWidget->SetHUD(this);  // Set HUD reference for MainHallWidget
+        MainHallWidget->SetHUD(this); // Set HUD reference for MainHallWidget
     }
 
     HelpWidget = Cast<UHelpUserWidget>(CreateWidget(GetWorld(), HelpWidgetClass, TEXT("HelpHUD")));
     if (HelpWidget)
     {
         HelpWidget->AddToViewport();
-        HelpWidget->SetVisibility(ESlateVisibility::Collapsed);  // Hide HelpWidget initially
-        HelpWidget->SetHUD(this);  // Set HUD reference for HelpWidget
+        HelpWidget->SetVisibility(ESlateVisibility::Collapsed); // Hide HelpWidget initially
+        HelpWidget->SetHUD(this);                               // Set HUD reference for HelpWidget
     }
 }
-
 
 void AMainHallHUD::ShowWidget(MainHallWidgetType type)
 {
@@ -62,7 +60,7 @@ void AMainHallHUD::ShowWidget(MainHallWidgetType type)
     case MainHallWidgetType::HelpWidget:
         MainHallWidget->SetVisibility(ESlateVisibility::Collapsed);
         HelpWidget->SetVisibility(ESlateVisibility::Visible);
-        ShowMouseCursor(true); // Ä¿¼­¸¦ º¸ÀÌµµ·Ï ¼³Á¤
+        ShowMouseCursor(true); // Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         break;
     case MainHallWidgetType::MAX:
         break;
@@ -81,7 +79,7 @@ void AMainHallHUD::SetHelpWidgetVisibility(ESlateVisibility Visibility)
 
 void AMainHallHUD::ShowMouseCursor(bool bShowCursor)
 {
-    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    APlayerController *PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     if (PlayerController)
     {
         PlayerController->bShowMouseCursor = bShowCursor;
@@ -101,7 +99,7 @@ void AMainHallHUD::UpdateRankingList()
     if (MainHallWidget)
     {
         // Retrieve the GameState and update the widget
-        AMainHallGameState* GameState = GetWorld()->GetGameState<AMainHallGameState>();
+        AMainHallGameState *GameState = GetWorld()->GetGameState<AMainHallGameState>();
         if (GameState)
         {
             MainHallWidget->UpdateRankingList(GameState->PlayerRankings);
