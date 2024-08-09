@@ -7,11 +7,12 @@
 #include "OpenPassGameMode.generated.h"
 
 /**
- * 
+ * @description 오픈패스 게임모드 (임시 게임)
  */
 UCLASS()
 class THEGENIUSPLAN_API AOpenPassGameMode : public AMainGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+	virtual void BeginPlay() override;
 };

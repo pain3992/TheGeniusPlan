@@ -7,7 +7,8 @@
 #include "MainGameModeBase.generated.h"
 
 /**
- * 
+ * @description 메인 게임모드 부모 클래스로 사용 예정
+ * @see 게임의 규칙과 관련된 로직이 주로 사용될 예정
  */
 UCLASS()
 class THEGENIUSPLAN_API AMainGameModeBase : public AGameMode
@@ -16,6 +17,9 @@ class THEGENIUSPLAN_API AMainGameModeBase : public AGameMode
 public:
 	AMainGameModeBase();
 
+	UFUNCTION(BlueprintCallable, Category="GameMode")
+	void SelectNextGameMode();
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -24,7 +28,6 @@ protected:
 	// void CheckForOverallWinner();
 	// void TransitionToNextRound();
 	// void EndMatch(int32 WinningPlayerId);
-	void SelectNextGameMode();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Rounds", meta=(AllowPrivateAccess = "true"))
 	int32 TotalRounds;
