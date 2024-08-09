@@ -57,6 +57,18 @@ ATheGeniusPlanCharacter::ATheGeniusPlanCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+void ATheGeniusPlanCharacter::changeCameraMode()
+{
+	if (CameraBoom->TargetArmLength > 0.0)
+	{
+		CameraBoom->TargetArmLength = 0.0f;
+	}
+	else
+	{
+		CameraBoom->TargetArmLength = 400.0f;
+	}
+}
+
 void ATheGeniusPlanCharacter::BeginPlay()
 {
 	// Call the base class  

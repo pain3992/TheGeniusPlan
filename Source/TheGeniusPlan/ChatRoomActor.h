@@ -6,6 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "ChatRoomActor.generated.h"
 
+UENUM()
+enum class RoomType : uint8
+{
+	NONE UMETA(DisplayName = "NONE"),
+	WaitingRoom UMETA(DisplayName = "WaitingRoom"),
+	StudyRoom UMETA(DisplayName = "StudyRoom"),
+
+};
 
 UCLASS()
 class THEGENIUSPLAN_API AChatRoomActor : public AActor
@@ -15,6 +23,10 @@ class THEGENIUSPLAN_API AChatRoomActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AChatRoomActor();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RoomType")
+	RoomType thisRoomType;
+
 
 protected:
 	// Called when the game starts or when spawned

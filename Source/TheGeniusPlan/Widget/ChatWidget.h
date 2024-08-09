@@ -26,13 +26,16 @@ public:
 	void ScrollChat(uint8 bIsUp);
 
 	UFUNCTION()
-	void AddMyChatMessage(const FString &Message);
+	void AddMyChatMessage(const FString &Message, uint8 Type);
 
 	UFUNCTION()
 	void ClearChatWidget();
 
 	UFUNCTION()
 	void EnterToEditableTextBox(const FText& Text, ETextCommit::Type CommitMethod);
+
+	UPROPERTY()
+	uint8 ChatRoomType;
 
 protected:
 

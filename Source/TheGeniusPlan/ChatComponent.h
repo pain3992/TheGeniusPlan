@@ -32,7 +32,7 @@ public:
 	TObjectPtr<class UChatWidget> ChatWidget;
 
 	UFUNCTION()
-	void CreateChatWidget();
+	void CreateChatWidget(uint8 RoomType);
 
 	UFUNCTION()
 	void RemoveChatWidget();
@@ -41,9 +41,9 @@ public:
 	bool GetChatVaild();
 
 	UFUNCTION(Server, Reliable)
-	void SendMyMessage(const FString& Message);
+	void SendMyMessage(const FString& Message, uint8 Type);
 
 	UFUNCTION(Client, Reliable)
-	void AddMyChatMessage(const FString& Message);
+	void AddMyChatMessage(const FString& Message, uint8 Type);
 		
 };

@@ -53,7 +53,7 @@ void AChatRoomActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 			if (PlayerController)
 			{
 				UE_LOG(LogTemp, Error, TEXT("PlayerController Cast Succeeded!"));
-				PlayerController->ChatComponent->CreateChatWidget();
+				PlayerController->ChatComponent->CreateChatWidget((uint8)thisRoomType);
 			}
 		}
 	}
@@ -63,6 +63,7 @@ void AChatRoomActor::OnComponentEndOverlap(UPrimitiveComponent* OverlappedCompon
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	UE_LOG(LogTemp, Error, TEXT("EndOverlap"));
+
 	ACharacter* OverlapActor = Cast<ACharacter>(OtherActor);
 
 	if (OverlapActor)

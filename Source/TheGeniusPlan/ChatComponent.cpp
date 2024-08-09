@@ -5,6 +5,7 @@
 #include "GameFramework/GameState.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerState.h"
+#include "ChatRoomActor.h"
 
 
 UChatComponent::UChatComponent()
@@ -43,18 +44,25 @@ void UChatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 }
 
-void UChatComponent::CreateChatWidget()
+void UChatComponent::CreateChatWidget(uint8 RoomType)
 {
-	if (!ChatWidgetClass)
+	if(!ChatWidgetClass)
 	{
-		UE_LOG(LogTemp, Error, TEXT("ChatWidgetClass is Null"));
+		UE_LOG(LogTemp, Error, TEXT("ChatWidgetclass is Null"));
 		return;
 	}
 
-	if (ChatWidget == nullptr)
+	if (ChatWidget != nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("you have ChatWidget"));
+		ChatWidget->AddToViewport();
+		ChatWidget->ChatRoomType = RoomType;
+	}
+	else
 	{
 		ChatWidget = Cast<UChatWidget>(CreateWidget(GetWorld(), ChatWidgetClass));
 		ChatWidget->AddToViewport();
+		ChatWidget->ChatRoomType = RoomType;
 	}
 
 	UE_LOG(LogTemp, Error, TEXT("Create Chat Widget Succeeded!"));
@@ -78,15 +86,15 @@ bool UChatComponent::GetChatVaild()
 	return bIsChatVaild;
 }
 
-void UChatComponent::AddMyChatMessage_Implementation(const FString& Message)
+void UChatComponent::AddMyChatMessage_Implementation(const FString& Message, uint8 Type)
 {
 	if(ChatWidget)
 	{
-		ChatWidget->AddMyChatMessage(Message);
+		ChatWidget->AddMyChatMessage(Message, Type);
 	}
 }
 
-void UChatComponent::SendMyMessage_Implementation(const FString& Message)
+void UChatComponent::SendMyMessage_Implementation(const FString& Message, uint8 Type)
 {
 	UWorld* World = GetWorld();
 
@@ -108,7 +116,7 @@ void UChatComponent::SendMyMessage_Implementation(const FString& Message)
 
 				if (UserChatComponent)
 				{
-					UserChatComponent->AddMyChatMessage(Message);
+					UserChatComponent->AddMyChatMessage(Message, Type);
 				}
 			}
 		}

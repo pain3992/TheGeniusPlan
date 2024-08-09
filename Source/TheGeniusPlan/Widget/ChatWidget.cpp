@@ -51,15 +51,18 @@ void UChatWidget::ScrollChat(uint8 bIsUp)
 	}
 }
 
-void UChatWidget::AddMyChatMessage(const FString& MyMessage)
+void UChatWidget::AddMyChatMessage(const FString& MyMessage, uint8 Type)
 {
 	UE_LOG(LogTemp, Error, TEXT("AddMyChatMessage Using Client Function"));
 
-	UTextBlock* NewTextBlock = NewObject<UTextBlock>(ScrollBox);
-	NewTextBlock->SetText(FText::FromString(MyMessage));
+	if (ChatRoomType == (uint8)Type)
+	{
+		UTextBlock* NewTextBlock = NewObject<UTextBlock>(ScrollBox);
+		NewTextBlock->SetText(FText::FromString(MyMessage));
 
-	ScrollBox->AddChild(NewTextBlock);
-	ScrollBox->ScrollToEnd();
+		ScrollBox->AddChild(NewTextBlock);
+		ScrollBox->ScrollToEnd();
+	}
 }
 
 void UChatWidget::ClearChatWidget()
@@ -82,7 +85,7 @@ void UChatWidget::EnterToEditableTextBox(const FText& Text, ETextCommit::Type Co
 
 			if (MyChatComponent)
 			{
-				MyChatComponent->SendMyMessage(Message);
+				MyChatComponent->SendMyMessage(Message, ChatRoomType);
 			}
 
 			UE_LOG(LogTemp, Error, TEXT("MyChatComponent Not Vaild"));

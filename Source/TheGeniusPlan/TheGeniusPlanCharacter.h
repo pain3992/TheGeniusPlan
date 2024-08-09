@@ -49,6 +49,9 @@ class ATheGeniusPlanCharacter : public ACharacter
 
 public:
 	ATheGeniusPlanCharacter();
+
+	UFUNCTION()
+	void changeCameraMode();
 	
 
 protected:
