@@ -4,25 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "TheGeniusPlan/Widget/PlayerRankingUserWidget.h"
+#include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/Data/PlayerRankingData.h"
 #include "Components/ListView.h"
-#include "MainHallUserWidget.generated.h"
+#include "MainGameWidget.generated.h"
 
 
 UCLASS()
-class THEGENIUSPLAN_API UMainHallUserWidget : public UUserWidget
+class THEGENIUSPLAN_API UMainGameWidget : public UUserWidget
 {
     GENERATED_BODY()
 
 
 public:
-    void SetHUD(class AMainHallHUD* InHUD);
+    void SetHUD(class AMainGameHUD* InHUD);
 
     UFUNCTION(BlueprintCallable, Category = "Player Ranking")
     void UpdatePlayerList(const TArray<UPlayerRankingData*>& PlayerRankingDataArray);
 
-    AMainHallHUD* MainHallHUD;
+    AMainGameHUD* MainGameHUD;
 
 
 protected:

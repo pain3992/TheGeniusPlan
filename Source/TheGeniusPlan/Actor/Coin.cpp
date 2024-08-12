@@ -2,13 +2,8 @@
 
 
 #include "TheGeniusPlan/Actor/Coin.h"
-#include "Coin.h"
 #include "Components/SphereComponent.h"
-#include "GameFramework/Character.h" 
-#include "GameFramework/HUD.h"
 #include "Components/StaticMeshComponent.h"
-#include "TheGeniusPlan/Widget/MainHallUserWidget.h"
-#include "TheGeniusPlan/GameModes/MainHallGameMode.h"
 #include "GameFramework/PlayerController.h"
 
 // Sets default values

@@ -6,8 +6,19 @@
 #include "GameFramework/HUD.h"
 #include "MainGameHUD.generated.h"
 
+
+UENUM()
+enum class MainGameWidgetType : uint8
+{
+	// Home 작업 예시 2 
+    NONE UMETA(DisplayName = "NONE"),
+    MainGameWidget UMETA(DisplayName = "MainGameWidget"),
+    HelpWidget UMETA(DisplayName = "HelpWidget"),
+    MAX UMETA(DisplayName = "MAX")
+};
+
 /**
- * @description 메인 게임모드 HUD, 게임모드 변경위젯을 불러오는 HUD로 제작했으나 MainHall과 통합 검토
+ * 
  */
 UCLASS()
 class THEGENIUSPLAN_API AMainGameHUD : public AHUD
@@ -15,16 +26,32 @@ class THEGENIUSPLAN_API AMainGameHUD : public AHUD
 	GENERATED_BODY()
 
 public:
-	AMainGameHUD();
+    AMainGameHUD();
 
 	virtual void BeginPlay() override;
 
-	// 게임모드 전환 테스트용 위젯 클래스
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="WidgetClass")
-	TSubclassOf<class UChangeGameModeWidget> ChangeGameModeWidgetClass;
+    UFUNCTION()
+    void ShowWidget(MainGameWidgetType type);
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
+    TSubclassOf<class UMainGameWidget> MainGameWidgetClass;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
+    TSubclassOf<class UHelpUserWidget> HelpWidgetClass;
+
+    // Function to set visibility of HelpWidget
+    void SetHelpWidgetVisibility(ESlateVisibility Visibility);
+    void ShowMouseCursor(bool bShowCursor);
+   // void UpdateRankingList();
+
+        // Public accessor for MainGameWidget
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    UMainGameWidget* GetMainGameWidget() const { return MainGameWidget; }
+
+    UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+    TObjectPtr<class UMainGameWidget> MainGameWidget;
 
 protected:
-	// 게임모드 전환 테스트용 위젯
-	UPROPERTY(BlueprintReadWrite, Category="Widgets")
-	TObjectPtr<class UChangeGameModeWidget> ChangeGameModeWidget;
+    UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+    TObjectPtr<class UHelpUserWidget> HelpWidget; 
 };

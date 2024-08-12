@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TheGeniusPlan/Widget/HelpUserWidget.h"
+#include "TheGeniusPlan/Widget/MainGame/HelpUserWidget.h"
 #include "Components/Button.h"
-#include "TheGeniusPlan/HUD/MainHallHUD.h"
+#include "TheGeniusPlan/HUD/MainGameHUD.h"
 
 void UHelpUserWidget::NativeConstruct()
 {
@@ -15,7 +15,7 @@ void UHelpUserWidget::NativeConstruct()
 	}
 }
 
-void UHelpUserWidget::SetHUD(AMainHallHUD* InHUD)
+void UHelpUserWidget::SetHUD(AMainGameHUD* InHUD)
 {
 	HUD = InHUD;
 }
@@ -24,6 +24,6 @@ void UHelpUserWidget::OnBackButtonClicked()
 {
     if (HUD)
     {
-        HUD->ShowWidget(MainHallWidgetType::MainHallWidget);
+        HUD->ShowWidget(MainGameWidgetType::MainGameWidget);
     }
 }

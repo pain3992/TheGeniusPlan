@@ -22,12 +22,12 @@ protected:
 	class UButton* Button_Back;
 
 public:
-	void SetHUD(class AMainHallHUD* InHUD);
+	void SetHUD(class AMainGameHUD* InHUD);
 
 private:
 	UFUNCTION()
 	void OnBackButtonClicked();
 
-	AMainHallHUD* HUD;
+	AMainGameHUD* HUD;
 
 };

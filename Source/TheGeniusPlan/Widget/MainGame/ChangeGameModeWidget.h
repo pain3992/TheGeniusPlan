@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
-#include "TheGeniusPlan/HUD/MainGameHUD.h"
+#include "TheGeniusPlan/HUD/ChangeGameModeHUD.h"
 #include "ChangeGameModeWidget.generated.h"
 
 /**
@@ -28,5 +28,5 @@ public:
 	void OnChangeGameModeButtonClicked();
 
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
-	TObjectPtr<AMainGameHUD> MainGameHUD;
+	TObjectPtr<AChangeGameModeHUD> ChangeGameModeHUD;
 };
