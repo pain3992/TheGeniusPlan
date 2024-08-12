@@ -4,6 +4,9 @@
 #include "TheGeniusPlan/Actor/Coin.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
+#include "TheGeniusPlan/GameModes/MainGame/MainGameModeBase.h"
+#include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "GameFramework/PlayerController.h"
 
 // Sets default values
@@ -45,5 +48,21 @@ void ACoin::Tick(float DeltaTime)
 
 void ACoin::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+    if (OtherActor)
+    {
+        APlayerController* PlayerController = Cast<APlayerController>(OtherActor->GetInstigatorController());
+        if (PlayerController)
+        {
+            AGeniusPlayerState* PlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
+            if (PlayerState)
+            {
+                AMainGameModeBase* GameMode = Cast<AMainGameModeBase>(GetWorld()->GetAuthGameMode());
+                if (GameMode)
+                {
+                 //   GameMode->PlayerCollectedCoin(PlayerState);
+                }
+                Destroy();
+            }
+        }
+    }
 }
