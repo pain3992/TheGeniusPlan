@@ -10,43 +10,37 @@
 
 AMainGameHUD::AMainGameHUD()
 {
-    Super::BeginPlay();
-
-    // static ConstructorHelpers::FClassFinder<UMainGameWidget> CMainGameWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MainHallContent/Widget/WG_MainHallWidget.WG_MainHallWidget_C'"));
-    // static ConstructorHelpers::FClassFinder<UHelpUserWidget> CHelpWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MainHallContent/Widget/WG_Help.WG_Help_C'"));
-    // if (CMainGameWidget.Succeeded() && CHelpWidget.Succeeded())
-    // {
-    //     MainGameWidgetClass = CMainGameWidget.Class;
-    //     HelpWidgetClass = CHelpWidget.Class;
-    // }
-    // check(MainGameWidgetClass);
-    //
-    // MainGameWidget = Cast<UMainGameWidget>(CreateWidget<UMainGameWidget>(GetWorld(), MainGameWidgetClass, TEXT("MainGameHUD")));
-    // if (MainGameWidget)
-    // {
-    //     MainGameWidget->SetHUD(this);  // Set HUD reference for MainGameWidget
-    //     MainGameWidget->MainGameHUD = this;
-    //     MainGameWidget->AddToViewport();
-    //     UE_LOG(LogTemp, Log, TEXT("MainGameWidget successfully created and added to viewport."));
-    // }
-    //
-    // HelpWidget = CreateWidget<UHelpUserWidget>(GetWorld(), HelpWidgetClass, TEXT("HelpHUD"));
-    // if (HelpWidget)
-    // {
-    //     HelpWidget->AddToViewport();
-    //     HelpWidget->SetVisibility(ESlateVisibility::Collapsed);  // Hide HelpWidget initially
-    //     HelpWidget->SetHUD(this);  // Set HUD reference for HelpWidget
-    //     UE_LOG(LogTemp, Log, TEXT("HelpWidget successfully created and added to viewport."));
-    // }
-    // else
-    // {
-    //     UE_LOG(LogTemp, Error, TEXT("Failed to create HelpWidget. Make sure the widget class is properly assigned in the HUD."));
-    // }
+    static ConstructorHelpers::FClassFinder<UMainGameWidget> CMainGameWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MainHallContent/Widget/WG_MainGameWidget.WG_MainGameWidget_C'"));
+    static ConstructorHelpers::FClassFinder<UHelpUserWidget> CHelpWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MainHallContent/Widget/WG_Help.WG_Help_C'"));
+    if (CMainGameWidget.Succeeded() && CHelpWidget.Succeeded())
+    {
+        MainGameWidgetClass = CMainGameWidget.Class;
+        HelpWidgetClass = CHelpWidget.Class;
+    }
 }
 
 void AMainGameHUD::BeginPlay()
 {
-   
+    UE_LOG(LogTemp, Error, TEXT ("BeginPlay is Work"))
+    Super::BeginPlay();
+
+    check(MainGameWidgetClass);
+    check(HelpWidgetClass);
+
+    MainGameWidget = Cast<UMainGameWidget>(CreateWidget(GetWorld(), MainGameWidgetClass, TEXT("MainGameHUD")));
+    if (MainGameWidget)
+    {
+        MainGameWidget->AddToViewport();
+        MainGameWidget->SetHUD(this);  // Set HUD reference for MainHallWidget
+    }
+
+    HelpWidget = Cast<UHelpUserWidget>(CreateWidget(GetWorld(), HelpWidgetClass, TEXT("HelpHUD")));
+    if (HelpWidget)
+    {
+        HelpWidget->AddToViewport();
+        HelpWidget->SetVisibility(ESlateVisibility::Collapsed);  // Hide HelpWidget initially
+        HelpWidget->SetHUD(this);  // Set HUD reference for HelpWidget
+    }
 }
 
 void AMainGameHUD::ShowWidget(MainGameWidgetType type)
@@ -105,7 +99,7 @@ void AMainGameHUD::ShowMouseCursor(bool bShowCursor)
 //    if (MainHallWidget)
 //    {
 //        // Retrieve the GameState and update the widget
-//        AMainHallGameState* GameState = GetWorld()->GetGameState<AMainHallGameState>();
+//        AGameState* GameState = GetWorld()->GetGameState<AMainHallGameState>();
 //        if (GameState)
 //        {
 //            MainHallWidget->UpdateRankingList(GameState->PlayerRankings);
