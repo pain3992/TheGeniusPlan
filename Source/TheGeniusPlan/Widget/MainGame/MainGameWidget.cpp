@@ -7,6 +7,7 @@
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
+#include "Components/TextBlock.h"
 #include "Engine/Engine.h"
 
 void UMainGameWidget::NativeConstruct()
@@ -20,22 +21,20 @@ void UMainGameWidget::NativeConstruct()
         Button_Help->OnClicked.AddDynamic(this, &UMainGameWidget::OnHelpButtonClicked);
     }
 
-    //// 플레이어 리스트 업데이트 호출 (임시로 테스트 데이터 전달)
-    //TArray<UPlayerRankingData*> TestData;
-    //UPlayerRankingData* TestData1 = NewObject<UPlayerRankingData>();
-    //TestData1->PlayerName = TEXT("Player1");
-    //TestData1->Score = 100;
-    //TestData.Add(TestData1);
-
-    //UPlayerRankingData* TestData2 = NewObject<UPlayerRankingData>();
-    //TestData2->PlayerName = TEXT("Player2");
-    //TestData2->Score = 200;
-    //TestData.Add(TestData2);
-
-    //UpdatePlayerList(TestData);
     LoadData();
 }
 
+void UMainGameWidget::UpdateCountdownDisplay(int32 CountdownTimeInSeconds)
+{
+    int32 Minutes = CountdownTimeInSeconds / 60;
+    int32 Seconds = CountdownTimeInSeconds % 60;
+    FString CountdownText = FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
+
+    if (Text_Countdown)
+    {
+        Text_Countdown->SetText(FText::FromString(CountdownText));
+    }
+}
 
 void UMainGameWidget::LoadData()
 {

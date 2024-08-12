@@ -28,6 +28,9 @@ AMainGameModeBase::AMainGameModeBase()
 		GameStateClass = AMainGameStateBase::StaticClass();
 		PlayerStateClass = AGeniusPlayerState::StaticClass();
 	}
+
+	// 카운트다운 시간 (테스트 후 다른 시간으로 변경)
+	CountdownTimeInSeconds = 300;
 }
 
 void AMainGameModeBase::BeginPlay()
@@ -52,6 +55,7 @@ void AMainGameModeBase::HandleGameStart()
 	// 	PlayerScores.Add(PlayerID, 0);
 	// }
 	// 첫번째 라운드 시작
+	SetCountdownRule();
 	TransitionToNextRound();
 }
 
@@ -116,10 +120,17 @@ void AMainGameModeBase::SetGameRules()
 	// 특정 조건, 아이템 스폰 등등
 }
 
+void AMainGameModeBase::SetCountdownRule()
+{
+	if (AMainGameStateBase* MainGameState = GetGameState<AMainGameStateBase>())
+	{
+		MainGameState->StartCountdown(CountdownTimeInSeconds);
+	}
+}
+
 void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-
 	if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
 	{
 		if (AGeniusPlayerState *NewPlayerState = NewPlayer->GetPlayerState<AGeniusPlayerState>())

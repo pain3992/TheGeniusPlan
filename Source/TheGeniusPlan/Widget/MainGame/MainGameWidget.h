@@ -24,6 +24,9 @@ public:
 
     AMainGameHUD* MainGameHUD;
 
+    UFUNCTION(BlueprintCallable, Category = "Countdown")
+    void UpdateCountdownDisplay(int32 CountdownTimeInSeconds);  
+
 
 protected:
     virtual void NativeConstruct() override;
@@ -43,8 +46,14 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Ranking")
     TSubclassOf<class UPlayerRankingUserWidget> PlayerRankingUserWidgetClass;
 
+
+
 private:
-    
+    FTimerHandle CountdownTimerHandle;
+    int32 CountdownTime;
+
+    UPROPERTY(meta=(BindWidget))
+    class UTextBlock* Text_Countdown;
 
     void LoadData();
 };

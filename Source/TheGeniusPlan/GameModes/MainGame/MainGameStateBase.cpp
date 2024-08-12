@@ -3,6 +3,8 @@
 #include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
+#include "Net/UnrealNetwork.h"
+#include "Engine/Engine.h"
 
 void AMainGameStateBase::AddPlayer(AGeniusPlayerState* NewPlayerState)
 {
@@ -81,4 +83,57 @@ void AMainGameStateBase::UpdatePlayerRankings()
     {
         UE_LOG(LogTemp, Warning, TEXT("UpdatePlayerRankings: Failed to get HUD from player controller."));
     }
+}
+
+void AMainGameStateBase::StartCountdown(int32 InitialCountdownTime)
+{
+    if (HasAuthority())
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("StartCountdown"));
+        CountdownTime = InitialCountdownTime;
+        OnRep_CountdownTime();
+
+        GetWorld()->GetTimerManager().SetTimer(CountdownTimerHandle, this, &AMainGameStateBase::UpdateCountdown, 1.0f, true);
+    }
+}
+
+void AMainGameStateBase::OnRep_CountdownTime() const
+{
+        //UE_LOG(LogTemp, Warning, TEXT("IS SERVER"));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("IS SERVER"));
+        for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+        {
+            if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
+            {
+                if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
+                {
+                    MainGameWidget->UpdateCountdownDisplay(CountdownTime);
+                }
+            }
+        }
+}
+
+void AMainGameStateBase::UpdateCountdown()
+{
+    if (CountdownTime > 0)
+    {
+        CountdownTime--;
+        // OnRep_CountdownTime();
+    }
+    else
+    {
+        CountdownFinished();
+    }
+}
+
+void AMainGameStateBase::CountdownFinished()
+{
+    GetWorld()->GetTimerManager().ClearTimer(CountdownTimerHandle);
+    // 타이머 종료 시 실행되는 로직 작성
+}
+
+void AMainGameStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+    DOREPLIFETIME(AMainGameStateBase, CountdownTime);
 }

@@ -38,4 +38,24 @@ public:
     // 플레이어 랭킹 데이터
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Ranking")
     TArray<UPlayerRankingData*> PlayerRankings;
+
+    // 카운트다운 시작 함수
+    UFUNCTION(BlueprintCallable, Category = "Countdown")
+    void StartCountdown(int32 InitialCountdownTime);
+
+protected:
+    // 카운트다운 변수가 변경될 때 클라이언트에서 호출되는 함수
+    UFUNCTION()
+    void OnRep_CountdownTime() const;
+
+    UPROPERTY(ReplicatedUsing = OnRep_CountdownTime)
+    int32 CountdownTime;
+
+private:
+    FTimerHandle CountdownTimerHandle;
+
+    void UpdateCountdown();
+    void CountdownFinished();
+
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
