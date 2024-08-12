@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "TheGeniusPlan/HUD/ChangeGameModeHUD.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
+#include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 
 AMainGameModeBase::AMainGameModeBase()
@@ -119,30 +120,33 @@ void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	// PlayingPlayers.Add(NewPlayer);
-	// UE_LOG(LogTemp, Log, TEXT(" // 게임 상태 및 플레이어 상태를 가져옵니다.
-	if (AGeniusPlayerState *PlayerState = NewPlayer->GetPlayerState<AGeniusPlayerState>())
+	if (AMainGameStateBase *GameState = GetGameState<AMainGameStateBase>())
 	{
-		// 플레이어 컨트롤러의 이름을 PlayerState에 설정합니다.
-		PlayerState->PlayerName = NewPlayer->GetName();
+		if (AGeniusPlayerState *NewPlayerState = NewPlayer->GetPlayerState<AGeniusPlayerState>())
+		{
+			GameState->AddPlayer(NewPlayerState);
+			// 플레이어 컨트롤러의 이름을 PlayerState에 설정합니다.
+			NewPlayerState->PlayerName = NewPlayer->GetName();
 
-		// 기본 점수를 0으로 설정합니다.
-		PlayerState->SetPlayerScore(0);
-
-		UE_LOG(LogTemp, Log, TEXT("Client has joined the game. PlayerController name: %s, PlayerState name: %s"),
-			   *NewPlayer->GetName(), *PlayerState->PlayerName);
-	}
-
-	// 플레이어 상태 업데이트
-	if (AMainGameStateBase *CurrentGameState = GetWorld()->GetGameState<AMainGameStateBase>())
-	{
-		CurrentGameState->UpdatePlayerRankings();
+			// 기본 점수를 0으로 설정합니다.
+			NewPlayerState->SetPlayerScore(0);
+		}
+		// 랭킹 초기화
+		GameState->UpdatePlayerRankings();
 	}
 }
 
 void AMainGameModeBase::Logout(AController *Exiting)
 {
 	Super::Logout(Exiting);
+
+	if (APlayerController *PlayerController = Cast<AGeniusPlayerController>(Exiting))
+	{
+		if (AMainGameStateBase *GameState = GetGameState<AMainGameStateBase>())
+		{
+			GameState->RemovePlayer(PlayerController->GetPlayerState<AGeniusPlayerState>());
+		}
+	}
 }
 
 /**

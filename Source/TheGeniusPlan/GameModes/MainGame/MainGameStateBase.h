@@ -16,12 +16,20 @@ class THEGENIUSPLAN_API AMainGameStateBase : public AGameState
     GENERATED_BODY()
 
 public:
+	// 플레이어 목록
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="GameState")
+	TArray<AGeniusPlayerState*> PlayingPlayers;
 
+	// 플레이어를 목록에서 추가 함수
+	void AddPlayer(AGeniusPlayerState *NewPlayerState);
+	// 플레이어를 목록에서 제거하는 함수
+	void RemovePlayer(AGeniusPlayerState *RemovePlayerState);
+	
     AMainGameStateBase();
 
     // 플레이어 상태 정보를 반환하는 함수
     UFUNCTION(BlueprintCallable, Category = "PlayerData")
-    TArray<AGeniusPlayerState*> GetAllPlayerStates() const;
+    TArray<AGeniusPlayerState*> GetAllPlayingPlayers() const;
 
     // 플레이어 순위를 업데이트하는 함수
     UFUNCTION(BlueprintCallable, Category = "PlayerData")
