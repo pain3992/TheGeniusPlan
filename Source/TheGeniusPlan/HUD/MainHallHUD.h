@@ -10,6 +10,7 @@
 UENUM()
 enum class MainHallWidgetType : uint8
 {
+	// Home 작업 예시 2 
     NONE UMETA(DisplayName = "NONE"),
     MainHallWidget UMETA(DisplayName = "MainHallWidget"),
     HelpWidget UMETA(DisplayName = "HelpWidget"),
@@ -41,12 +42,16 @@ public:
     // Function to set visibility of HelpWidget
     void SetHelpWidgetVisibility(ESlateVisibility Visibility);
     void ShowMouseCursor(bool bShowCursor);
-    void UpdateRankingList();
+   // void UpdateRankingList();
 
-protected:
+        // Public accessor for MainHallWidget
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    UMainHallUserWidget* GetMainHallWidget() const { return MainHallWidget; }
+
     UPROPERTY(BlueprintReadWrite, Category = "Widgets")
     TObjectPtr<class UMainHallUserWidget> MainHallWidget;
 
+protected:
     UPROPERTY(BlueprintReadWrite, Category = "Widgets")
     TObjectPtr<class UHelpUserWidget> HelpWidget; 
 };

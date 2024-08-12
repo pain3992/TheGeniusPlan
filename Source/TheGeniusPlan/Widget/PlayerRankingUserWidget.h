@@ -14,18 +14,29 @@
  * 
  */
 UCLASS()
-class THEGENIUSPLAN_API UPlayerRankingUserWidget : public UUserWidget, public IUserObjectListEntry
+class THEGENIUSPLAN_API UPlayerRankingUserWidget : public UUserWidget , public IUserObjectListEntry
 {
     GENERATED_BODY()
 
 public:
+    virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    UTextBlock* Text_PlayerName;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    UTextBlock* Text_Score;
+
     UFUNCTION(BlueprintCallable, Category = "Player Ranking")
-    void UpdateData(const FPlayerRankingData& PlayerRankingData);
+    void SetPlayerName(const FString& PlayerName);
 
-protected:
-    UPROPERTY(meta = (BindWidget))
-    class UTextBlock* Text_PlayerName;
+    UFUNCTION(BlueprintCallable, Category = "Player Ranking")
+    void SetScore(int32 Score);
 
-    UPROPERTY(meta = (BindWidget))
-    class UTextBlock* Text_Score;
+private:
+    UPROPERTY()
+    FString PlayerName;
+
+    UPROPERTY()
+    int32 Score;
 };

@@ -16,13 +16,18 @@ class THEGENIUSPLAN_API AMainHallGameState : public AGameState
     GENERATED_BODY()
 
 public:
-    UPROPERTY(ReplicatedUsing = OnRep_PlayerRankings)
-    TArray<FPlayerRankingData> PlayerRankings;
 
-    UFUNCTION()
-    void OnRep_PlayerRankings();
+    AMainHallGameState();
 
+    // 플레이어 상태 정보를 반환하는 함수
+    UFUNCTION(BlueprintCallable, Category = "PlayerData")
+    TArray<AMainHallPlayerState*> GetAllPlayerStates() const;
+
+    // 플레이어 순위를 업데이트하는 함수
+    UFUNCTION(BlueprintCallable, Category = "PlayerData")
     void UpdatePlayerRankings();
 
-    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+    // 플레이어 랭킹 데이터
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Ranking")
+    TArray<UPlayerRankingData*> PlayerRankings;
 };
