@@ -9,8 +9,10 @@
 
 AMainGameModeBase::AMainGameModeBase()
 {
-	TotalRounds = 0;
+	// TODO: 수정 예정, 토탈라운드와 위닝스코어 검토
+	TotalRound = 5;
 	CurrentRound = 0;
+	WinningScore = 10;
 
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
 	if (PlayerPawnBPClass.Class != nullptr)
@@ -24,17 +26,97 @@ void AMainGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 메인 게임모드 시작시, 메인매치 게임 등록 (결합게임 모드, 오픈패스 게임 모드)
+	// TEST: 메인 게임모드 시작시, 메인매치 게임 등록 (결합게임 모드, 오픈패스 게임 모드)
 	if (PossibleGameModes.Num() == 0)
 	{
 		PossibleGameModes.Add(AGyulhapGameMode::StaticClass());
 		PossibleGameModes.Add(AOpenPassGameMode::StaticClass());
 	}
-	
+	// 게임 시작
+	HandleGameStart();
 }
 
 void AMainGameModeBase::HandleGameStart()
 {
+	// 플레이어 점수 및 기타 필요한 데이터 초기화
+	for (int32 PlayerID : PlayingPlayers)
+	{
+		PlayerScores.Add(PlayerID, 0);
+	}
+	// 첫번째 라운드 시작
+	TransitionToNextRound();
+}
+
+void AMainGameModeBase::TransitionToNextRound()
+{
+	if (CurrentRound < TotalRound)
+	{
+		// 라운드수 적용
+		CurrentRound++;
+		// 라운드 규칙 적용
+		SetGameRules();
+	}
+	else
+	{
+		/**
+		 * CASE: FinalGameMode 적용시 FinalGameMode 변경
+		 * CASE: FinalGameMode 미적용시 EndGame 호출
+		 */
+	}
+}
+
+void AMainGameModeBase::HandleRoundEnd()
+{
+	// 라운드 종료를 초리하는 로직
+	// 라운드 승자를 결정하고 승자
+	// NOTE: 승자가 1명이 아니고 여러명일 수 있으므로 플레이어ID를 리스트로 받아야함
+	// int32 WinningPlayerId = 승자결정함수 호출 
+	TArray<int32> Winners;
+	Winners.Push(1);
+	Winners.Push(2);
+	Winners.Push(3);
+
+	// 승자를 받아와서 점수 반영
+	// for ()
+
+	// 누가 게임의 승자인지 체크
+	 
+}
+
+void AMainGameModeBase::CheckRoundWinner()
+{
+	for (const auto& PlayerScore: PlayerScores)
+	{
+		if (PlayerScore.Value >= WinningScore)
+		{
+			EndGame(PlayerScore.Key);
+			return;
+		}
+	}
+	// 아무도 승리하지 않았다면 다음으로 이동
+	TransitionToNextRound();
+}
+
+
+void AMainGameModeBase::EndGame(int32 WinningPlayerId)
+{
+	// 게임 종료후 로직 처리
+	// UI 표기, 결과 저장 등등
+	
+}
+
+void AMainGameModeBase::SetGameRules()
+{
+	// 게임 규칙 정의
+	// 특정 조건, 아이템 스폰 등등
+}
+
+void AMainGameModeBase::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	PlayingPlayers.Add(NewPlayer);
+	// UE_LOG(LogTemp, Log, TEXT("Player %s has joined the game."), *NewPlayer->GetPlayerState<APlayerState>()->GetPlayerName());
 }
 
 /**
