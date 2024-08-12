@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TheGeniusPlan/Widget/SignupWidget.h"
+#include "SignupWidget.h"
 #include "Components/Button.h"
-#include "TheGeniusPlan/GameModes/MainMenuHUD.h"
+#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 
 void USignupWidget::NativeConstruct()
 {

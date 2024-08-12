@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TheGeniusPlan/Widget/MainMenuUserWidgetOption.h"
+#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetOption.h"
 #include "Components/Button.h"
-#include "TheGeniusPlan/GameModes/MainMenuHUD.h"
+#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 
 void UMainMenuUserWidgetOption::NativeConstruct()
 {
