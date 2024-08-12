@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
-#include "MainHallPlayerState.generated.h"
+#include "GeniusPlayerState.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class THEGENIUSPLAN_API AMainHallPlayerState : public APlayerState
+class THEGENIUSPLAN_API AGeniusPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 

@@ -1,16 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "TheGeniusPlan/Widget/MainHallUserWidget.h"
+#include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
 #include "Components/Button.h"
 #include "Components/ListView.h"
 #include "Blueprint/UserWidget.h"
-#include "TheGeniusPlan/Widget/PlayerRankingUserWidget.h"
-#include "TheGeniusPlan/GameModes/MainHallGameMode.h"
-#include "TheGeniusPlan/GameState/MainHallGameState.h"
-#include "TheGeniusPlan/HUD/MainHallHUD.h"
+#include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
+#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
+#include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "Engine/Engine.h"
 
-void UMainHallUserWidget::NativeConstruct()
+void UMainGameWidget::NativeConstruct()
 {
     Super::NativeConstruct();
     UE_LOG(LogTemp, Log, TEXT("UMainHallUserWidget::NativeConstruct called"));
@@ -18,7 +17,7 @@ void UMainHallUserWidget::NativeConstruct()
     // 버튼 클릭 이벤트 처리
     if (Button_Help)
     {
-        Button_Help->OnClicked.AddDynamic(this, &UMainHallUserWidget::OnHelpButtonClicked);
+        Button_Help->OnClicked.AddDynamic(this, &UMainGameWidget::OnHelpButtonClicked);
     }
 
     //// 플레이어 리스트 업데이트 호출 (임시로 테스트 데이터 전달)
@@ -38,11 +37,11 @@ void UMainHallUserWidget::NativeConstruct()
 }
 
 
-void UMainHallUserWidget::LoadData()
+void UMainGameWidget::LoadData()
 {
     UE_LOG(LogTemp, Warning, TEXT("LoadData is working."));
     // 현재 게임 상태를 가져옵니다
-    if (AMainHallGameState* GameState = GetWorld()->GetGameState<AMainHallGameState>())
+    if (AMainGameStateBase* GameState = GetWorld()->GetGameState<AMainGameStateBase>())
     {
         const TArray<UPlayerRankingData*>& PlayerRankings = GameState->PlayerRankings;
 
@@ -65,7 +64,7 @@ void UMainHallUserWidget::LoadData()
 }
 
 
-void UMainHallUserWidget::UpdatePlayerList(const TArray<UPlayerRankingData*>& PlayerRankingDataArray)
+void UMainGameWidget::UpdatePlayerList(const TArray<UPlayerRankingData*>& PlayerRankingDataArray)
 {
     UE_LOG(LogTemp, Warning, TEXT("UpdatePlayerList is working."));
     if (ListView_PlayerRanking == nullptr)
@@ -107,18 +106,18 @@ void UMainHallUserWidget::UpdatePlayerList(const TArray<UPlayerRankingData*>& Pl
 }
 
 
-void UMainHallUserWidget::OnHelpButtonClicked()
+void UMainGameWidget::OnHelpButtonClicked()
 {
 	UE_LOG(LogTemp, Log, TEXT("Is Work!"));
-	if (MainHallHUD)
+	if (MainGameHUD)
 	{
-		MainHallHUD->ShowWidget(MainHallWidgetType::HelpWidget);
+		MainGameHUD->ShowWidget(MainGameWidgetType::HelpWidget);
 	}
 }
 
-void UMainHallUserWidget::SetHUD(AMainHallHUD *InHUD)
+void UMainGameWidget::SetHUD(AMainGameHUD *InHUD)
 {
-	MainHallHUD = InHUD;
-    UE_LOG(LogTemp, Log, TEXT("HUD successfully set in MainHallUserWidget."));
+	MainGameHUD = InHUD;
+    UE_LOG(LogTemp, Log, TEXT("HUD successfully set in MainGameWidget."));
 }
 

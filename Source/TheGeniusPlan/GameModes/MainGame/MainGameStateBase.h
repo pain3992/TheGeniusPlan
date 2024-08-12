@@ -5,23 +5,23 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameState.h"
 #include "TheGeniusPlan/Data/PlayerRankingData.h"
-#include "MainHallGameState.generated.h"
+#include "MainGameStateBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class THEGENIUSPLAN_API AMainHallGameState : public AGameState
+class THEGENIUSPLAN_API AMainGameStateBase : public AGameState
 {
     GENERATED_BODY()
 
 public:
 
-    AMainHallGameState();
+    AMainGameStateBase();
 
     // 플레이어 상태 정보를 반환하는 함수
     UFUNCTION(BlueprintCallable, Category = "PlayerData")
-    TArray<AMainHallPlayerState*> GetAllPlayerStates() const;
+    TArray<AGeniusPlayerState*> GetAllPlayerStates() const;
 
     // 플레이어 순위를 업데이트하는 함수
     UFUNCTION(BlueprintCallable, Category = "PlayerData")

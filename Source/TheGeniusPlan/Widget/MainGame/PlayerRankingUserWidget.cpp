@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TheGeniusPlan/Widget/PlayerRankingUserWidget.h"
+#include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/Data/PlayerRankingData.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Components/ListView.h"
