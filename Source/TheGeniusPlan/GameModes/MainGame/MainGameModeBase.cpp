@@ -120,11 +120,11 @@ void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	if (AMainGameStateBase *GameState = GetGameState<AMainGameStateBase>())
+	if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
 	{
 		if (AGeniusPlayerState *NewPlayerState = NewPlayer->GetPlayerState<AGeniusPlayerState>())
 		{
-			GameState->AddPlayer(NewPlayerState);
+			MainGameState->AddPlayer(NewPlayerState);
 			// 플레이어 컨트롤러의 이름을 PlayerState에 설정합니다.
 			NewPlayerState->PlayerName = NewPlayer->GetName();
 
@@ -132,7 +132,7 @@ void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 			NewPlayerState->SetPlayerScore(0);
 		}
 		// 랭킹 초기화
-		GameState->UpdatePlayerRankings();
+		MainGameState->UpdatePlayerRankings();
 	}
 }
 
@@ -142,9 +142,9 @@ void AMainGameModeBase::Logout(AController *Exiting)
 
 	if (APlayerController *PlayerController = Cast<AGeniusPlayerController>(Exiting))
 	{
-		if (AMainGameStateBase *GameState = GetGameState<AMainGameStateBase>())
+		if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
 		{
-			GameState->RemovePlayer(PlayerController->GetPlayerState<AGeniusPlayerState>());
+			MainGameState->RemovePlayer(PlayerController->GetPlayerState<AGeniusPlayerState>());
 		}
 	}
 }
