@@ -4,27 +4,33 @@
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 
+void AMainGameStateBase::AddPlayer(AGeniusPlayerState* NewPlayerState)
+{
+    // 플레이어 목록 중복 체크
+    if (NewPlayerState && !PlayingPlayers.Contains(NewPlayerState))
+    {
+        PlayingPlayers.Add(NewPlayerState);
+        UE_LOG(LogTemp, Log, TEXT("플레이어: '%s'가 참여하였습니다."), *NewPlayerState->GetPlayerName());
+    }
+}
+
+void AMainGameStateBase::RemovePlayer(AGeniusPlayerState* RemovePlayerState)
+{
+    if (RemovePlayerState && PlayingPlayers.Contains(RemovePlayerState))
+    {
+        PlayingPlayers.Remove(RemovePlayerState);
+        UE_LOG(LogTemp, Log, TEXT("플레이어: '%s'가 나갔습니다."), *RemovePlayerState->GetPlayerName());
+    }
+}
+
 AMainGameStateBase::AMainGameStateBase()
 {
     UE_LOG(LogTemp, Log, TEXT("AMainGameStateBase instance created."));
 }
 
-TArray<AGeniusPlayerState *> AMainGameStateBase::GetAllPlayerStates() const
+TArray<AGeniusPlayerState *> AMainGameStateBase::GetAllPlayingPlayers() const
 {
-    TArray<AGeniusPlayerState *> PlayerStates;
-
-    // 모든 플레이어 상태를 가져옵니다.
-    for (APlayerState *PlayerState : PlayerArray)
-    {
-        AGeniusPlayerState *GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
-        if (GeniusPlayerState)
-        {
-            PlayerStates.Add(GeniusPlayerState);
-        }
-    }
-
-    UE_LOG(LogTemp, Log, TEXT("GetAllPlayerStates: %d player states found."), PlayerStates.Num());
-    return PlayerStates;
+    return PlayingPlayers;
 }
 
 void AMainGameStateBase::UpdatePlayerRankings()
@@ -32,7 +38,7 @@ void AMainGameStateBase::UpdatePlayerRankings()
     UE_LOG(LogTemp, Log, TEXT("UpdatePlayerRankings function started."));
 
     // 플레이어 상태를 모두 가져옵니다.
-    TArray<AGeniusPlayerState *> PlayerStates = GetAllPlayerStates();
+    TArray<AGeniusPlayerState *> PlayerStates = GetAllPlayingPlayers();
 
     // 점수에 따라 정렬
     PlayerStates.Sort([](const AGeniusPlayerState &A, const AGeniusPlayerState &B)
