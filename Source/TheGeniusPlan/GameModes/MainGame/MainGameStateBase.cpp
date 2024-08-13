@@ -99,8 +99,6 @@ void AMainGameStateBase::StartCountdown(int32 InitialCountdownTime)
 
 void AMainGameStateBase::OnRep_CountdownTime() const
 {
-        //UE_LOG(LogTemp, Warning, TEXT("IS SERVER"));
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("IS SERVER"));
         for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
         {
             if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
@@ -118,7 +116,7 @@ void AMainGameStateBase::UpdateCountdown()
     if (CountdownTime > 0)
     {
         CountdownTime--;
-        // OnRep_CountdownTime();
+        OnRep_CountdownTime(); 
     }
     else
     {
