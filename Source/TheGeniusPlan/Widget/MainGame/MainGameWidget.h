@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
+#include "TheGeniusPlan/gameModes/MainGame/MainGameStateBase.h"
 #include "TheGeniusPlan/Data/PlayerRankingData.h"
 #include "Components/ListView.h"
 #include "MainGameWidget.generated.h"
@@ -20,12 +21,13 @@ public:
     void SetHUD(class AMainGameHUD* InHUD);
 
     UFUNCTION(BlueprintCallable, Category = "Player Ranking")
-    void UpdatePlayerList(const TArray<UPlayerRankingData*>& PlayerRankingDataArray);
+    void UpdatePlayerList(const TArray<AGeniusPlayerState*>& PlayingPlayersArray);
 
     AMainGameHUD* MainGameHUD;
 
     UFUNCTION(BlueprintCallable, Category = "Countdown")
     void UpdateCountdownDisplay(int32 CountdownTimeInSeconds);  
+
 
 
 protected:
@@ -42,9 +44,9 @@ protected:
     UFUNCTION()
     void OnHelpButtonClicked();
 
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Ranking")
     TSubclassOf<class UPlayerRankingUserWidget> PlayerRankingUserWidgetClass;
+
 
 
 
@@ -55,5 +57,5 @@ private:
     UPROPERTY(meta=(BindWidget))
     class UTextBlock* Text_Countdown;
 
-    void LoadData();
+   // void LoadData();
 };

@@ -33,10 +33,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Player Ranking")
     void SetScore(int32 Score);
 
-private:
     UPROPERTY()
     FString PlayerName;
 
     UPROPERTY()
     int32 Score;
+
+private:
+
 };

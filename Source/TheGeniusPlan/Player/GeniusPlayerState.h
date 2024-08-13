@@ -2,6 +2,9 @@
 
 #pragma once
 
+// DECLARE_DYNAMIC_MULTICAST_DELEGATE_
+
+
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
 #include "GeniusPlayerState.generated.h"

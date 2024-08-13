@@ -20,4 +20,5 @@ public:
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Ranking")
     int32 Score;
+
 };

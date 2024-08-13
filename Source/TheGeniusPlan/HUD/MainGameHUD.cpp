@@ -21,7 +21,6 @@ AMainGameHUD::AMainGameHUD()
 
 void AMainGameHUD::BeginPlay()
 {
-    UE_LOG(LogTemp, Error, TEXT ("BeginPlay is Work"))
     Super::BeginPlay();
 
     check(MainGameWidgetClass);
@@ -31,17 +30,32 @@ void AMainGameHUD::BeginPlay()
     if (MainGameWidget)
     {
         MainGameWidget->AddToViewport();
-        MainGameWidget->SetHUD(this);  // Set HUD reference for MainHallWidget
+        MainGameWidget->SetHUD(this);
     }
 
     HelpWidget = Cast<UHelpUserWidget>(CreateWidget(GetWorld(), HelpWidgetClass, TEXT("HelpHUD")));
     if (HelpWidget)
     {
         HelpWidget->AddToViewport();
-        HelpWidget->SetVisibility(ESlateVisibility::Collapsed);  // Hide HelpWidget initially
-        HelpWidget->SetHUD(this);  // Set HUD reference for HelpWidget
+        HelpWidget->SetVisibility(ESlateVisibility::Collapsed);
+        HelpWidget->SetHUD(this);
     }
+
+    //// Call UpdatePlayerRankings with a slight delay to ensure widgets are initialized
+    //GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
+    //    {
+    //        // Ensure that MainGameWidget is properly initialized
+    //        if (MainGameWidget)
+    //        {
+    //            AMainGameStateBase* GameState = GetWorld()->GetGameState<AMainGameStateBase>();
+    //            if (GameState)
+    //            {
+    //                GameState->UpdatePlayerRankings();
+    //            }
+    //        }
+    //    });
 }
+
 
 void AMainGameHUD::ShowWidget(MainGameWidgetType type)
 {

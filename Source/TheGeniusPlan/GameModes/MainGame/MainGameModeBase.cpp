@@ -135,15 +135,17 @@ void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 	{
 		if (AGeniusPlayerState *NewPlayerState = NewPlayer->GetPlayerState<AGeniusPlayerState>())
 		{
-			MainGameState->AddPlayer(NewPlayerState);
 			// 플레이어 컨트롤러의 이름을 PlayerState에 설정합니다.
 			NewPlayerState->PlayerName = NewPlayer->GetName();
 
 			// 기본 점수를 0으로 설정합니다.
 			NewPlayerState->SetPlayerScore(0);
+
+			MainGameState->AddPlayer(NewPlayerState);
+			
 		}
-		// 랭킹 초기화
-		MainGameState->UpdatePlayerRankings();
+		//// 랭킹 초기화
+		//MainGameState->UpdatePlayerRankings();
 	}
 }
 
