@@ -7,6 +7,7 @@
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
 
 AMainGameHUD::AMainGameHUD()
 {
@@ -45,6 +46,7 @@ void AMainGameHUD::BeginPlay()
 
 void AMainGameHUD::ShowWidget(MainGameWidgetType type)
 {
+    APlayerController* PlayerController = Cast<APlayerController>(GetOwningPawn()->GetController());
     switch (type)
     {
     case MainGameWidgetType::NONE:
@@ -60,7 +62,8 @@ void AMainGameHUD::ShowWidget(MainGameWidgetType type)
     case MainGameWidgetType::HelpWidget:
         MainGameWidget->SetVisibility(ESlateVisibility::Collapsed);
         HelpWidget->SetVisibility(ESlateVisibility::Visible);
-        ShowMouseCursor(true); // 커서를 보이도록 설정
+        PlayerController->bShowMouseCursor = true;
+
         break;
     case MainGameWidgetType::MAX:
         break;

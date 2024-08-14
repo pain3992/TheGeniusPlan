@@ -13,6 +13,8 @@
 #include "TheGeniusPlanController.h"
 #include "TheGeniusPlan/ChatComponent.h"
 #include "TheGeniusPlan/Widget/ChatWidget.h"
+#include "TheGeniusPlan/HUD/MainGameHUD.h"
+#include "TheGeniusPlan/Widget/MainGame/HelpUserWidget.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -102,6 +104,8 @@ void ATheGeniusPlanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATheGeniusPlanCharacter::Look);
 		EnhancedInputComponent->BindAction(ChatFocusAction, ETriggerEvent::Started, this, &ATheGeniusPlanCharacter::ChatFocus);
+
+		EnhancedInputComponent->BindAction(HintAction, ETriggerEvent::Triggered, this, &ATheGeniusPlanCharacter::Hint);
 	}
 	else
 	{
@@ -163,4 +167,32 @@ void ATheGeniusPlanCharacter::ChatFocus(const FInputActionValue& Value)
 
 	}
 	
+}
+
+void ATheGeniusPlanCharacter::Hint(const FInputActionValue& Value)
+{
+	bool bIsHintPressed = Value.Get<bool>();
+
+	if (bIsHintPressed)
+	{	
+		UE_LOG(LogTemp, Warning, TEXT("Pressed H"));
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		if (PlayerController)
+		{
+			AMainGameHUD* HUD = Cast<AMainGameHUD>(PlayerController->GetHUD());
+			if (HUD && HUD->GetHelpWidget())
+			{
+				// Toggle the visibility of the HelpWidget
+				UHelpUserWidget* HelpWidget = HUD->GetHelpWidget();
+				if (HUD->GetHelpWidget()->IsVisible())
+				{
+					HUD->ShowWidget(MainGameWidgetType::NONE); // Hide HelpWidget
+				}
+				else
+				{
+					HUD->ShowWidget(MainGameWidgetType::HelpWidget); // Show HelpWidget
+				}
+			}
+		}
+	}
 }

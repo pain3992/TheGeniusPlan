@@ -18,9 +18,9 @@ void UMainGameWidget::NativeConstruct()
     UE_LOG(LogTemp, Log, TEXT("UMainHallUserWidget::NativeConstruct called"));
 
     // 버튼 클릭 이벤트 처리
-    if (Button_Help)
+    if (Button_Hint)
     {
-        Button_Help->OnClicked.AddDynamic(this, &UMainGameWidget::OnHelpButtonClicked);
+        Button_Hint->OnClicked.AddDynamic(this, &UMainGameWidget::OnHelpButtonClicked);
     }
 }
 

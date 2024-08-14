@@ -42,11 +42,13 @@ public:
     // Function to set visibility of HelpWidget
     void SetHelpWidgetVisibility(ESlateVisibility Visibility);
     void ShowMouseCursor(bool bShowCursor);
-   // void UpdateRankingList();
 
         // Public accessor for MainGameWidget
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     UMainGameWidget* GetMainGameWidget() const { return MainGameWidget; }
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    UHelpUserWidget* GetHelpWidget() const { return HelpWidget; }
 
     UPROPERTY(BlueprintReadWrite, Category = "Widgets")
     TObjectPtr<class UMainGameWidget> MainGameWidget;

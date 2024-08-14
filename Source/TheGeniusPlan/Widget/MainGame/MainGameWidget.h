@@ -37,7 +37,7 @@ protected:
 
 
     UPROPERTY(meta = (BindWidget))
-    class UButton* Button_Help;
+    class UButton* Button_Hint;
 
     UFUNCTION()
     void OnHelpButtonClicked();

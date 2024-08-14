@@ -47,6 +47,9 @@ class ATheGeniusPlanCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* ChatFocusAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* HintAction;
+
 public:
 	ATheGeniusPlanCharacter();
 
@@ -63,6 +66,8 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	void ChatFocus(const FInputActionValue& Value);
+
+	void Hint(const FInputActionValue& Value);
 
 			
 
