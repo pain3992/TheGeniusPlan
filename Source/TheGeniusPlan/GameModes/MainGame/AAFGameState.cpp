@@ -2,43 +2,17 @@
 
 
 #include "AAFGameState.h"
-#include "TheGeniusPlan/PlayerState/AAFPlayerState.h"
+#include "TheGeniusPlan/Player/AAFPlayerState.h"
+#include "TheGeniusPlan/HUD/MainGameHUD.h"
+#include "Net/UnrealNetwork.h"
+#include "TheGeniusPlan/Player/GeniusPlayerController.h"
 
 AAAFGameState::AAAFGameState()
 {
+	StageCount = 0;
 }
 
-bool AAAFGameState::CheckPlayerState()
+void AAAFGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	for(auto PlayerState : GetAllPlayerStates())
-	{
-		AAAFPlayerState* Player = Cast<AAAFPlayerState>(PlayerState);
-		if(Player)
-		{
-			if (Player->GetSelectedLand() == ESelectedLand::None)
-			{
-				AbundanceLand = 0;
-				FamineLand = 0;
-				return 0;
-			}
-			else if (Player->GetSelectedLand() == ESelectedLand::AbundanceLand)
-			{
-				AbundanceLand++;
-			}
-			else
-			{
-				FamineLand++;
-			}
-		}
-	}
-
-	return 1;
-}
-
-void AAAFGameState::ShowPlayerState()
-{
-	if(CheckPlayerState())
-	{
-
-	}
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }

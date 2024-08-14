@@ -21,10 +21,16 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UTextBlock> FLand;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> Timer;
+
 public:
 
 	UFUNCTION()
 	void SetTextBox(const uint8& AbundanceNumber,const uint8& FamineNumber);
+
+	UFUNCTION()
+	void SetTimer(float Time);
 
 	
 };

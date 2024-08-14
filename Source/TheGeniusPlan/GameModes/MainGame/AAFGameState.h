@@ -3,29 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MainHallGameState.h"
+#include "MainGameStateBase.h"
 #include "AAFGameState.generated.h"
 
 UCLASS()
-class THEGENIUSPLAN_API AAAFGameState : public AMainHallGameState
+class THEGENIUSPLAN_API AAAFGameState : public AMainGameStateBase
 {
 	GENERATED_BODY()
 
 public:
 	AAAFGameState();
 
-	UFUNCTION()
-	bool CheckPlayerState();
-
-	UFUNCTION()
-	void ShowPlayerState();
-
 
 protected:
-	UPROPERTY()
-	uint8 AbundanceLand;
 
 	UPROPERTY()
-	uint8 FamineLand;
-	
+	uint8 StageCount;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+
 };

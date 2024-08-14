@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MainHallPlayerState.h"
+#include "GeniusPlayerState.h"
 #include "AAFPlayerState.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEventDispatcher_AllPlayerSelected);
 
 UENUM()
 enum class ESelectedLand : uint8
@@ -16,22 +18,32 @@ enum class ESelectedLand : uint8
 };
 
 UCLASS()
-class THEGENIUSPLAN_API AAAFPlayerState : public AMainHallPlayerState
+class THEGENIUSPLAN_API AAAFPlayerState : public AGeniusPlayerState
 {
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(ReplicatedUsing = CheckAllPlayerLand)
-	ESelectedLand SelectedLand;
-
-	UFUNCTION()
-	void CheckAllPlayerLand();
 
 public:
+
+	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
+	FEventDispatcher_AllPlayerSelected AllPlayerSelected;
+
+	UPROPERTY(ReplicatedUsing = OnReq_ChangeLand)
+	ESelectedLand SelectedLand;
+
 	AAAFPlayerState();
 
 	UFUNCTION()
-	void ChangeLand(ESelectedLand Select);
+	void OnReq_ChangeLand();
+
+	UFUNCTION(Server, Reliable)
+	void ChangeLand(ESelectedLand Type);
+
+	UFUNCTION()
+	void ResetLand();
 
 	UFUNCTION()
 	ESelectedLand GetSelectedLand();

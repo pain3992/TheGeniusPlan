@@ -12,3 +12,9 @@ void UShowPlayerSeletedLandWidget::SetTextBox(const uint8& AbundanceNumber, cons
 	ALand->SetText(Abundance);
 	FLand->SetText(Famine);
 }
+
+void UShowPlayerSeletedLandWidget::SetTimer(float Time)
+{
+	FText TextTime = FText::AsNumber((int)Time);
+	Timer->SetText(TextTime);
+}

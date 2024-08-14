@@ -2,16 +2,13 @@
 
 
 #include "AAFPlayerState.h"
-#include "TheGeniusPlan/GameState/AAFGameState.h"
+#include "TheGeniusPlan/GameModes/MainGame/AAFGameState.h"
 #include "Net/UnrealNetwork.h"
+#include "TheGeniusPlan/HUD/MainGameHUD.h"
 
-void AAAFPlayerState::CheckAllPlayerLand()
+void AAAFPlayerState::BeginPlay()
 {
-	AAAFGameState* GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
-	if(GameState)
-	{
-		GameState->CheckPlayerState();
-	}
+	Super::BeginPlay();
 }
 
 AAAFPlayerState::AAAFPlayerState()
@@ -19,9 +16,22 @@ AAAFPlayerState::AAAFPlayerState()
 	SelectedLand = ESelectedLand::None;
 }
 
-void AAAFPlayerState::ChangeLand(ESelectedLand Select)
+void AAAFPlayerState::OnReq_ChangeLand()
 {
-	SelectedLand = Select;
+	if(AllPlayerSelected.IsBound())
+	{
+		AllPlayerSelected.Broadcast();
+	}
+}
+
+void AAAFPlayerState::ChangeLand_Implementation(ESelectedLand Type)
+{
+	SelectedLand = Type;
+}
+
+void AAAFPlayerState::ResetLand()
+{
+	SelectedLand = ESelectedLand::None;
 }
 
 ESelectedLand AAAFPlayerState::GetSelectedLand()
