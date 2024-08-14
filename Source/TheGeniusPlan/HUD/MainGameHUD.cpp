@@ -40,20 +40,6 @@ void AMainGameHUD::BeginPlay()
         HelpWidget->SetVisibility(ESlateVisibility::Collapsed);
         HelpWidget->SetHUD(this);
     }
-
-    //// Call UpdatePlayerRankings with a slight delay to ensure widgets are initialized
-    //GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
-    //    {
-    //        // Ensure that MainGameWidget is properly initialized
-    //        if (MainGameWidget)
-    //        {
-    //            AMainGameStateBase* GameState = GetWorld()->GetGameState<AMainGameStateBase>();
-    //            if (GameState)
-    //            {
-    //                GameState->UpdatePlayerRankings();
-    //            }
-    //        }
-    //    });
 }
 
 
@@ -107,16 +93,3 @@ void AMainGameHUD::ShowMouseCursor(bool bShowCursor)
         }
     }
 }
-
-//void AMainHallHUD::UpdateRankingList()
-//{
-//    if (MainHallWidget)
-//    {
-//        // Retrieve the GameState and update the widget
-//        AGameState* GameState = GetWorld()->GetGameState<AMainHallGameState>();
-//        if (GameState)
-//        {
-//            MainHallWidget->UpdateRankingList(GameState->PlayerRankings);
-//        }
-//    }
-//}

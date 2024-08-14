@@ -28,8 +28,6 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Countdown")
     void UpdateCountdownDisplay(int32 CountdownTimeInSeconds);  
 
-
-
 protected:
     virtual void NativeConstruct() override;
 

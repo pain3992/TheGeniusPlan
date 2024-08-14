@@ -37,57 +37,6 @@ TArray<AGeniusPlayerState *> AMainGameStateBase::GetAllPlayingPlayers() const
     return PlayingPlayers;
 }
 
-//void AMainGameStateBase::UpdatePlayerRankings()
-//{
-//    UE_LOG(LogTemp, Log, TEXT("UpdatePlayerRankings function started."));
-//
-//    TArray<AGeniusPlayerState*> PlayerStates = GetAllPlayingPlayers();
-//    PlayerStates.Sort([](const AGeniusPlayerState& A, const AGeniusPlayerState& B)
-//        {
-//            return A.GetPlayerScore() > B.GetPlayerScore();
-//        });
-//
-//    PlayerRankings.Empty();
-//
-//    for (AGeniusPlayerState* PlayerState : PlayerStates)
-//    {
-//        if (PlayerState)
-//        {
-//            UPlayerRankingData* RankingData = NewObject<UPlayerRankingData>();
-//            RankingData->PlayerName = PlayerState->PlayerName;
-//            RankingData->Score = PlayerState->GetPlayerScore();
-//
-//            PlayerRankings.Add(RankingData);
-//
-//            UE_LOG(LogTemp, Log, TEXT("UpdatePlayerRankings: Added player %s with score %d."), *RankingData->PlayerName, RankingData->Score);
-//        }
-//    }
-//
-//    OnRep_PlayerRankings();
-//
-//    //// Delayed execution to ensure MainGameWidget is properly initialized
-//    //GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
-//    //    {
-//    //        if (AMainGameHUD* HUD = GetWorld()->GetFirstPlayerController()->GetHUD<AMainGameHUD>())
-//    //        {
-//    //            if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
-//    //            {
-//    //                MainGameWidget->UpdatePlayerList(PlayerRankings);
-//    //                UE_LOG(LogTemp, Log, TEXT("UpdatePlayerRankings: Updated player rankings in MainGameWidget."));
-//    //            }
-//    //            else
-//    //            {
-//    //                UE_LOG(LogTemp, Warning, TEXT("UpdatePlayerRankings: Failed to get MainGameWidget from HUD."));
-//    //            }
-//    //        }
-//    //        else
-//    //        {
-//    //            UE_LOG(LogTemp, Warning, TEXT("UpdatePlayerRankings: Failed to get HUD from player controller."));
-//    //        }
-//    //    });
-//}
-
-
 void AMainGameStateBase::StartCountdown(int32 InitialCountdownTime)
 {
     if (HasAuthority())
@@ -114,20 +63,6 @@ void AMainGameStateBase::OnRep_CountdownTime() const
         }
 }
 
-//void AMainGameStateBase::OnRep_PlayerRankings() const
-//{
-//    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-//    {
-//        if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
-//        {
-//            if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
-//            {
-//                MainGameWidget->UpdatePlayerList(PlayerRankings);
-//            }
-//        }
-//    }
-//}
-
 void AMainGameStateBase::OnRep_PlayingPlayers() const
 {
     for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
@@ -137,6 +72,24 @@ void AMainGameStateBase::OnRep_PlayingPlayers() const
             if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
             {
                 MainGameWidget->UpdatePlayerList(PlayingPlayers);
+            }
+        }
+    }
+}
+
+void AMainGameStateBase::ShowWidgetPlayerRanking_Implementation()
+{
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
+        {
+            if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
+            {
+                for (AGeniusPlayerState* PlayerState : PlayingPlayers)
+                    if (PlayerState)
+                    {
+                        OnRep_PlayingPlayers();
+                    }
             }
         }
     }
@@ -166,5 +119,4 @@ void AMainGameStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     DOREPLIFETIME(AMainGameStateBase, CountdownTime);
     DOREPLIFETIME(AMainGameStateBase, PlayingPlayers);
-   // DOREPLIFETIME(AMainGameStateBase, PlayerRankings);
 }

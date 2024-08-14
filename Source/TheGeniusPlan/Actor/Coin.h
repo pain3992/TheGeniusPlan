@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-// ����� �÷��̾� ���� ���� - ����Ʈ �������� �׽�Ʈ�� ���� ���Ƿ� ��������ϴ� �׽�Ʈ ��ģ �Ŀ��� ����ϴ�!
+// 점수 오르는 거 확인하기 위해 임시로 만들었습니다 테스트 완료 후 삭제 예정
 
 #pragma once
 
@@ -35,6 +35,9 @@ public:
     // Points to add on overlap
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
     int32 PointsToAdd;
+
+    UFUNCTION(Server, Reliable)
+    void handleGetCoin(AActor *GotCoinPlayer);
 
     // Overlap event
     UFUNCTION()

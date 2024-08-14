@@ -6,9 +6,6 @@
 #include "UObject/NoExportTypes.h"
 #include "PlayerRankingData.generated.h"
 
-/**
- * 
- */
 UCLASS(BlueprintType)
 class THEGENIUSPLAN_API UPlayerRankingData : public UObject
 {

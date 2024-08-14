@@ -31,17 +31,16 @@ public:
     UFUNCTION(BlueprintCallable, Category = "PlayerData")
     TArray<AGeniusPlayerState*> GetAllPlayingPlayers() const;
 
-    //// 플레이어 순위를 업데이트하는 함수
-    //UFUNCTION(BlueprintCallable, Category = "PlayerData")
-    //void UpdatePlayerRankings();
-
     // 카운트다운 시작 함수
     UFUNCTION(BlueprintCallable, Category = "Countdown")
     void StartCountdown(int32 InitialCountdownTime);
 
-    //플레이어 랭킹 데이터를 클라이언트에게도 복제
-    //UPROPERTY(ReplicatedUsing = OnRep_PlayerRankings, BlueprintReadWrite, EditAnywhere, Category = "Player Ranking")
-    //TArray<UPlayerRankingData*> PlayerRankings;
+    UFUNCTION()
+    void OnRep_PlayingPlayers() const;
+
+  UFUNCTION(NetMulticast, Reliable)
+  void ShowWidgetPlayerRanking();
+
 
 protected:
     // 카운트다운 변수가 변경될 때 클라이언트에서 호출되는 함수
@@ -50,13 +49,6 @@ protected:
 
     UPROPERTY(ReplicatedUsing = OnRep_CountdownTime)
     int32 CountdownTime;
-
-  /*  UFUNCTION()
-    void OnRep_PlayerRankings() const;*/
-
-    UFUNCTION()
-    void OnRep_PlayingPlayers() const;
-
 
 
 private:

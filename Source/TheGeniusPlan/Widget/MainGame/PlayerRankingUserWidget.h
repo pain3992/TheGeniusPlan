@@ -38,7 +38,4 @@ public:
 
     UPROPERTY()
     int32 Score;
-
-private:
-
 };

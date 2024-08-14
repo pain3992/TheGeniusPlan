@@ -11,14 +11,29 @@
 
 void UPlayerRankingUserWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
-    UE_LOG(LogTemp, Log, TEXT("ListItemObject Class: %s"), *ListItemObject->GetClass()->GetName());
-    
-    UPlayerRankingUserWidget* PlayerRankingWidget = Cast<UPlayerRankingUserWidget>(ListItemObject);
-    
-    if (IsValid(ListItemObject) == false)
-        return;
+    // Ensure that the ListItemObject is of type UPlayerRankingData
+    if (UPlayerRankingData* RankingData = Cast<UPlayerRankingData>(ListItemObject))
+    {
+        // Use the data from RankingData to set the PlayerName and Score
+        SetPlayerName(RankingData->PlayerName);
+        SetScore(RankingData->Score);
+    }
+    else
+    {
+        // If ListItemObject is not valid or not of the expected type, set default values
+        SetPlayerName(TEXT("Default Player"));
+        SetScore(100);
+        UE_LOG(LogTemp, Warning, TEXT("ListItemObject is not of type UPlayerRankingData."));
+    }
 
-    UE_LOG(LogTemp, Log, TEXT("ListItemObject 11111"));
+    if (ListItemObject)
+    {
+        UE_LOG(LogTemp, Log, TEXT("ListItemObject Type: %s"), *ListItemObject->GetClass()->GetName());
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("ListItemObject is nullptr."));
+    }
 }
 
 void UPlayerRankingUserWidget::SetPlayerName(const FString& NewPlayerName)

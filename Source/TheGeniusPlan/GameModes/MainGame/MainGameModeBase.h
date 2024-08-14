@@ -42,6 +42,9 @@ public:
 	// 카운트 다운 함수
 	void SetCountdownRule();
 
+	// 코인 습득 시 점수가 오르는 함수 (테스트 후 삭제 예정)
+	void AddCoinScore(APlayerState* PlayerState, int32 ScoreAmount);
+
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 	

@@ -10,6 +10,7 @@
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
+#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
 
 AMainGameModeBase::AMainGameModeBase()
 {
@@ -128,6 +129,21 @@ void AMainGameModeBase::SetCountdownRule()
 	}
 }
 
+// From Coin Serve RPC
+void AMainGameModeBase::AddCoinScore(APlayerState* PlayerState, int32 ScoreAmount)
+{
+	AGeniusPlayerState* GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
+	if (GeniusPlayerState)
+	{
+		GeniusPlayerState->AddScore(ScoreAmount);
+		
+		if (AMainGameStateBase* MainGameState = GetGameState<AMainGameStateBase>())
+		{
+			MainGameState->ShowWidgetPlayerRanking();
+		}
+	}
+}
+
 void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
@@ -144,8 +160,6 @@ void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 			MainGameState->AddPlayer(NewPlayerState);
 			
 		}
-		//// 랭킹 초기화
-		//MainGameState->UpdatePlayerRankings();
 	}
 }
 
