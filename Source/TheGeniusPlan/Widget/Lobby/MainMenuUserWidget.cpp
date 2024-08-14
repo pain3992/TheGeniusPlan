@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TheGeniusPlan/Widget/MainMenuUserWidget.h"
+#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidget.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/Button.h"
 #include "Components/EditableTextBox.h"
-#include "TheGeniusPlan/GameModes/MainMenuHUD.h"
+#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 
 void UMainMenuUserWidget::NativeConstruct()
 {

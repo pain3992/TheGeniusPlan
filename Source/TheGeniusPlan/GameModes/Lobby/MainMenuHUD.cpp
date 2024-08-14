@@ -1,10 +1,10 @@
-#include "TheGeniusPlan/GameModes/MainMenuHUD.h"
+#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 #include "Blueprint/UserWidget.h"
-#include "TheGeniusPlan/Widget/MainMenuUserWidget.h"
-#include "TheGeniusPlan/Widget/MainMenuUserWidgetOption.h"
-#include "TheGeniusPlan/Widget/MainMenuUserWidgetLobby.h"
-#include "TheGeniusPlan/Widget/OptionWidget.h"
-#include "TheGeniusPlan/Widget/SignupWidget.h"
+#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidget.h"
+#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetOption.h"
+#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetLobby.h"
+#include "TheGeniusPlan/Widget/Lobby/OptionWidget.h"
+#include "TheGeniusPlan/Widget/Lobby/SignupWidget.h"
 
 AMainMenuHUD::AMainMenuHUD()
 {

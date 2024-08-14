@@ -2,10 +2,10 @@
 
 
 #include "MainMenuUserWidgetLobby.h"
-#include "TheGeniusPlan/GameModes/MainMenuHUD.h"
+#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 #include "Components/Button.h"
 #include "TheGeniusPlan/Characters/MainMenuPawn.h"
-#include "TheGeniusPlan/GameModes/MainMenuPlayerController.h"
+#include "TheGeniusPlan/GameModes/Lobby/MainMenuPlayerController.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
