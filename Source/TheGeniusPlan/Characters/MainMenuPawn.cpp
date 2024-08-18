@@ -38,9 +38,12 @@ AMainMenuPawn::AMainMenuPawn()
 		SkeletalMeshes.Add(Woman);
 	}
 
-	SelectedSkeletaMesh->SetSkeletalMesh(SkeletalMeshes[0]);
-	SelectedSkeletaMesh->SetRelativeRotation(FRotator(0.0, 90.0, 0.0));
-	SelectedSkeletaMesh->SetRelativeLocation(FVector(0.0, 0.0, -90.0));
+	if (SkeletalMeshes.Num() > 0)
+	{
+		SelectedSkeletaMesh->SetSkeletalMesh(SkeletalMeshes[0]);
+		SelectedSkeletaMesh->SetRelativeRotation(FRotator(0.0, 90.0, 0.0));
+		SelectedSkeletaMesh->SetRelativeLocation(FVector(0.0, 0.0, -90.0));
+	}
 
 	UClass* MenAnimBlueprint = LoadObject<UClass>(nullptr, TEXT("/Script/Engine.AnimBlueprint'/Game/Characters/Mannequins/Animations/ABP_Manny.ABP_Manny_C'"));
 

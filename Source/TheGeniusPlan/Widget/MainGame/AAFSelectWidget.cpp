@@ -4,6 +4,7 @@
 #include "AAFSelectWidget.h"
 #include "Components/Button.h"
 #include "TheGeniusPlan/Player/AAFPlayerState.h"
+#include "Components/TextBlock.h"
 
 void UAAFSelectWidget::NativeConstruct()
 {
@@ -21,6 +22,7 @@ void UAAFSelectWidget::NativeConstruct()
 		SelectedFamine->OnClicked.AddDynamic(this, &UAAFSelectWidget::ClickedFamine);
 
 	}
+
 }
 
 void UAAFSelectWidget::ClickedAbundance()
@@ -33,7 +35,8 @@ void UAAFSelectWidget::ClickedAbundance()
 		PlayerState->ChangeLand(ESelectedLand::AbundanceLand);
 	}
 
-	RemoveFromParent();
+	SelectedAbundance->SetVisibility(ESlateVisibility::Collapsed);
+	SelectedFamine->SetVisibility(ESlateVisibility::Collapsed);
 
 }
 
@@ -46,6 +49,13 @@ void UAAFSelectWidget::ClickedFamine()
 		UE_LOG(LogTemp, Error, TEXT("ClickedFamine"));
 		PlayerState->ChangeLand(ESelectedLand::FamineLand);
 	}
+	
+	SelectedAbundance->SetVisibility(ESlateVisibility::Collapsed);
+	SelectedFamine->SetVisibility(ESlateVisibility::Collapsed);
+}
 
-	RemoveFromParent();
+void UAAFSelectWidget::SetTimer(float Time)
+{
+	FText TextTime = FText::AsNumber((int)Time);
+	Timer->SetText(TextTime);
 }

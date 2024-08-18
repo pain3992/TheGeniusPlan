@@ -51,21 +51,6 @@ public:
     UPROPERTY(BlueprintReadWrite, Category = "Widgets")
     TObjectPtr<class UMainGameWidget> MainGameWidget;
 
-    UFUNCTION()
-    void CreateResultWidget(uint8 First, uint8 Seconds);
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
-    TSubclassOf<class UShowPlayerSeletedLandWidget> ShowLandWidgetClass;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
-    TSubclassOf<class UAAFSelectWidget> SelectLandWidgetClass;
-
-    UPROPERTY(BlueprintReadWrite, Category = "Widgets")
-    TObjectPtr<class UShowPlayerSeletedLandWidget> ShowLandWidget;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
-    TObjectPtr<class UAAFSelectWidget> SelectLandWidget;
-
 
 protected:
     UPROPERTY(BlueprintReadWrite, Category = "Widgets")
