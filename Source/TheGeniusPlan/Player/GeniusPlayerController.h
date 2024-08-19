@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "../GameModes/MainGame/AAFGameState.h"
 #include "GeniusPlayerController.generated.h"
 
 /**
@@ -18,13 +19,10 @@ public:
     AGeniusPlayerController();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
-	TSubclassOf<class UShowPlayerSeletedLandWidget> ShowLandWidgetClass;
+	TSubclassOf<class UShowPlayerSeletedLandWidget> SelectResultWidgetClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
 	TSubclassOf<class UAAFSelectWidget> SelectLandWidgetClass;
-
-	UFUNCTION(NetMulticast, Reliable)
-	void SetDrawResultWidget(uint8 firstNumber, uint8 SecondsNumber);
 
     UFUNCTION()
     void CreateVoteWidget();
@@ -32,13 +30,13 @@ public:
 	virtual void BeginPlay() override;
 
     UPROPERTY(BlueprintReadWrite, Category = "Widgets")
-    TObjectPtr<class UShowPlayerSeletedLandWidget> ShowLandWidget;
+    TObjectPtr<class UShowPlayerSeletedLandWidget> SelectResultWidget;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
     TObjectPtr<class UAAFSelectWidget> SelectLandWidget;
 
     UFUNCTION()
-    void PlayerStateBind();
+    void BindDispatcher();
 
     UPROPERTY()
     FTimerHandle TimerHandle;
@@ -47,23 +45,42 @@ public:
     FTimerHandle TimerHandletwo;
 
     UPROPERTY()
+    float DeltaTimer;
+
+    UPROPERTY()
     float Timer;
 
-    UFUNCTION()
-    void AllPlayerSelectedCheck();
+    UPROPERTY()
+    uint8 ActiveTimer;
 
-    UFUNCTION(Server, Reliable)
-    void Req_PlayerCreateResultWidget(uint8 FNumber, uint8 SNumber);
+    UFUNCTION()
+    void GameStepChange(EGameStep NewStep);
+
+    UFUNCTION()
+    void CreateResultWidget(uint8 FNumber, uint8 SNumber);
 
     UFUNCTION()
     void RemoveResultWidget();
 
+    uint8 AbundanceLand;
+
+    uint8 FamineLand;
+
+    UFUNCTION()
+    void CheckPlayerAllSelected();
+
+    UFUNCTION(Server, Reliable)
+    void RequestChangetStepOnServer(EGameStep NewStep, uint8 FirstLand, uint8 SecondsLand);
+
     UFUNCTION()
     void SetTimerWidget();
 
-    UPROPERTY()
-    uint8 AbundanceLand;
+    UFUNCTION(Server, Reliable)
+    void ServerRequestCurrentTime();
 
-    UPROPERTY()
-    uint8 FamineLand;
+    UFUNCTION(Client, Reliable)
+    void ClientReciveCurrentTime(float Time);
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+    TObjectPtr<class UChatComponent> ChatComponent;
 };

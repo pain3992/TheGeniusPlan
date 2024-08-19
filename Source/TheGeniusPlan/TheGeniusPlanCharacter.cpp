@@ -10,9 +10,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-#include "TheGeniusPlanController.h"
 #include "TheGeniusPlan/ChatComponent.h"
 #include "TheGeniusPlan/Widget/ChatWidget.h"
+#include "TheGeniusPlan/Player/GeniusPlayerController.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -152,7 +152,7 @@ void ATheGeniusPlanCharacter::ChatFocus(const FInputActionValue& Value)
 
 	if (bIsEnter)
 	{
-		ATheGeniusPlanController* myController = Cast<ATheGeniusPlanController>(GetController());
+		AGeniusPlayerController* myController = Cast<AGeniusPlayerController>(GetController());
 		if (myController->ChatComponent->GetChatVaild())
 		{
 			myController->ChatComponent->ChatWidget->FocusChatWidget();

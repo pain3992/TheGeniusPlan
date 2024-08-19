@@ -6,8 +6,6 @@
 #include "GeniusPlayerState.h"
 #include "AAFPlayerState.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEventDispatcher_AllPlayerSelected);
-
 UENUM()
 enum class ESelectedLand : uint8
 {
@@ -27,9 +25,6 @@ protected:
 public:
 
 	virtual void BeginPlay() override;
-
-	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
-	FEventDispatcher_AllPlayerSelected AllPlayerSelected;
 
 	UPROPERTY(ReplicatedUsing = OnReq_ChangeLand)
 	ESelectedLand SelectedLand;

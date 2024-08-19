@@ -31,6 +31,5 @@ public:
 
 	UFUNCTION()
 	void SetTimer(float Time);
-
 	
 };

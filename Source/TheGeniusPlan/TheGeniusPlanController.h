@@ -17,12 +17,6 @@ class THEGENIUSPLAN_API ATheGeniusPlanController : public APlayerController
 public:
 	virtual void BeginPlay() override;
 
-	ATheGeniusPlanController();
-
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-	TObjectPtr<class UChatComponent> ChatComponent;
-
 
 protected:
 	

@@ -5,6 +5,7 @@
 #include "TheGeniusPlan/GameModes/MainGame/AAFGameState.h"
 #include "Net/UnrealNetwork.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
+#include "TheGeniusPlan/Player/GeniusPlayerController.h"
 
 void AAAFPlayerState::BeginPlay()
 {
@@ -18,10 +19,13 @@ AAAFPlayerState::AAAFPlayerState()
 
 void AAAFPlayerState::OnReq_ChangeLand()
 {
-	if(AllPlayerSelected.IsBound())
+	AGeniusPlayerController* Controller = Cast<AGeniusPlayerController>(GetWorld()->GetFirstPlayerController());
+
+	if(Controller)
 	{
-		AllPlayerSelected.Broadcast();
+		Controller->CheckPlayerAllSelected();
 	}
+
 }
 
 void AAAFPlayerState::ChangeLand_Implementation(ESelectedLand Type)

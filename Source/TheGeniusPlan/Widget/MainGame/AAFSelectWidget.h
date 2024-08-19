@@ -23,11 +23,18 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> SelectedFamine;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> Timer;
+
 public:
 	UFUNCTION()
 	void ClickedAbundance();
 
 	UFUNCTION()
 	void ClickedFamine();
+
+	UFUNCTION()
+	void SetTimer(float Time);
 	
+
 };

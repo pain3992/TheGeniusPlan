@@ -2,7 +2,7 @@
 #include "ChatRoomActor.h"
 #include "Components/BoxComponent.h"
 #include "TheGeniusPlanCharacter.h"
-#include "TheGeniusPlanController.h"
+#include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "ChatComponent.h"
 
 
@@ -48,7 +48,7 @@ void AChatRoomActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 
 		if (OverlapActor->GetController() == GetWorld()->GetFirstPlayerController())
 		{
-			ATheGeniusPlanController* PlayerController = Cast<ATheGeniusPlanController>(OverlapActor->GetController());
+			AGeniusPlayerController* PlayerController = Cast<AGeniusPlayerController>(OverlapActor->GetController());
 
 			if (PlayerController)
 			{
@@ -69,7 +69,7 @@ void AChatRoomActor::OnComponentEndOverlap(UPrimitiveComponent* OverlappedCompon
 	if (OverlapActor)
 	{
 		UE_LOG(LogTemp, Error, TEXT("OverlapActor Cast Succeeded!"));
-		ATheGeniusPlanController* PlayerController = Cast<ATheGeniusPlanController>(OverlapActor->GetController());
+		AGeniusPlayerController* PlayerController = Cast<AGeniusPlayerController>(OverlapActor->GetController());
 
 		if (PlayerController)
 		{
