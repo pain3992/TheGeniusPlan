@@ -25,6 +25,9 @@ AMainGameModeBase::AMainGameModeBase()
 		GameStateClass = AMainGameStateBase::StaticClass();
 		PlayerStateClass = AGeniusPlayerState::StaticClass();
 	}
+
+	// 카운트다운 시간 (테스트 후 다른 시간으로 변경)
+	CountdownTimeInSeconds = 300;
 }
 
 void AMainGameModeBase::BeginPlay()
@@ -50,6 +53,7 @@ void AMainGameModeBase::HandleGameStart()
 	// }
 	// 첫번째 라운드 시작
 	TransitionToNextRound();
+	SetCountdownRule();
 }
 
 void AMainGameModeBase::TransitionToNextRound()
@@ -124,6 +128,14 @@ void AMainGameModeBase::AddCoinScore(APlayerState *PlayerState, int32 ScoreAmoun
 		{
 			MainGameState->ShowWidgetPlayerRanking();
 		}
+	}
+}
+
+void AMainGameModeBase::SetCountdownRule()
+{
+	if (AMainGameStateBase* MainGameState = GetGameState<AMainGameStateBase>())
+	{
+		MainGameState->StartCountdown(CountdownTimeInSeconds);
 	}
 }
 

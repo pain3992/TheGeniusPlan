@@ -57,12 +57,12 @@ void AMainGameHUD::ShowWidget(MainGameWidgetType type)
 	case MainGameWidgetType::NONE:
 		MainGameWidget->SetVisibility(ESlateVisibility::Visible);
 		HelpWidget->SetVisibility(ESlateVisibility::Collapsed);
-		ShowMouseCursor(true);
+		ShowMouseCursor(false);
 		break;
 	case MainGameWidgetType::MainGameWidget:
 		MainGameWidget->SetVisibility(ESlateVisibility::Visible);
 		HelpWidget->SetVisibility(ESlateVisibility::Collapsed);
-		ShowMouseCursor(true);
+		ShowMouseCursor(false);
 		break;
 	case MainGameWidgetType::HelpWidget:
 		MainGameWidget->SetVisibility(ESlateVisibility::Collapsed);
@@ -100,16 +100,3 @@ void AMainGameHUD::ShowMouseCursor(bool bShowCursor)
 		}
 	}
 }
-
-// void AMainHallHUD::UpdateRankingList()
-//{
-//     if (MainHallWidget)
-//     {
-//         // Retrieve the GameState and update the widget
-//         AGameState* GameState = GetWorld()->GetGameState<AMainHallGameState>();
-//         if (GameState)
-//         {
-//             MainHallWidget->UpdateRankingList(GameState->PlayerRankings);
-//         }
-//     }
-// }

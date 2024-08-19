@@ -39,6 +39,9 @@ public:
 	// 게임 규칙을 적용하는 함수
 	void SetGameRules();
 
+	// 카운트 다운 함수
+	void SetCountdownRule();
+
 	virtual void PostLogin(APlayerController *NewPlayer) override;
 	virtual void Logout(AController *Exiting) override;
 
@@ -72,4 +75,8 @@ private:
 	// 테스트용 변수, 변경 가능한 게임모드
 	UPROPERTY(EditDefaultsOnly, Category = "GameModes")
 	TArray<TSubclassOf<AGameMode>> PossibleGameModes;
+
+	// 카운트다운
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Rules", meta = (AllowPrivateAccess = "true"))
+	int32 CountdownTimeInSeconds;
 };
