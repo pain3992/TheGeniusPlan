@@ -8,6 +8,7 @@
 #include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/GameModes/MainGame/AAFGameState.h"
+#include "TheGeniusPlan/ChatComponent.h"
 
 AGeniusPlayerController::AGeniusPlayerController()
 {
@@ -27,6 +28,12 @@ AGeniusPlayerController::AGeniusPlayerController()
 	DeltaTimer = 60.0f;
 	ActiveTimer = 0;
 
+	ChatComponent = CreateDefaultSubobject<UChatComponent>(TEXT("ChatComponent"));
+
+	if (ChatComponent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ChatComponent Create Succeeded!"));
+	}
 }
 
 void AGeniusPlayerController::CreateVoteWidget()
@@ -59,8 +66,8 @@ void AGeniusPlayerController::BeginPlay()
 
 	BindDispatcher();
 
-	AAAFGameState* GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
-	GameState->SetGameStep(EGameStep::Vote);
+	//AAAFGameState* GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
+	//GameState->SetGameStep(EGameStep::Vote);
 }
 
 void AGeniusPlayerController::CreateResultWidget(uint8 firstNumber, uint8 SecondsNumber)

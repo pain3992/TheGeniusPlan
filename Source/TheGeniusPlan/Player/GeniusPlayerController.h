@@ -80,4 +80,7 @@ public:
 
     UFUNCTION(Client, Reliable)
     void ClientReciveCurrentTime(float Time);
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+    TObjectPtr<class UChatComponent> ChatComponent;
 };
