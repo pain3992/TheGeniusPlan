@@ -26,18 +26,20 @@ public:
 
     // Collision component
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-    class USphereComponent* SphereComponent;
+    class USphereComponent *SphereComponent;
 
     // Mesh component
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-    class UStaticMeshComponent* MeshComponent;
+    class UStaticMeshComponent *MeshComponent;
 
     // Points to add on overlap
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
     int32 PointsToAdd;
 
+    UFUNCTION(Server, Reliable)
+    void handleGetCoin(AActor *GotCoinPlayer);
+
     // Overlap event
     UFUNCTION()
-    void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
+    void OnOverlapBegin(UPrimitiveComponent *OverlappedComp, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
 };

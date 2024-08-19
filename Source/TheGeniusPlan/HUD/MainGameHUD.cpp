@@ -11,8 +11,7 @@
 #include "TheGeniusPlan/Widget/MainGame/ShowPlayerSeletedLandWidget.h"
 #include "TheGeniusPlan/Player/AAFPlayerState.h"
 #include "Net/UnrealNetwork.h"
-
-
+#include "GameFramework/PlayerController.h"
 
 AMainGameHUD::AMainGameHUD()
 {
@@ -24,13 +23,12 @@ AMainGameHUD::AMainGameHUD()
 		MainGameWidgetClass = CMainGameWidget.Class;
 		HelpWidgetClass = CHelpWidget.Class;
 	}
-
 }
 
 void AMainGameHUD::BeginPlay()
 {
 	UE_LOG(LogTemp, Error, TEXT("BeginPlay is Work"))
-		Super::BeginPlay();
+	Super::BeginPlay();
 
 	check(MainGameWidgetClass);
 	check(HelpWidgetClass);
@@ -39,21 +37,21 @@ void AMainGameHUD::BeginPlay()
 	if (MainGameWidget)
 	{
 		MainGameWidget->AddToViewport();
-		MainGameWidget->SetHUD(this);  // Set HUD reference for MainHallWidget
+		MainGameWidget->SetHUD(this); // Set HUD reference for MainHallWidget
 	}
 
 	HelpWidget = Cast<UHelpUserWidget>(CreateWidget(GetWorld(), HelpWidgetClass, TEXT("HelpHUD")));
 	if (HelpWidget)
 	{
 		HelpWidget->AddToViewport();
-		HelpWidget->SetVisibility(ESlateVisibility::Collapsed);  // Hide HelpWidget initially
-		HelpWidget->SetHUD(this);  // Set HUD reference for HelpWidget
+		HelpWidget->SetVisibility(ESlateVisibility::Collapsed); // Hide HelpWidget initially
+		HelpWidget->SetHUD(this);								// Set HUD reference for HelpWidget
 	}
-
 }
 
 void AMainGameHUD::ShowWidget(MainGameWidgetType type)
 {
+	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPawn()->GetController());
 	switch (type)
 	{
 	case MainGameWidgetType::NONE:
@@ -69,7 +67,7 @@ void AMainGameHUD::ShowWidget(MainGameWidgetType type)
 	case MainGameWidgetType::HelpWidget:
 		MainGameWidget->SetVisibility(ESlateVisibility::Collapsed);
 		HelpWidget->SetVisibility(ESlateVisibility::Visible);
-		ShowMouseCursor(true); // 커서를 보이도록 설정
+		PlayerController->bShowMouseCursor = true;
 		break;
 	case MainGameWidgetType::MAX:
 		break;
@@ -88,7 +86,7 @@ void AMainGameHUD::SetHelpWidgetVisibility(ESlateVisibility Visibility)
 
 void AMainGameHUD::ShowMouseCursor(bool bShowCursor)
 {
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APlayerController *PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (PlayerController)
 	{
 		PlayerController->bShowMouseCursor = bShowCursor;
@@ -103,17 +101,15 @@ void AMainGameHUD::ShowMouseCursor(bool bShowCursor)
 	}
 }
 
-//void AMainHallHUD::UpdateRankingList()
+// void AMainHallHUD::UpdateRankingList()
 //{
-//    if (MainHallWidget)
-//    {
-//        // Retrieve the GameState and update the widget
-//        AGameState* GameState = GetWorld()->GetGameState<AMainHallGameState>();
-//        if (GameState)
-//        {
-//            MainHallWidget->UpdateRankingList(GameState->PlayerRankings);
-//        }
-//    }
-//}
-
-
+//     if (MainHallWidget)
+//     {
+//         // Retrieve the GameState and update the widget
+//         AGameState* GameState = GetWorld()->GetGameState<AMainHallGameState>();
+//         if (GameState)
+//         {
+//             MainHallWidget->UpdateRankingList(GameState->PlayerRankings);
+//         }
+//     }
+// }

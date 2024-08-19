@@ -7,13 +7,12 @@
 #include "GeniusPlayerState.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class THEGENIUSPLAN_API AGeniusPlayerState : public APlayerState
 {
-	GENERATED_BODY()
-
+    GENERATED_BODY()
 
 public:
     UPROPERTY(Replicated, BlueprintReadWrite, Category = "PlayerData")
@@ -22,6 +21,9 @@ public:
     int32 GetPlayerScore() const;
     void SetPlayerScore(int32 NewScore);
 
-    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	
+    void AddScore(int32 Amount);
+
+    virtual void OnRep_Score() override;
+
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
 };

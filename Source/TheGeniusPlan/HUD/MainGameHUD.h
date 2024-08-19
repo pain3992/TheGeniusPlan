@@ -6,11 +6,10 @@
 #include "GameFramework/HUD.h"
 #include "MainGameHUD.generated.h"
 
-
 UENUM()
 enum class MainGameWidgetType : uint8
 {
-	// Home 작업 예시 2 
+    // Home 작업 예시 2
     NONE UMETA(DisplayName = "NONE"),
     MainGameWidget UMETA(DisplayName = "MainGameWidget"),
     HelpWidget UMETA(DisplayName = "HelpWidget"),
@@ -18,17 +17,17 @@ enum class MainGameWidgetType : uint8
 };
 
 /**
- * 
+ *
  */
 UCLASS()
 class THEGENIUSPLAN_API AMainGameHUD : public AHUD
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
     AMainGameHUD();
 
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
     UFUNCTION()
     void ShowWidget(MainGameWidgetType type);
@@ -42,18 +41,18 @@ public:
     // Function to set visibility of HelpWidget
     void SetHelpWidgetVisibility(ESlateVisibility Visibility);
     void ShowMouseCursor(bool bShowCursor);
-   // void UpdateRankingList();
 
-        // Public accessor for MainGameWidget
+    // Public accessor for MainGameWidget
     UFUNCTION(BlueprintCallable, Category = "Widgets")
-    UMainGameWidget* GetMainGameWidget() const { return MainGameWidget; }
+    UMainGameWidget *GetMainGameWidget() const { return MainGameWidget; }
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    UHelpUserWidget *GetHelpWidget() const { return HelpWidget; }
 
     UPROPERTY(BlueprintReadWrite, Category = "Widgets")
     TObjectPtr<class UMainGameWidget> MainGameWidget;
 
-
 protected:
     UPROPERTY(BlueprintReadWrite, Category = "Widgets")
-    TObjectPtr<class UHelpUserWidget> HelpWidget; 
-
+    TObjectPtr<class UHelpUserWidget> HelpWidget;
 };

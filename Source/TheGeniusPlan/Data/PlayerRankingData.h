@@ -7,7 +7,7 @@
 #include "PlayerRankingData.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS(BlueprintType)
 class THEGENIUSPLAN_API UPlayerRankingData : public UObject
@@ -20,4 +20,7 @@ public:
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Ranking")
     int32 Score;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Piece")
+    int32 PieceCount;
 };

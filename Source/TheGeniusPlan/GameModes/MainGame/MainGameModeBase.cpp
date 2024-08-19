@@ -10,6 +10,7 @@
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
+#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
 
 AMainGameModeBase::AMainGameModeBase()
 {
@@ -64,7 +65,6 @@ void AMainGameModeBase::TransitionToNextRound()
 		// 라운드 규칙 적용
 		SetGameRules();
 	}
-	else
 	{
 		/**
 		 * CASE: FinalGameMode 적용시 FinalGameMode 변경
@@ -116,6 +116,21 @@ void AMainGameModeBase::SetGameRules()
 	// 특정 조건, 아이템 스폰 등등
 }
 
+// From Coin Serve RPC
+void AMainGameModeBase::AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount)
+{
+	AGeniusPlayerState *GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
+	if (GeniusPlayerState)
+	{
+		GeniusPlayerState->AddScore(ScoreAmount);
+
+		if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
+		{
+			MainGameState->ShowWidgetPlayerRanking();
+		}
+	}
+}
+
 void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
@@ -131,8 +146,6 @@ void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 			// 기본 점수를 0으로 설정합니다.
 			NewPlayerState->SetPlayerScore(0);
 		}
-		// 랭킹 초기화
-		MainGameState->UpdatePlayerRankings();
 	}
 }
 
