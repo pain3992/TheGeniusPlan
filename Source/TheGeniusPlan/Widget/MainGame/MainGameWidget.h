@@ -55,5 +55,4 @@ private:
     UPROPERTY(meta=(BindWidget))
     class UTextBlock* Text_Countdown;
 
-   // void LoadData();
 };

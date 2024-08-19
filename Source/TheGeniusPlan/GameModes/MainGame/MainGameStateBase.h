@@ -41,6 +41,7 @@ public:
   UFUNCTION(NetMulticast, Reliable)
   void ShowWidgetPlayerRanking();
 
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
     // 카운트다운 변수가 변경될 때 클라이언트에서 호출되는 함수
@@ -57,5 +58,5 @@ private:
     void UpdateCountdown();
     void CountdownFinished();
 
-    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 };
