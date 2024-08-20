@@ -42,6 +42,7 @@ void AMainGameModeBase::BeginPlay()
 	}
 	// 게임 시작
 	HandleGameStart();
+	SetCountdownRule();
 }
 
 void AMainGameModeBase::HandleGameStart()
@@ -53,7 +54,6 @@ void AMainGameModeBase::HandleGameStart()
 	// }
 	// 첫번째 라운드 시작
 	TransitionToNextRound();
-	SetCountdownRule();
 }
 
 void AMainGameModeBase::TransitionToNextRound()

@@ -35,10 +35,10 @@ public:
     void StartCountdown(int32 InitialCountdownTime);
 
     UFUNCTION()
-    void OnRep_PlayingPlayers() const;
+    virtual void OnRep_PlayingPlayers() const;
 
     UFUNCTION(NetMulticast, Reliable)
-    void ShowWidgetPlayerRanking();
+    virtual void ShowWidgetPlayerRanking();
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
 

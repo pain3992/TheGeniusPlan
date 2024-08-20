@@ -48,6 +48,10 @@ public:
 	// 코인 습득 시 점수가 오르는 함수 (테스트 후 삭제 예정)
 	void AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount);
 
+	// 카운트다운
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Rules", meta = (AllowPrivateAccess = "true"))
+	int32 CountdownTimeInSeconds;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -75,8 +79,4 @@ private:
 	// 테스트용 변수, 변경 가능한 게임모드
 	UPROPERTY(EditDefaultsOnly, Category = "GameModes")
 	TArray<TSubclassOf<AGameMode>> PossibleGameModes;
-
-	// 카운트다운
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Rules", meta = (AllowPrivateAccess = "true"))
-	int32 CountdownTimeInSeconds;
 };

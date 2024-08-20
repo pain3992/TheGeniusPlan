@@ -5,6 +5,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"
 
+
 void AMainGameStateBase::AddPlayer(AGeniusPlayerState *NewPlayerState)
 {
     // 플레이어 목록 중복 체크
@@ -88,6 +89,7 @@ void AMainGameStateBase::ShowWidgetPlayerRanking_Implementation()
                     if (PlayerState)
                     {
                         OnRep_PlayingPlayers();
+
                     }
             }
         }

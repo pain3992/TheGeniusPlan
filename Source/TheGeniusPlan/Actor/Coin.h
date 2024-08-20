@@ -1,5 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-// ����� �÷��̾� ���� ���� - ����Ʈ �������� �׽�Ʈ�� ���� ���Ƿ� ��������ϴ� �׽�Ʈ ��ģ �Ŀ��� ����ϴ�!
 
 #pragma once
 
