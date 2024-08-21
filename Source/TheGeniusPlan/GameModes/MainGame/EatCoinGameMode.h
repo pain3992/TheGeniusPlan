@@ -31,6 +31,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Gameplay")
     void ApplySpeedBoost(ACharacter* PlayerCharacter);
 
+
+protected:
+    virtual void BeginPlay() override;
+
 private:
     FTimerHandle BoostTimerHandle;
 

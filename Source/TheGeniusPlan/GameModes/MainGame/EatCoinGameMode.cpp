@@ -5,10 +5,19 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
+#include "GameFramework/Actor.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AEatCoinGameMode::AEatCoinGameMode()
 {
 	CountdownTimeInSeconds = 180;
+}
+
+void AEatCoinGameMode::BeginPlay()
+{
+    Super::BeginPlay();
 }
 
 void AEatCoinGameMode::ApplySpeedBoost(ACharacter* PlayerCharacter)

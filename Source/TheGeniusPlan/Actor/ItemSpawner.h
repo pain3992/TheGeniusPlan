@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "TheGeniusPlan/Actor/Booster.h"
+#include "TheGeniusPlan/Actor/Coin.h"
 #include "ItemSpawner.generated.h"
 
 UCLASS()
@@ -21,31 +23,34 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	TSubclassOf<AActor> CoinClass;
+	TArray<TSubclassOf<AActor>> ItemClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	TSubclassOf<AActor> BoosterClass;
+	UPROPERTY()
+	TSubclassOf<ABooster> BoosterClass;
 
+	// Reference to the Coin Blueprint
+	UPROPERTY()
+	TSubclassOf<ACoin> CoinClass;
+
+	// 랜덤으로 아이템을 생성하는 함수
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
 	void SpawnRandomActor();
 
+	// 아이템 리스폰까지의 시간
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
+	float RespawnTime = 10.0f;
 
-	//// 스폰 영역 (Min~Max)
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	//FVector SpawnAreaMin;
+	UFUNCTION()
+	void OnItemDestroyed(AActor* DestroyedActor);
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	//FVector SpawnAreaMax;
-
-	//// 스폰 간격 정의
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	//float SpawnInterval;
-
-private:
-	//void SpawnItem();
-	//FTimerHandle SpawnTimerHandle;
 
 protected:
 	FVector SpawnLocation;
+
+private:
+	// Function to respawn the actor after a delay
+	void Respawn();
+	
+	FTimerHandle TimerHandle;
 
 };
