@@ -31,6 +31,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Gameplay")
     void ApplySpeedBoost(ACharacter* PlayerCharacter);
 
+    // 남은 부스트 시간(위젯 전달용)
+    float GetRemainingBoostTime() const;
+
 
 protected:
     virtual void BeginPlay() override;

@@ -53,32 +53,16 @@ void ACoin::handleGetCoin_Implementation(AActor *GotCoinPlayer)
     if (IsValid(Character) == false)
         return;
 
-    //APlayerController *PlayerController = Cast<APlayerController>(Character->GetController());
-    //if (PlayerController)
-    //{
-    //    AGeniusPlayerState *PlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
-    //    if (PlayerState)
-    //    {
-    //        AMainGameModeBase *GameMode = Cast<AMainGameModeBase>(GetWorld()->GetAuthGameMode());
-    //        if (GameMode)
-    //        {
-    //            GameMode->AddCoinScore(PlayerState, 50);
-    //        }
-    //    }
-    //}
-
-    APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
+    APlayerController *PlayerController = Cast<APlayerController>(Character->GetController());
     if (PlayerController)
     {
-        AEatCoinPlayerState* EatCoinPlayerState = PlayerController->GetPlayerState<AEatCoinPlayerState>();
+        AGeniusPlayerState *PlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
+        if (PlayerState)
         {
-            if (EatCoinPlayerState)
+            AMainGameModeBase *GameMode = Cast<AMainGameModeBase>(GetWorld()->GetAuthGameMode());
+            if (GameMode)
             {
-                AEatCoinGameMode* EatCoinGameMode = Cast<AEatCoinGameMode>(GetWorld()->GetAuthGameMode());
-                if (EatCoinGameMode)
-                {
-                    EatCoinGameMode->AddCoinScore(EatCoinPlayerState, 50);
-                }
+                GameMode->AddCoinScore(PlayerState, 50);
             }
         }
     }

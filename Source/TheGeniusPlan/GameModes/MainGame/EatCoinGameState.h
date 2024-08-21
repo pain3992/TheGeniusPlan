@@ -21,5 +21,4 @@ public:
 	//  virtual void OnRep_Score() override;
 	virtual void OnRep_PlayingPlayers() const override;
 	virtual void ShowWidgetPlayerRanking_Implementation() override;
-
 };

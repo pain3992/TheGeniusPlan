@@ -9,6 +9,9 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TheGeniusPlan/Widget/MainGame/EatCoinWidget.h"
+#include "TheGeniusPlan/HUD/EatCoinHUD.h"
+#include "TheGeniusPlan/Player/EatCoinPlayerState.h"
 
 AEatCoinGameMode::AEatCoinGameMode()
 {
@@ -76,6 +79,31 @@ void AEatCoinGameMode::ApplySpeedBoost(ACharacter* PlayerCharacter)
                 FString SpeedText = FString::Printf(TEXT("Speed Reset to Original: %f"), MovementComponent->MaxWalkSpeed);
                 GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, SpeedText);
             }
-
         }, BoostDuration, false);
+
+    APlayerController* PlayerController = Cast<APlayerController>(GetOwner());
+    if (PlayerController)
+    {
+        AEatCoinHUD* HUD = PlayerController->GetHUD< AEatCoinHUD>();
+        if (HUD)
+        {
+            UEatCoinWidget* EatCoinWidget = Cast<UEatCoinWidget>(HUD->GetEatCoinWidget());
+            if (EatCoinWidget)
+            {
+                EatCoinWidget->UpdateBoostTimer();
+            }
+        }
+    }
+   
+}
+
+
+float AEatCoinGameMode::GetRemainingBoostTime() const
+{
+    if (bIsBoostActive)
+    {
+        // Calculate the remaining time
+        return FMath::Max(0.0f, BoostDuration - GetWorld()->GetTimerManager().GetTimerElapsed(BoostTimerHandle));
+    }
+    return 0.0f;
 }

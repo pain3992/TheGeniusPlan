@@ -11,9 +11,21 @@
 #include "TheGeniusPlan/Widget/MainGame/CoinScoreItemWidget.h"
 #include "Components/TextBlock.h"
 #include "Engine/Engine.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 void UEatCoinWidget::NativeConstruct()
 {
+    Super::NativeConstruct();
+
+    // Set up a timer to update the boost timer every second
+    GetWorld()->GetTimerManager().SetTimer(
+        UpdateTimerHandle,
+        this,
+        &UEatCoinWidget::UpdateBoostTimer,
+        1.0f, // Update interval
+        true // Looping
+    );
 }
 
 void UEatCoinWidget::UpdateEatCoinPlayerList(const TArray<AGeniusPlayerState*>& PlayingPlayersArray)
@@ -54,3 +66,20 @@ void UEatCoinWidget::UpdateEatCoinPlayerList(const TArray<AGeniusPlayerState*>& 
     // Refresh the ListView
     ListView_CoinScore->RequestRefresh();
 }
+
+void UEatCoinWidget::UpdateBoostTimer()
+{
+    if (Text_BoostTimer)
+    {
+        AEatCoinGameMode* GameMode = Cast<AEatCoinGameMode>(UGameplayStatics::GetGameMode(this));
+        if (GameMode)
+        {
+            // 남은 시간을 정수로 변환
+            int32 RemainingTime = FMath::CeilToInt(GameMode->GetRemainingBoostTime());
+            FText BoostTimeText = FText::FromString(FString::Printf(TEXT("%d"), RemainingTime));
+            Text_BoostTimer->SetText(BoostTimeText);
+        }
+    }
+}
+
+

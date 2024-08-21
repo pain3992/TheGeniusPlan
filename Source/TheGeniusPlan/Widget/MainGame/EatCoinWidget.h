@@ -22,6 +22,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Eat Coin Ranking")
 	void UpdateEatCoinPlayerList(const TArray<AGeniusPlayerState*>& PlayingPlayersArray);
 
+	void UpdateBoostTimer();
+	void UpdateBoostTimerText();
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -31,5 +34,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eat Coin Ranking")
 	TSubclassOf<class UCoinScoreItemWidget> CoinScoreItemWidgetClass;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Text_BoostTimer;
+
+private:
+	FTimerHandle UpdateTimerHandle;
+
+	float RemainingBoostTime = 0.0f; // Track remaining boost time
 	
 };
