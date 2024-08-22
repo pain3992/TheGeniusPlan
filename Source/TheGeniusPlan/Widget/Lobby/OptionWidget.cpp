@@ -5,7 +5,6 @@
 #include "Components/Slider.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
-#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 #include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
 #include "AudioDevice.h"

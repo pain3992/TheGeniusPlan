@@ -1,12 +1,11 @@
-#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
-#include "Blueprint/UserWidget.h"
+#include "TheGeniusPlan/HUD/EntryHUD.h"
 #include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidget.h"
-#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetOption.h"
 #include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetLobby.h"
+#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetOption.h"
 #include "TheGeniusPlan/Widget/Lobby/OptionWidget.h"
 #include "TheGeniusPlan/Widget/Lobby/SignupWidget.h"
 
-AMainMenuHUD::AMainMenuHUD()
+AEntryHUD::AEntryHUD()
 {
 	static ConstructorHelpers::FClassFinder<UMainMenuUserWidget> CLoginWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_MainMenuLogin.WG_MainMenuLogin_C'"));
 	static ConstructorHelpers::FClassFinder<UMainMenuUserWidgetOption> CGameStartWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_MainMenuGameStart.WG_MainMenuGameStart_C'"));
@@ -24,10 +23,72 @@ AMainMenuHUD::AMainMenuHUD()
 		SignupWidgetClass = CSignupWidget.Class;
 		OptionWidgetClass = COptionWidget.Class;
 	}
+}
+
+void AEntryHUD::BeginPlay()
+{
+	Super::BeginPlay();
+
+	check(LoginWidgetClass)
+check(GameStartWidgetClass)
+check(LobbyWidgetClass)
+check(LoadingWidgetClass)
+check(OptionWidgetClass)
+check(SignupWidgetClass)
+
+LoginWidget = Cast<UMainMenuUserWidget>(CreateWidget(GetWorld(), LoginWidgetClass, TEXT("LoginMenuHUD")));
+
+	if (LoginWidget)
+	{
+		LoginWidget->EntryHUD= this;
+		LoginWidget->AddToViewport();
+	}
+
+	GameStartWidget = Cast<UMainMenuUserWidgetOption>(CreateWidget(GetWorld(), GameStartWidgetClass, TEXT("GameStartMenuHUD")));
+
+	if (GameStartWidget)
+	{
+		GameStartWidget->EntryHUD = this;
+		GameStartWidget->AddToViewport();
+	}
+
+	LobbyWidget = Cast<UMainMenuUserWidgetLobby>(CreateWidget(GetWorld(), LobbyWidgetClass, TEXT("LobbyMenuHUD")));
+
+	if (LobbyWidget)
+	{
+		LobbyWidget->EntryHUD = this;
+		LobbyWidget->AddToViewport();
+	}
+
+	LoadingWidget = Cast<UUserWidget>(CreateWidget(GetWorld(), LoadingWidgetClass));
+
+	if(LoadingWidget)
+	{
+		LoadingWidget->AddToViewport();
+		LoadingWidget->SetVisibility(ESlateVisibility::Collapsed);
+	}
+
+	SignupWidget = Cast<USignupWidget>(CreateWidget(GetWorld(), SignupWidgetClass, TEXT("SignupMenuHUD")));
+
+	if (SignupWidget)
+	{
+		SignupWidget->EntryHUD = this;
+		SignupWidget->AddToViewport();
+	}
+
+	OptionWidget = Cast<UOptionWidget>(CreateWidget(GetWorld(), OptionWidgetClass, TEXT("OptionMenuHUD")));
+
+	if (OptionWidget)
+	{
+		OptionWidget->EntryHUD = this;
+		OptionWidget->AddToViewport();
+	}
+
+	ShowWidget(WidgetType::LoginWidget);
 
 }
 
-void AMainMenuHUD::ShowWidget(WidgetType type)
+void AEntryHUD::ShowWidget(WidgetType type) const
 {
 	switch (type)
 	{
@@ -65,71 +126,4 @@ void AMainMenuHUD::ShowWidget(WidgetType type)
 	default:
 		break;
 	}
-
 }
-
-
-void AMainMenuHUD::BeginPlay()
-{
-	Super::BeginPlay();
-
-	check(LoginWidgetClass)
-	check(GameStartWidgetClass)
-	check(LobbyWidgetClass)
-	check(LoadingWidgetClass)
-	check(OptionWidgetClass)
-	check(SignupWidgetClass)
-
-	LoginWidget = Cast<UMainMenuUserWidget>(CreateWidget(GetWorld(), LoginWidgetClass, TEXT("LoginMenuHUD")));
-
-	if (LoginWidget)
-	{
-		LoginWidget->LoginMenuHUD = this;
-		LoginWidget->AddToViewport();
-	}
-
-	GameStartWidget = Cast<UMainMenuUserWidgetOption>(CreateWidget(GetWorld(), GameStartWidgetClass, TEXT("GameStartMenuHUD")));
-
-	if (GameStartWidget)
-	{
-		GameStartWidget->GameStartMenuHUD = this;
-		GameStartWidget->AddToViewport();
-	}
-
-	LobbyWidget = Cast<UMainMenuUserWidgetLobby>(CreateWidget(GetWorld(), LobbyWidgetClass, TEXT("LobbyMenuHUD")));
-
-	if (LobbyWidget)
-	{
-		LobbyWidget->LobbyMenuHUD = this;
-		LobbyWidget->AddToViewport();
-	}
-
-	LoadingWidget = Cast<UUserWidget>(CreateWidget(GetWorld(), LoadingWidgetClass));
-
-	if(LoadingWidget)
-	{
-		LoadingWidget->AddToViewport();
-		LoadingWidget->SetVisibility(ESlateVisibility::Collapsed);
-	}
-
-	SignupWidget = Cast<USignupWidget>(CreateWidget(GetWorld(), SignupWidgetClass, TEXT("SignupMenuHUD")));
-
-	if (SignupWidget)
-	{
-		SignupWidget->SignupMenuHUD = this;
-		SignupWidget->AddToViewport();
-	}
-
-	OptionWidget = Cast<UOptionWidget>(CreateWidget(GetWorld(), OptionWidgetClass, TEXT("OptionMenuHUD")));
-
-	if (OptionWidget)
-	{
-		OptionWidget->OptionMenuHUD = this;
-		OptionWidget->AddToViewport();
-	}
-
-	ShowWidget(WidgetType::LoginWidget);
-
-}
-
-

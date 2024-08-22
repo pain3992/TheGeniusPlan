@@ -4,8 +4,7 @@
 #include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidget.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/Button.h"
-#include "Components/EditableTextBox.h"
-#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
+#include "TheGeniusPlan/HUD/EntryHUD.h"
 
 void UMainMenuUserWidget::NativeConstruct()
 {
@@ -22,23 +21,20 @@ void UMainMenuUserWidget::NativeConstruct()
 	if(ButtonSignUp)
 	{
 		ButtonSignUp->OnClicked.AddDynamic(this, &UMainMenuUserWidget::ClickedSignUp);
-
 	}
 }
 
 void UMainMenuUserWidget::ClickedLogin()
 {
-	if (LoginMenuHUD)
+	if (EntryHUD)
 	{
-		LoginMenuHUD->ShowWidget(WidgetType::StartWidget);
+		EntryHUD->ShowWidget(WidgetType::StartWidget);
 		UE_LOG(LogTemp, Warning, TEXT("HUD is Vaild"));
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("HUD is Null"));
-
 	}
-
 }
 
 void UMainMenuUserWidget::ClickedQuit()
@@ -48,9 +44,9 @@ void UMainMenuUserWidget::ClickedQuit()
 
 void UMainMenuUserWidget::ClickedSignUp()
 {
-	if(LoginMenuHUD)
+	if(EntryHUD)
 	{
-		LoginMenuHUD->ShowWidget(WidgetType::SignupWidget);
+		EntryHUD->ShowWidget(WidgetType::SignupWidget);
 	}
 
 }

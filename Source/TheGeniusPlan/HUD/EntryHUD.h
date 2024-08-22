@@ -1,8 +1,10 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
-#include "MainMenuHUD.generated.h"
+#include "EntryHUD.generated.h"
 
 UENUM()
 enum class WidgetType : uint8
@@ -17,20 +19,20 @@ enum class WidgetType : uint8
 	MAX UMETA(DisplayName = "MAX")
 };
 
-
+/**
+ * 
+ */
 UCLASS()
-class THEGENIUSPLAN_API AMainMenuHUD : public AHUD
+class THEGENIUSPLAN_API AEntryHUD : public AHUD
 {
 	GENERATED_BODY()
-
 public:
-	AMainMenuHUD();
-
-
+	AEntryHUD();
+	
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void ShowWidget(WidgetType type);
+	void ShowWidget(WidgetType type) const;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
 	TSubclassOf<class UMainMenuUserWidget> LoginWidgetClass;
@@ -76,5 +78,4 @@ protected:
 	TObjectPtr<class UOptionWidget> OptionWidget;
 
 	FTimerHandle HUDTimerHandle;
-
 };

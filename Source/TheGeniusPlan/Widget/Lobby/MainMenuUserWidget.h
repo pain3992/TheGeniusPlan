@@ -25,7 +25,7 @@ public:
 	void ClickedSignUp();
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	TObjectPtr<class AMainMenuHUD> LoginMenuHUD;
+	TObjectPtr<class AEntryHUD> EntryHUD;
 
 	void TestFunction();
 	
