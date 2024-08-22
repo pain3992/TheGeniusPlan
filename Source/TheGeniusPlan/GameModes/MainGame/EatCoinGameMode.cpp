@@ -12,6 +12,7 @@
 #include "TheGeniusPlan/Widget/MainGame/EatCoinWidget.h"
 #include "TheGeniusPlan/HUD/EatCoinHUD.h"
 #include "TheGeniusPlan/Player/EatCoinPlayerState.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameState.h"
 
 AEatCoinGameMode::AEatCoinGameMode()
 {
@@ -25,85 +26,85 @@ void AEatCoinGameMode::BeginPlay()
 
 void AEatCoinGameMode::ApplySpeedBoost(ACharacter* PlayerCharacter)
 {
-    if (!PlayerCharacter)
+    if (!PlayerCharacter) return;
+
+    AEatCoinPlayerState* PlayerState = PlayerCharacter->GetPlayerState<AEatCoinPlayerState>();
+    if (PlayerState)
     {
-        return;
-    }
-
-    UCharacterMovementComponent* MovementComponent = PlayerCharacter->GetCharacterMovement();
-    if (!MovementComponent)
-    {
-        return;
-    }
-
-    if (!bIsBoostActive)
-    {
-        // Store the original speed if not already boosted
-        OriginalSpeed = MovementComponent->MaxWalkSpeed;
-
-        // Apply the speed boost
-        MovementComponent->MaxWalkSpeed *= SpeedMultiplier;
-
-        // 부스터 습득 시 속도 확인용 로그 출력 (테스트 확인 후 지웁니다)
-        if (GEngine)
+        UCharacterMovementComponent* MovementComponent = PlayerCharacter->GetCharacterMovement();
+        if (MovementComponent)
         {
-            FString SpeedText = FString::Printf(TEXT("Current Speed: %f"), MovementComponent->MaxWalkSpeed);
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, SpeedText);
-        }
-
-        // Mark boost as active
-        bIsBoostActive = true;
-    }
-
-    else
-    {
-        // 부스터 남은 시간 리셋 확인용 로그 출력 (테스트 확인 후 지웁니다)
-        if (GEngine)
-        {
-            FString SpeedText = FString::Printf(TEXT("Boost Timer Reset. Current Speed: %f"), MovementComponent->MaxWalkSpeed);
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, SpeedText);
-        }
-    }
-
-    // Reset the boost duration timer
-    GetWorld()->GetTimerManager().ClearTimer(BoostTimerHandle);
-    GetWorld()->GetTimerManager().SetTimer(BoostTimerHandle, [this, MovementComponent]()
-        {
-            // 속도를 기본 속도로 리셋
-            MovementComponent->MaxWalkSpeed = OriginalSpeed;
-            bIsBoostActive = false;
-
-            // 부스터 지속 시간이 지났을 때 속도 확인용 로그 출력 (테스트 확인 후 지웁니다)
-            if (GEngine)
+            if (!bIsBoostActive)
             {
-                FString SpeedText = FString::Printf(TEXT("Speed Reset to Original: %f"), MovementComponent->MaxWalkSpeed);
-                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, SpeedText);
-            }
-        }, BoostDuration, false);
+                // 부스트 활성화 되지 않은 상태일 경우 원래 속도 저장
+                OriginalSpeed = MovementComponent->MaxWalkSpeed;
 
-    APlayerController* PlayerController = Cast<APlayerController>(GetOwner());
-    if (PlayerController)
-    {
-        AEatCoinHUD* HUD = PlayerController->GetHUD< AEatCoinHUD>();
-        if (HUD)
-        {
-            UEatCoinWidget* EatCoinWidget = Cast<UEatCoinWidget>(HUD->GetEatCoinWidget());
-            if (EatCoinWidget)
-            {
-                EatCoinWidget->UpdateBoostTimer();
+                // 부스트 속도 적용(2배)
+                MovementComponent->MaxWalkSpeed *= SpeedMultiplier;
+                bIsBoostActive = true;
+
+                // 부스트 카운트다운 시작(또는 재시작)
+                PlayerState->StartBoostCountdown(BoostDuration);
             }
+            else
+            {
+                GetWorld()->GetTimerManager().ClearTimer(BoostTimerHandle);
+            }
+
+            // 부스터 타이머 시작(또는 재시작)
+            GetWorld()->GetTimerManager().SetTimer(
+                BoostTimerHandle,
+                [this, PlayerCharacter]()
+                {
+                    UCharacterMovementComponent* MovementComponent = PlayerCharacter->GetCharacterMovement();
+                    if (MovementComponent)
+                    {
+                        // Reset the speed to the original value
+                        MovementComponent->MaxWalkSpeed = OriginalSpeed;
+
+                        // Log output (for testing)
+                        if (GEngine)
+                        {
+                            FString SpeedText = FString::Printf(TEXT("Speed Reset to Original: %f"), MovementComponent->MaxWalkSpeed);
+                            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, SpeedText);
+                        }
+                    }
+                    bIsBoostActive = false;
+
+                    // 부스터 효과가 끝났음을 PlayerState에 알림
+                    if (PlayerCharacter)
+                    {
+                        AEatCoinPlayerState* PlayerState = PlayerCharacter->GetPlayerState<AEatCoinPlayerState>();
+                        if (PlayerState)
+                        {
+                            PlayerState->BoostTimeLeft = 0;
+                            PlayerState->bIsBoostActive = false;
+                        }
+                    }
+                },
+                BoostDuration,
+                false
+            );
+
+            // 새로운 부스트 지속시간을 PlayerState에 반영
+            PlayerState->BoostTimeLeft = BoostDuration;
+            PlayerState->bIsBoostActive = true;
         }
     }
-   
 }
 
-
-float AEatCoinGameMode::GetRemainingBoostTime() const
+void AEatCoinGameMode::AddCoinScoreRule(APlayerState* PlayerState, int32 ScoreAmount)
 {
-    if (bIsBoostActive)
+    AEatCoinPlayerState* EatCoinPlayerState = Cast<AEatCoinPlayerState>(PlayerState);
     {
-        // Calculate the remaining time
-        return FMath::Max(0.0f, BoostDuration - GetWorld()->GetTimerManager().GetTimerElapsed(BoostTimerHandle));
+        if (EatCoinPlayerState)
+        {
+            EatCoinPlayerState->AddCoinScore(ScoreAmount);
+
+            if (AEatCoinGameState* EatCoinGameState = GetGameState <AEatCoinGameState>())
+            {
+                EatCoinGameState->ShowWidgetCoinRanking();
+            }
+        }
     }
-    return 0.0f;
 }

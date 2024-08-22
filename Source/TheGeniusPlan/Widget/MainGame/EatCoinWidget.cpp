@@ -13,6 +13,7 @@
 #include "Engine/Engine.h"
 #include "TheGeniusPlan/GameModes/MainGame/EatCoinGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "TheGeniusPlan/Player/EatCoinPlayerState.h"
 
 void UEatCoinWidget::NativeConstruct()
 {
@@ -23,12 +24,12 @@ void UEatCoinWidget::NativeConstruct()
         UpdateTimerHandle,
         this,
         &UEatCoinWidget::UpdateBoostTimer,
-        1.0f, // Update interval
+        0.1f, // Update interval
         true // Looping
     );
 }
 
-void UEatCoinWidget::UpdateEatCoinPlayerList(const TArray<AGeniusPlayerState*>& PlayingPlayersArray)
+void UEatCoinWidget::UpdateEatCoinPlayerList(const TArray<AEatCoinPlayerState*>& PlayerCoinScoresArray)
 {
     UE_LOG(LogTemp, Warning, TEXT("UpdateEatCoinPlayerList함수 실행")); //
     if (ListView_CoinScore == nullptr || CoinScoreItemWidgetClass == nullptr)
@@ -40,21 +41,26 @@ void UEatCoinWidget::UpdateEatCoinPlayerList(const TArray<AGeniusPlayerState*>& 
     // Create and add items
     TArray<UPlayerRankingData*> PlayerRankingDataArray;
 
-    for (AGeniusPlayerState* PlayerState : PlayingPlayersArray)
+    for (AEatCoinPlayerState* EatCoinPlayerState : PlayerCoinScoresArray) 
     {
-        if (PlayerState)
+        if (EatCoinPlayerState)
         {
             UPlayerRankingData* PlayerRankingData = NewObject<UPlayerRankingData>(this);
-            PlayerRankingData->PlayerName = PlayerState->GetPlayerName();
-            PlayerRankingData->Score = PlayerState->GetPlayerScore();
+            PlayerRankingData->PlayerName = EatCoinPlayerState->GetPlayerName();
+            PlayerRankingData->CoinScore = EatCoinPlayerState->GetCoinScore();
+           
 
             PlayerRankingDataArray.Add(PlayerRankingData);
         }
     }
 
+
     // Sort the array based on scores
     PlayerRankingDataArray.Sort([](const UPlayerRankingData& A, const UPlayerRankingData& B)
         { return A.Score > B.Score; });
+
+
+    ListView_CoinScore;
 
     // Clear and re-add sorted items to the ListView
     ListView_CoinScore->ClearListItems();
@@ -67,17 +73,22 @@ void UEatCoinWidget::UpdateEatCoinPlayerList(const TArray<AGeniusPlayerState*>& 
     ListView_CoinScore->RequestRefresh();
 }
 
+
 void UEatCoinWidget::UpdateBoostTimer()
 {
     if (Text_BoostTimer)
     {
-        AEatCoinGameMode* GameMode = Cast<AEatCoinGameMode>(UGameplayStatics::GetGameMode(this));
-        if (GameMode)
+        APlayerController* PlayerController = GetOwningPlayer();
+        if (PlayerController)
         {
-            // 남은 시간을 정수로 변환
-            int32 RemainingTime = FMath::CeilToInt(GameMode->GetRemainingBoostTime());
-            FText BoostTimeText = FText::FromString(FString::Printf(TEXT("%d"), RemainingTime));
-            Text_BoostTimer->SetText(BoostTimeText);
+            AEatCoinPlayerState* PlayerState = PlayerController->GetPlayerState<AEatCoinPlayerState>();
+            if (PlayerState)
+            {
+                // Display the remaining boost time
+                int32 RemainingTime = FMath::CeilToInt(PlayerState->BoostTimeLeft);
+                FText BoostTimeText = FText::FromString(FString::Printf(TEXT("%d"), RemainingTime));
+                Text_BoostTimer->SetText(BoostTimeText);
+            }
         }
     }
 }

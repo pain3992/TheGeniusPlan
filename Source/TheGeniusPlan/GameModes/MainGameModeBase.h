@@ -46,7 +46,7 @@ public:
 	virtual void Logout(AController *Exiting) override;
 
 	// 코인 습득 시 점수가 오르는 함수 (테스트 후 삭제 예정)
-	void AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount);
+	//void AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount);
 
 	// 카운트다운
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Rules", meta = (AllowPrivateAccess = "true"))

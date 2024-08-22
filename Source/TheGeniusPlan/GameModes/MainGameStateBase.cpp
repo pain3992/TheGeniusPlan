@@ -77,24 +77,24 @@ void AMainGameStateBase::OnRep_PlayingPlayers() const
     }
 }
 
-void AMainGameStateBase::ShowWidgetPlayerRanking_Implementation()
-{
-    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-    {
-        if (AMainGameHUD *HUD = (*It)->GetHUD<AMainGameHUD>())
-        {
-            if (UMainGameWidget *MainGameWidget = HUD->GetMainGameWidget())
-            {
-                for (AGeniusPlayerState *PlayerState : PlayingPlayers)
-                    if (PlayerState)
-                    {
-                        OnRep_PlayingPlayers();
-
-                    }
-            }
-        }
-    }
-}
+//void AMainGameStateBase::ShowWidgetPlayerRanking_Implementation()
+//{
+//    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+//    {
+//        if (AMainGameHUD *HUD = (*It)->GetHUD<AMainGameHUD>())
+//        {
+//            if (UMainGameWidget *MainGameWidget = HUD->GetMainGameWidget())
+//            {
+//                for (AGeniusPlayerState *PlayerState : PlayingPlayers)
+//                    if (PlayerState)
+//                    {
+//                        OnRep_PlayingPlayers();
+//
+//                    }
+//            }
+//        }
+//    }
+//}
 
 void AMainGameStateBase::UpdateCountdown()
 {

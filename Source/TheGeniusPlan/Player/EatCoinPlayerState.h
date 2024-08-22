@@ -13,20 +13,37 @@ UCLASS()
 class THEGENIUSPLAN_API AEatCoinPlayerState : public AGeniusPlayerState
 {
 	GENERATED_BODY()
-	
+
 public:
 	AEatCoinPlayerState();
 
-	// Remaining time for the boost in seconds
-    UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Boost")
-    float RemainingBoostTime;
+	UPROPERTY(ReplicatedUsing = OnRep_CoinScore, BlueprintReadOnly, Category = "Coin")
+	int CoinScore;
 
-    // Function to update the remaining boost time
-    UFUNCTION()
-    void UpdateBoostTime(float DeltaTime);
+	UPROPERTY(ReplicatedUsing = OnRep_BoostTime, BlueprintReadOnly, Category = "Boost")
+	float BoostTimeLeft;
 
-    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Boost")
+	bool bIsBoostActive;
 
-protected:
-    virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+	virtual void OnRep_BoostTime();
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	void StartBoostCountdown(float Duration);
+	void UpdateBoostCountdown();
+
+	float OriginalSpeed = 500.0f;
+
+	void AddCoinScore(int32 Amount);
+
+	UFUNCTION()
+	void OnRep_CoinScore() const;
+
+	int32 GetCoinScore() const;
+
+private:
+	FTimerHandle BoostCountdownTimerHandle;
+	
 };

@@ -21,6 +21,9 @@ public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Ranking")
     int32 Score;
 
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "EatCoin Ranking")
+    int32 CoinScore;
+
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Piece")
     int32 PieceCount;
 };

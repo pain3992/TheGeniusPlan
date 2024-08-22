@@ -117,19 +117,19 @@ void AMainGameModeBase::SetGameRules()
 }
 
 // From Coin Serve RPC
-void AMainGameModeBase::AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount)
-{
-	AGeniusPlayerState *GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
-	if (GeniusPlayerState)
-	{
-		GeniusPlayerState->AddScore(ScoreAmount);
-
-		if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
-		{
-			MainGameState->ShowWidgetPlayerRanking();
-		}
-	}
-}
+//void AMainGameModeBase::AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount)
+//{
+//	AGeniusPlayerState *GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
+//	if (GeniusPlayerState)
+//	{
+//		GeniusPlayerState->AddScore(ScoreAmount);
+//
+//		if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
+//		{
+//			MainGameState->ShowWidgetPlayerRanking();
+//		}
+//	}
+//}
 
 void AMainGameModeBase::SetCountdownRule()
 {

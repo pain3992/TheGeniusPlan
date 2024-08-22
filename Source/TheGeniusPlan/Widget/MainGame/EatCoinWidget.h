@@ -19,12 +19,15 @@ class THEGENIUSPLAN_API UEatCoinWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	/*UFUNCTION(BlueprintCallable, Category = "Eat Coin Ranking")
+	void UpdateEatCoinPlayerList(const TArray<AGeniusPlayerState*>& PlayingPlayersArray);*/
+
 	UFUNCTION(BlueprintCallable, Category = "Eat Coin Ranking")
-	void UpdateEatCoinPlayerList(const TArray<AGeniusPlayerState*>& PlayingPlayersArray);
+	void UpdateEatCoinPlayerList(const TArray<AEatCoinPlayerState*>& PlayerCoinScoresArray);
 
 	void UpdateBoostTimer();
-	void UpdateBoostTimerText();
 
+	FTimerHandle UpdateTimerHandle;
 protected:
 	virtual void NativeConstruct() override;
 
@@ -39,8 +42,6 @@ protected:
 	class UTextBlock* Text_BoostTimer;
 
 private:
-	FTimerHandle UpdateTimerHandle;
-
 	float RemainingBoostTime = 0.0f; // Track remaining boost time
 	
 };

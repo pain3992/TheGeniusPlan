@@ -3,52 +3,108 @@
 
 #include "TheGeniusPlan/Player/EatCoinPlayerState.h"
 #include "TheGeniusPlan/Widget/MainGame/EatCoinWidget.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameMode.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameState.h"
 #include "TheGeniusPlan/HUD/EatCoinHUD.h"
 #include "GameFramework/HUD.h"
 #include "Net/UnrealNetwork.h"
 
+
 AEatCoinPlayerState::AEatCoinPlayerState()
 {
-	RemainingBoostTime = 0.0f;
+    bIsBoostActive = false;
+    BoostTimeLeft = 0.0f;
 }
 
-void AEatCoinPlayerState::UpdateBoostTime(float DeltaTime)
+int32 AEatCoinPlayerState::GetCoinScore() const
 {
-    if (RemainingBoostTime > 0.0f)
+    return CoinScore;
+}
+
+void AEatCoinPlayerState::StartBoostCountdown(float Duration)
+{
+    BoostTimeLeft = Duration;
+    bIsBoostActive = true;
+
+    // Start the countdown timer
+    GetWorld()->GetTimerManager().SetTimer(
+        BoostCountdownTimerHandle,
+        this,
+        &AEatCoinPlayerState::UpdateBoostCountdown,
+        1.0f, // Update interval: 1 second
+        true  // Looping
+    );
+
+    // Notify clients about the boost state
+    OnRep_BoostTime();
+}
+
+void AEatCoinPlayerState::UpdateBoostCountdown()
+{
+    if (BoostTimeLeft > 0)
     {
-        RemainingBoostTime -= DeltaTime;
-        if (RemainingBoostTime < 0.0f)
+        BoostTimeLeft -= 1.0f;
+
+        if (BoostTimeLeft <= 0)
         {
-            RemainingBoostTime = 0.0f;
+            bIsBoostActive = false;
+            GetWorld()->GetTimerManager().ClearTimer(BoostCountdownTimerHandle);
         }
+
+        // Notify the client about the updated time
+        OnRep_BoostTime();
     }
 }
 
-
-
-void AEatCoinPlayerState::Tick(float DeltaTime)
+void AEatCoinPlayerState::OnRep_BoostTime()
 {
-    Super::Tick(DeltaTime);
-
-    UpdateBoostTime(DeltaTime);
-
-    APlayerController* PlayerController = Cast<APlayerController>(GetOwner());
-    if (PlayerController)
+    // 클라이언트에서 UI 업데이트 등의 작업을 수행
+    if (APlayerController* PlayerController = GetPlayerController())
     {
-        AEatCoinHUD* HUD = PlayerController->GetHUD< AEatCoinHUD>();
-        if (HUD)
+        if (AEatCoinHUD* CoinHUD = PlayerController->GetHUD<AEatCoinHUD>())
         {
-            UEatCoinWidget* EatCoinWidget = Cast<UEatCoinWidget>(HUD->GetEatCoinWidget());
-            if (EatCoinWidget)
+            if (UEatCoinWidget* EatCoinWidget = CoinHUD->GetEatCoinWidget())
             {
-               // EatCoinWidget->UpdateBoostTimer(RemainingBoostTime);
+                EatCoinWidget->UpdateBoostTimer(); // UI 업데이트
             }
         }
     }
 }
 
+void AEatCoinPlayerState::AddCoinScore(int32 CoinAmount)
+{
+    // Retrieve the player's name
+    FString CurrentPlayerName = GetPlayerName();
+
+    // Log the information including the player name and the amount of score added
+    UE_LOG(LogTemp, Warning, TEXT("%s에게 %d점을 추가했습니다. 현재 총 점수: %d"),
+        *CurrentPlayerName, CoinAmount, static_cast<int32>(GetScore() + CoinAmount));
+
+
+    CoinScore += CoinAmount;
+
+    // Notify clients about the score change
+    OnRep_CoinScore();
+}
+
+void AEatCoinPlayerState::OnRep_CoinScore() const
+{
+    if (GetWorld()->GetGameState<AEatCoinGameState>())
+    {
+        AEatCoinGameState* EatCoinGameState = GetWorld()->GetGameState<AEatCoinGameState>();
+      //  EatCoinGameState->
+            //OnRep_PlayerCoinScores();
+    }
+}
+
+
 void AEatCoinPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-    DOREPLIFETIME(AEatCoinPlayerState, RemainingBoostTime);
+
+    DOREPLIFETIME(AEatCoinPlayerState, BoostTimeLeft);
+    DOREPLIFETIME(AEatCoinPlayerState, bIsBoostActive);
+    DOREPLIFETIME(AEatCoinPlayerState, CoinScore);
 }

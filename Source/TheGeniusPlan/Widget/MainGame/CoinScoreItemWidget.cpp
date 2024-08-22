@@ -15,7 +15,7 @@ void UCoinScoreItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
     {
         // Use the data from RankingData to set the PlayerName and Score
         SetEatCoinPlayerName(RankingData->PlayerName);
-        SetEatCoinScore(RankingData->Score);
+        SetEatCoinScore(RankingData->CoinScore);
     }
     else
     {

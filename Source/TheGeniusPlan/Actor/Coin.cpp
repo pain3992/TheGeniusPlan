@@ -37,8 +37,6 @@ ACoin::ACoin()
 void ACoin::BeginPlay()
 {
     Super::BeginPlay();
-    FString SpeedText = FString::Printf(TEXT("%s BeginPlay"), *GetName());
-    GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Green, SpeedText);
 }
 
 // Called every frame
@@ -53,7 +51,7 @@ void ACoin::handleGetCoin_Implementation(AActor *GotCoinPlayer)
     if (IsValid(Character) == false)
         return;
 
-    APlayerController *PlayerController = Cast<APlayerController>(Character->GetController());
+    /*APlayerController *PlayerController = Cast<APlayerController>(Character->GetController());
     if (PlayerController)
     {
         AGeniusPlayerState *PlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
@@ -65,6 +63,20 @@ void ACoin::handleGetCoin_Implementation(AActor *GotCoinPlayer)
                 GameMode->AddCoinScore(PlayerState, 50);
             }
         }
+    }*/
+
+    APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
+    if (PlayerController)
+    {
+        AEatCoinPlayerState* EatCoinPlayerState = PlayerController->GetPlayerState<AEatCoinPlayerState>();
+        if (EatCoinPlayerState)
+        {
+            AEatCoinGameMode* EatCoinGameMode = Cast<AEatCoinGameMode>(GetWorld()->GetAuthGameMode());
+            if (EatCoinGameMode)
+            {
+                EatCoinGameMode->AddCoinScoreRule(EatCoinPlayerState, 50);
+            }
+        }
     }
 }
 
@@ -72,9 +84,6 @@ void ACoin::OnOverlapBegin(UPrimitiveComponent *OverlappedComp, AActor *OtherAct
 {
     if (OtherActor)
     {
-        FString SpeedText = FString::Printf(TEXT("%s OnOverlapBegin OtherActor = %s, OtherActorComp = %s"), *OverlappedComp->GetName(), *OtherActor->GetName(), *OtherComp->GetName());
-        GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Green, SpeedText);
-
         handleGetCoin(OtherActor);
         Destroy();
     }
