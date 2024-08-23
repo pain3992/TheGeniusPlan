@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TheGeniusPlan/GameModes/MainGame/MainGameModeBase.h"
+#include "TheGeniusPlan/GameModes/MainGameModeBase.h"
 #include "GyulhapGameMode.generated.h"
 
 UENUM(BlueprintType)

@@ -1,7 +1,6 @@
-#include "TheGeniusPlan/gameModes/MainGame//MainGameStateBase.h"
+#include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
-#include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"

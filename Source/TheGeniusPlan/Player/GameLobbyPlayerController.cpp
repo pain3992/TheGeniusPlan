@@ -3,7 +3,7 @@
 
 #include "GameLobbyPlayerController.h"
 #include "TheGeniusPlan/Widget/GameLobbyWidget.h"
-#include "TheGeniusPlan/GameModes/LobbyGameState.h"
+#include "TheGeniusPlan/GameModes/Lobby/LobbyGameState.h"
 
 void AGameLobbyPlayerController::BeginPlay()
 {

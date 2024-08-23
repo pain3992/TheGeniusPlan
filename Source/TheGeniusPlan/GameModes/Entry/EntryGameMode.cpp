@@ -2,10 +2,9 @@
 
 
 #include "TheGeniusPlan/GameModes/Entry/EntryGameMode.h"
-
-#include "EntryPlayerController.h"
 #include "TheGeniusPlan/Characters/EntryPawn.h"
 #include "TheGeniusPlan/HUD/EntryHUD.h"
+#include "TheGeniusPlan/Player/EntryPlayerController.h"
 
 AEntryGameMode::AEntryGameMode()
 {

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TheGeniusPlan/GameModes/LobbyGameMode.h"
+#include "TheGeniusPlan/GameModes/Lobby/LobbyGameMode.h"
 #include "TheGeniusPlan/Widget/GameLobbyWidget.h"
 #include "LobbyGameState.h"
 #include "TheGeniusPlan/Player/GameLobbyPlayerController.h"

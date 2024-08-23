@@ -1,6 +1,6 @@
 #include "TheGeniusPlan/Widget/MainGame/ChangeGameModeWidget.h"
 #include "Kismet/GameplayStatics.h"
-#include "TheGeniusPlan/GameModes/MainGame/MainGameModeBase.h"
+#include "TheGeniusPlan/GameModes/MainGameModeBase.h"
 
 void UChangeGameModeWidget::NativeConstruct()
 {

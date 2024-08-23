@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameState.h"
-#include "TheGeniusPlan/Data/PlayerRankingData.h"
 #include "MainGameStateBase.generated.h"
 
 /**

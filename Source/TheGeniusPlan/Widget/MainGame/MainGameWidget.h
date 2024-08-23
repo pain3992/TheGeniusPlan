@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
-#include "TheGeniusPlan/gameModes/MainGame/MainGameStateBase.h"
+#include "TheGeniusPlan/gameModes/MainGameStateBase.h"
 #include "TheGeniusPlan/Data/PlayerRankingData.h"
 #include "Components/ListView.h"
 #include "MainGameWidget.generated.h"

@@ -2,12 +2,11 @@
 
 
 #include "TheGeniusPlan/Widget/Entry/LobbyWidget.h"
-
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 #include "TheGeniusPlan/Characters/EntryPawn.h"
-#include "TheGeniusPlan/GameModes/Entry/EntryPlayerController.h"
 #include "TheGeniusPlan/HUD/EntryHUD.h"
+#include "TheGeniusPlan/Player/EntryPlayerController.h"
 
 void ULobbyWidget::NativeConstruct()
 {
