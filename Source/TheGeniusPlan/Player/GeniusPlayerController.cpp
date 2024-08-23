@@ -9,11 +9,16 @@
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/GameModes/MainGame/AAFGameState.h"
 #include "TheGeniusPlan/ChatComponent.h"
+#include "TheGeniusPlan/Widget/TimerWidget.h"
+#include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
+
 
 AGeniusPlayerController::AGeniusPlayerController()
 {
+
 	static ConstructorHelpers::FClassFinder<UShowPlayerSeletedLandWidget> CShowLandWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_ShowSelectedLand.WG_ShowSelectedLand_C'"));
 	static ConstructorHelpers::FClassFinder<UAAFSelectWidget> CSelectWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_SelectedWidget.WG_SelectedWidget_C'"));
+	static ConstructorHelpers::FClassFinder<UTimerWidget> CTimerWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_Timer.WG_Timer_C'"));
 
 	if (CShowLandWidget.Succeeded())
 	{
@@ -23,17 +28,20 @@ AGeniusPlayerController::AGeniusPlayerController()
 	{
 		SelectLandWidgetClass = CSelectWidget.Class;
 	}
-
-	Timer = 0.0f;
-	DeltaTimer = 60.0f;
-	ActiveTimer = 0;
+	if (CTimerWidget.Succeeded())
+	{
+		TimerWidgetClass = CTimerWidget.Class;
+	}
 
 	ChatComponent = CreateDefaultSubobject<UChatComponent>(TEXT("ChatComponent"));
 
 	if (ChatComponent)
 	{
-		UE_LOG(LogTemp, Error, TEXT("ChatComponent Create Succeeded!"));
+
 	}
+
+	TimerWidget = nullptr;
+	IsCreateWidget = false;
 }
 
 void AGeniusPlayerController::CreateVoteWidget()
@@ -66,8 +74,11 @@ void AGeniusPlayerController::BeginPlay()
 
 	BindDispatcher();
 
-	//AAAFGameState* GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
-	//GameState->SetGameStep(EGameStep::Vote);
+	GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
+	GameState->SetGameStep(EGameStep::Vote);
+
+	//CreateTimerWidget();
+
 }
 
 void AGeniusPlayerController::CreateResultWidget(uint8 firstNumber, uint8 SecondsNumber)
@@ -97,9 +108,6 @@ void AGeniusPlayerController::CreateResultWidget(uint8 firstNumber, uint8 Second
 
 void AGeniusPlayerController::GameStepChange(EGameStep NewStep)
 {
-
-	UE_LOG(LogTemp, Error, TEXT("Client Game Step Change"));
-	AAAFGameState* GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
 	FTimerManager& TimerManager = GetWorld()->GetTimerManager();
 
 	if (GameState)
@@ -107,23 +115,40 @@ void AGeniusPlayerController::GameStepChange(EGameStep NewStep)
 		switch (NewStep)
 		{
 		case EGameStep::None:
-			UE_LOG(LogTemp, Error, TEXT("Game Step Is None Step"));
 			break;
 		case EGameStep::Vote:
 			CreateVoteWidget();
-			ActiveTimer = 1;
-			SelectLandWidget->SetTimer(DeltaTimer);
-			TimerManager.SetTimer(TimerHandle, this, &AGeniusPlayerController::SetTimerWidget, 0.5f, true);
-			UE_LOG(LogTemp, Error, TEXT("Game Step Is Vote Step"));
 			break;
 		case EGameStep::Result:
+			SelectLandWidget->RemoveFromParent();
 			CreateResultWidget(GameState->AbundanceLand, GameState->FamineLand);
-			ActiveTimer = 2;
-			SelectResultWidget->SetTimer(DeltaTimer);
-			TimerManager.SetTimer(TimerHandle, this, &AGeniusPlayerController::SetTimerWidget, 0.5f, true);
-			UE_LOG(LogTemp, Error, TEXT("Game Step Is Result Step"));
 			break;
+		case EGameStep::MoveActor:
+			SelectResultWidget->RemoveFromParent();
+			{
+				AAAFPlayerState* CastPlayerState = Cast<AAAFPlayerState>(PlayerState);
+
+				if (CastPlayerState)
+				{
+					switch (CastPlayerState->SelectedLand)
+					{
+					case ESelectedLand::FamineLand:
+						break;
+					case ESelectedLand::AbundanceLand:
+						break;
+
+					case ESelectedLand::None:
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
+			break;
+
 		case EGameStep::GameEnd:
+			GetPawn()->SetActorLocation(FVector(0, 0, 0));
 			break;
 		default:
 			break;
@@ -138,58 +163,15 @@ void AGeniusPlayerController::RemoveResultWidget()
 	SelectResultWidget->RemoveFromParent();
 }
 
-void AGeniusPlayerController::SetTimerWidget()
-{
-	ServerRequestCurrentTime();
-
-	if (Timer >= 1.0f && DeltaTimer >= 0.0f)
-	{
-		DeltaTimer -= Timer;
-
-		if (ActiveTimer == 1)
-		{
-			SelectLandWidget->SetTimer(DeltaTimer);
-		}
-		else if (ActiveTimer == 2)
-		{
-			SelectResultWidget->SetTimer(DeltaTimer);
-		}
-		else
-		{
-
-		}
-	}
-	
-	if(DeltaTimer <= 0.0f)
-	{
-		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
-		DeltaTimer = 60.0f;
-	}
-
-}
-
-void AGeniusPlayerController::ServerRequestCurrentTime_Implementation()
-{
-	float ServerTimer = GetWorld()->GetDeltaSeconds();
-	ClientReciveCurrentTime(ServerTimer);
-}
-
-void AGeniusPlayerController::ClientReciveCurrentTime_Implementation(float Time)
-{
-	Timer += Time;
-}
-
 void AGeniusPlayerController::BindDispatcher()
 {
-	AAAFGameState* GameStateBase = Cast<AAAFGameState>(GetWorld()->GetGameState());
 
-	if (GameStateBase)
+	if (GameState)
 	{
-		if (!GameStateBase->EventDisptacherGameStepChange.IsBound())
+		if (!GameState->EventDisptacherGameStepChange.IsBound())
 		{
-			GameStateBase->EventDisptacherGameStepChange.AddDynamic(this, &AGeniusPlayerController::GameStepChange);
-			AGeniusPlayerController::GameStepChange(GameStateBase->GetGameStep());
-			UE_LOG(LogTemp, Error, TEXT("GameStep dispatcher Bind"));
+			GameState->EventDisptacherGameStepChange.AddDynamic(this, &AGeniusPlayerController::GameStepChange);
+			AGeniusPlayerController::GameStepChange(GameState->GetGameStep());
 			return;
 		}
 	}
@@ -229,18 +211,127 @@ void AGeniusPlayerController::CheckPlayerAllSelected()
 			}
 		}
 
+		UE_LOG(LogTemp, Error, TEXT("All Selected!"));
 		RequestChangetStepOnServer(EGameStep::Result, AbundanceLand, FamineLand);
 	}
 }
 
+void AGeniusPlayerController::CreateTimerWidget_Implementation()
+{
+
+	//if (TimerWidgetClass)
+	//{
+	//	if (TimerWidget == nullptr)
+	//	{
+	//		TimerWidget = CreateWidget<UTimerWidget>(GetWorld(), TimerWidgetClass);
+	//		IsCreateWidget = true;
+
+	//		if (TimerWidget)
+	//		{
+	//			TimerWidget->AddToViewport();
+	//		}
+	//		else
+	//		{
+	//			UE_LOG(LogTemp, Error, TEXT("Widget Create Fail"));
+	//		}
+	//	}
+	//	else
+	//	{
+
+	//		UE_LOG(LogTemp, Error, TEXT("TimerWidget Not Null"));
+
+	//		if (TimerWidget->IsInViewport())
+	//		{
+
+	//		}
+	//		else
+	//		{
+	//			TimerWidget->AddToViewport();
+	//		}
+	//	}
+	//}
+
+}
+
+void AGeniusPlayerController::UpdateTimerWidget(double NewTime)
+{
+	AMainGameHUD* GameHUD = Cast<AMainGameHUD>(GetHUD());
+
+	if (GameHUD)
+	{
+		if(GameHUD->MainGameWidget)
+		{
+			GameHUD->MainGameWidget->UpdateCountdownDisplay(60);
+		}
+		
+	}
+
+	//if(TimerWidget != nullptr && TimerWidget->IsInViewport())
+	//{
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Error, TEXT("TimerWidget is either null or not in viewport."));
+	//}
+}
+
+void AGeniusPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	//if (IsCreateWidget)
+	//{
+	//	if (GameState)
+	//	{
+	//		if (TimerWidget)
+	//		{
+	//			UpdateTimerWidget(GameState->Timer);
+	//		}
+	//		else
+	//		{
+	//			UE_LOG(LogTemp, Error, TEXT("TimerWidget is null."));
+	//		}
+	//	}
+	//	else
+	//	{
+	//		UE_LOG(LogTemp, Error, TEXT("GameState is null."));
+	//	}
+	//}
+}
+
+void AGeniusPlayerController::RequestServerChangeStep()
+{
+	GameState->SetGameStep(EGameStep::MoveActor);
+}
+
+void AGeniusPlayerController::MoveActor()
+{
+	AAAFPlayerState* CastPlayerState = Cast<AAAFPlayerState>(PlayerState);
+
+	UE_LOG(LogTemp, Error, TEXT("MoveActor Function Play"));
+	
+	switch (CastPlayerState->SelectedLand)
+	{
+	case ESelectedLand::AbundanceLand:
+		break;
+	case ESelectedLand::FamineLand:
+		break;
+	case ESelectedLand::None:
+		break;
+	default:
+		break;
+	}
+
+}
+
 void AGeniusPlayerController::RequestChangetStepOnServer_Implementation(EGameStep NewStep, uint8 FirstLand, uint8 SecondsLand)
 {
-	AAAFGameState* GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
-
 	if (GameState)
 	{
 		GameState->SetGameStep(NewStep);
 		GameState->SetLandCount(FirstLand, SecondsLand);
+		
+		GetWorld()->GetTimerManager().SetTimer(TimerHandlePC, this, &AGeniusPlayerController::RequestServerChangeStep, 10.0f, false);
 	}
 
 }

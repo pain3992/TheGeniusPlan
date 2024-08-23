@@ -39,12 +39,10 @@ void AChatRoomActor::Tick(float DeltaTime)
 
 void AChatRoomActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Error, TEXT("BeginOverlap"));
 	ACharacter* OverlapActor = Cast<ACharacter>(OtherActor);
 
 	if(OverlapActor)
 	{
-		UE_LOG(LogTemp, Error, TEXT("OverlapActor Cast Succeeded!"));
 
 		if (OverlapActor->GetController() == GetWorld()->GetFirstPlayerController())
 		{
@@ -52,7 +50,6 @@ void AChatRoomActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 
 			if (PlayerController)
 			{
-				UE_LOG(LogTemp, Error, TEXT("PlayerController Cast Succeeded!"));
 				PlayerController->ChatComponent->CreateChatWidget((uint8)thisRoomType);
 			}
 		}
@@ -62,18 +59,15 @@ void AChatRoomActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 void AChatRoomActor::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	UE_LOG(LogTemp, Error, TEXT("EndOverlap"));
 
 	ACharacter* OverlapActor = Cast<ACharacter>(OtherActor);
 
 	if (OverlapActor)
 	{
-		UE_LOG(LogTemp, Error, TEXT("OverlapActor Cast Succeeded!"));
 		AGeniusPlayerController* PlayerController = Cast<AGeniusPlayerController>(OverlapActor->GetController());
 
 		if (PlayerController)
 		{
-			UE_LOG(LogTemp, Error, TEXT("PlayerController Cast Succeeded!"));
 			PlayerController->ChatComponent->RemoveChatWidget();
 		}
 	}

@@ -13,6 +13,7 @@ AAAFGameState::AAAFGameState()
 	GameStep = EGameStep::None;
 	AbundanceLand = 0;
 	FamineLand = 0;
+	//Timer = 0;
 }
 
 void AAAFGameState::SetGameStep(EGameStep NewStep)
@@ -23,8 +24,6 @@ void AAAFGameState::SetGameStep(EGameStep NewStep)
 	{
 		OnReq_GameStepChange();
 	}
-
-	UE_LOG(LogTemp, Error, TEXT("GameStep Change!"));
 }
 
 EGameStep AAAFGameState::GetGameStep()
@@ -50,6 +49,7 @@ void AAAFGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	DOREPLIFETIME(AAAFGameState, GameStep);
 	DOREPLIFETIME(AAAFGameState, AbundanceLand);
 	DOREPLIFETIME(AAAFGameState, FamineLand);
+	//DOREPLIFETIME(AAAFGameState, Timer);
 }
 
 void AAAFGameState::OnReq_GameStepChange()
@@ -58,6 +58,5 @@ void AAAFGameState::OnReq_GameStepChange()
 	if (EventDisptacherGameStepChange.IsBound())
 	{
 		EventDisptacherGameStepChange.Broadcast(GameStep);
-		UE_LOG(LogTemp, Error, TEXT("GameStep BroadCast"));
 	}
 }

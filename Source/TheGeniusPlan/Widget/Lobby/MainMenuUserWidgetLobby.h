@@ -36,6 +36,9 @@ public:
 	UFUNCTION()
 	void ClickedOption();
 
+	UFUNCTION()
+	void ClickedCreate();
+
 
 protected:
 
@@ -56,5 +59,8 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonServerJoin;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UButton> ButtonServerCreate;
 	
 };

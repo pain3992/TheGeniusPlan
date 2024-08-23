@@ -6,9 +6,6 @@
 #include "GameFramework/GameMode.h"
 #include "LobbyGameMode.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class THEGENIUSPLAN_API ALobbyGameMode : public AGameMode
 {
@@ -16,5 +13,12 @@ class THEGENIUSPLAN_API ALobbyGameMode : public AGameMode
 public:
 	ALobbyGameMode();
 	virtual void Logout(AController* Exiting) override;
-	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer) override;
+
+	void TravelNewLevel();
+
+	FTimerHandle GameModeTimerHandle;
+
+	UPROPERTY()
+	TSubclassOf<class AAAFGameModeBase> StartGameMode;
 };
