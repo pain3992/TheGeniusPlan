@@ -25,6 +25,9 @@ AMainGameModeBase::AMainGameModeBase()
 		GameStateClass = AMainGameStateBase::StaticClass();
 		PlayerStateClass = AGeniusPlayerState::StaticClass();
 	}
+
+	// 카운트다운 시간 (테스트 후 다른 시간으로 변경)
+	CountdownTimeInSeconds = 300;
 }
 
 void AMainGameModeBase::BeginPlay()
@@ -39,6 +42,7 @@ void AMainGameModeBase::BeginPlay()
 	}
 	// 게임 시작
 	HandleGameStart();
+	SetCountdownRule();
 }
 
 void AMainGameModeBase::HandleGameStart()
@@ -112,18 +116,11 @@ void AMainGameModeBase::SetGameRules()
 	// 특정 조건, 아이템 스폰 등등
 }
 
-// From Coin Serve RPC
-void AMainGameModeBase::AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount)
+void AMainGameModeBase::SetCountdownRule()
 {
-	AGeniusPlayerState *GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
-	if (GeniusPlayerState)
+	if (AMainGameStateBase* MainGameState = GetGameState<AMainGameStateBase>())
 	{
-		GeniusPlayerState->AddScore(ScoreAmount);
-
-		if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
-		{
-			MainGameState->ShowWidgetPlayerRanking();
-		}
+		MainGameState->StartCountdown(CountdownTimeInSeconds);
 	}
 }
 

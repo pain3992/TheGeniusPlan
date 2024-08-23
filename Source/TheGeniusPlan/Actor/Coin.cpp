@@ -6,6 +6,9 @@
 #include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "TheGeniusPlan/GameModes/MainGameModeBase.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameState.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameMode.h"
+#include "TheGeniusPlan/Player/EatCoinPlayerState.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Character.h"
 
@@ -16,13 +19,13 @@ ACoin::ACoin()
     PrimaryActorTick.bCanEverTick = true;
     bReplicates = true;
 
-    // Create and configure the sphere component
+    // 코인의 스피어 컴포넌트
     SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
     RootComponent = SphereComponent;
     SphereComponent->InitSphereRadius(50.0f);
     SphereComponent->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 
-    // Create and configure the static mesh component
+    // 코인의 스태틱 메쉬
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
     MeshComponent->SetupAttachment(RootComponent);
 
@@ -48,16 +51,16 @@ void ACoin::handleGetCoin_Implementation(AActor *GotCoinPlayer)
     if (IsValid(Character) == false)
         return;
 
-    APlayerController *PlayerController = Cast<APlayerController>(Character->GetController());
+    APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
     if (PlayerController)
     {
-        AGeniusPlayerState *PlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
-        if (PlayerState)
+        AEatCoinPlayerState* EatCoinPlayerState = PlayerController->GetPlayerState<AEatCoinPlayerState>();
+        if (EatCoinPlayerState)
         {
-            AMainGameModeBase *GameMode = Cast<AMainGameModeBase>(GetWorld()->GetAuthGameMode());
-            if (GameMode)
+            AEatCoinGameMode* EatCoinGameMode = Cast<AEatCoinGameMode>(GetWorld()->GetAuthGameMode());
+            if (EatCoinGameMode)
             {
-                GameMode->AddCoinScore(PlayerState, 50);
+                EatCoinGameMode->AddCoinScoreRule(EatCoinPlayerState, 50);
             }
         }
     }

@@ -22,10 +22,11 @@ public:
 	void SelectNextGameMode();
 
 	// 게임 시작 함수
-	void HandleGameStart();
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
+	virtual void HandleGameStart();
 
 	// 라운드 종료 함수
-	void HandleRoundEnd();
+	virtual void HandleRoundEnd();
 
 	// 전체 승리자를 확인하는 함수
 	void CheckRoundWinner();
@@ -39,11 +40,18 @@ public:
 	// 게임 규칙을 적용하는 함수
 	void SetGameRules();
 
+	// 카운트 다운 함수
+	virtual void SetCountdownRule();
+
 	virtual void PostLogin(APlayerController *NewPlayer) override;
 	virtual void Logout(AController *Exiting) override;
 
 	// 코인 습득 시 점수가 오르는 함수 (테스트 후 삭제 예정)
-	void AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount);
+	//void AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount);
+
+	// 카운트다운
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Rules", meta = (AllowPrivateAccess = "true"))
+	int32 CountdownTimeInSeconds;
 
 protected:
 	virtual void BeginPlay() override;

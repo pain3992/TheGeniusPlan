@@ -21,9 +21,9 @@ public:
     int32 GetPlayerScore() const;
     void SetPlayerScore(int32 NewScore);
 
-    void AddScore(int32 Amount);
+ //   void AddScore(int32 Amount);
 
-    virtual void OnRep_Score() override;
+ //   virtual void OnRep_Score() override;
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
 };

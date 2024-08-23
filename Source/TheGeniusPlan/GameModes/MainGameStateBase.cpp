@@ -4,6 +4,8 @@
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"
+#include "MainGameModeBase.h"
+
 
 void AMainGameStateBase::AddPlayer(AGeniusPlayerState *NewPlayerState)
 {
@@ -76,24 +78,6 @@ void AMainGameStateBase::OnRep_PlayingPlayers() const
     }
 }
 
-void AMainGameStateBase::ShowWidgetPlayerRanking_Implementation()
-{
-    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-    {
-        if (AMainGameHUD *HUD = (*It)->GetHUD<AMainGameHUD>())
-        {
-            if (UMainGameWidget *MainGameWidget = HUD->GetMainGameWidget())
-            {
-                for (AGeniusPlayerState *PlayerState : PlayingPlayers)
-                    if (PlayerState)
-                    {
-                        OnRep_PlayingPlayers();
-                    }
-            }
-        }
-    }
-}
-
 void AMainGameStateBase::UpdateCountdown()
 {
     if (CountdownTime > 0)
@@ -110,7 +94,12 @@ void AMainGameStateBase::UpdateCountdown()
 void AMainGameStateBase::CountdownFinished()
 {
     GetWorld()->GetTimerManager().ClearTimer(CountdownTimerHandle);
-    // 타이머 종료 시 실행되는 로직 작성
+
+    // 타이머 종료 시 라운드 종료 처리
+    if (AMainGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AMainGameModeBase>())
+    {
+        GameMode->HandleRoundEnd();
+    }
 }
 
 void AMainGameStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const

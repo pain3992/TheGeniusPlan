@@ -31,16 +31,17 @@ public:
     TArray<AGeniusPlayerState *> GetAllPlayingPlayers() const;
 
     // 카운트다운 시작 함수
-    UFUNCTION(BlueprintCallable, Category = "Countdown")
-    void StartCountdown(int32 InitialCountdownTime);
+    virtual void StartCountdown(int32 InitialCountdownTime);
 
     UFUNCTION()
-    void OnRep_PlayingPlayers() const;
+    virtual void OnRep_PlayingPlayers() const;
 
-    UFUNCTION(NetMulticast, Reliable)
-    void ShowWidgetPlayerRanking();
+ /*   UFUNCTION(NetMulticast, Reliable)
+    virtual void ShowWidgetPlayerRanking();*/
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
+
+    virtual void CountdownFinished();
 
 protected:
     // 카운트다운 변수가 변경될 때 클라이언트에서 호출되는 함수
@@ -53,6 +54,6 @@ protected:
 private:
     FTimerHandle CountdownTimerHandle;
 
-    void UpdateCountdown();
-    void CountdownFinished();
+    virtual void UpdateCountdown();
+
 };
