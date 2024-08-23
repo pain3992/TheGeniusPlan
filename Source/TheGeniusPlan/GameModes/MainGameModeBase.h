@@ -22,10 +22,11 @@ public:
 	void SelectNextGameMode();
 
 	// 게임 시작 함수
-	void HandleGameStart();
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
+	virtual void HandleGameStart();
 
 	// 라운드 종료 함수
-	void HandleRoundEnd();
+	virtual void HandleRoundEnd();
 
 	// 전체 승리자를 확인하는 함수
 	void CheckRoundWinner();
@@ -40,7 +41,7 @@ public:
 	void SetGameRules();
 
 	// 카운트 다운 함수
-	void SetCountdownRule();
+	virtual void SetCountdownRule();
 
 	virtual void PostLogin(APlayerController *NewPlayer) override;
 	virtual void Logout(AController *Exiting) override;

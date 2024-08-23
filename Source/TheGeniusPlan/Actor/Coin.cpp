@@ -51,20 +51,6 @@ void ACoin::handleGetCoin_Implementation(AActor *GotCoinPlayer)
     if (IsValid(Character) == false)
         return;
 
-    /*APlayerController *PlayerController = Cast<APlayerController>(Character->GetController());
-    if (PlayerController)
-    {
-        AGeniusPlayerState *PlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
-        if (PlayerState)
-        {
-            AMainGameModeBase *GameMode = Cast<AMainGameModeBase>(GetWorld()->GetAuthGameMode());
-            if (GameMode)
-            {
-                GameMode->AddCoinScore(PlayerState, 50);
-            }
-        }
-    }*/
-
     APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
     if (PlayerController)
     {

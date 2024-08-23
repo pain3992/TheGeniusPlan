@@ -42,6 +42,7 @@ public:
 	void OnRep_CoinScore() const;
 
 	int32 GetCoinScore() const;
+	void SetCoinScore(int32 NewScore);
 
 private:
 	FTimerHandle BoostCountdownTimerHandle;

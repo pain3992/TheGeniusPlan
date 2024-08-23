@@ -23,21 +23,26 @@ int32 AEatCoinPlayerState::GetCoinScore() const
     return CoinScore;
 }
 
+void AEatCoinPlayerState::SetCoinScore(int32 NewScore)
+{
+    CoinScore = NewScore;
+}
+
 void AEatCoinPlayerState::StartBoostCountdown(float Duration)
 {
     BoostTimeLeft = Duration;
-    bIsBoostActive = true;
 
-    // Start the countdown timer
+    // 기존 타이머를 초기화하고 새 타이머 시작
+    GetWorld()->GetTimerManager().ClearTimer(BoostCountdownTimerHandle);
     GetWorld()->GetTimerManager().SetTimer(
         BoostCountdownTimerHandle,
         this,
         &AEatCoinPlayerState::UpdateBoostCountdown,
-        1.0f, // Update interval: 1 second
-        true  // Looping
+        1.0f, // 1초마다 업데이트
+        true  // 반복 실행
     );
 
-    // Notify clients about the boost state
+    // 클라이언트에게 부스트 상태 알림
     OnRep_BoostTime();
 }
 
@@ -51,16 +56,26 @@ void AEatCoinPlayerState::UpdateBoostCountdown()
         {
             bIsBoostActive = false;
             GetWorld()->GetTimerManager().ClearTimer(BoostCountdownTimerHandle);
+
+            // 부스트 시간 종료 후 속도 원래대로 복원
+            ACharacter* PlayerCharacter = Cast<ACharacter>(GetPawn());
+            if (PlayerCharacter)
+            {
+                UCharacterMovementComponent* MovementComponent = PlayerCharacter->GetCharacterMovement();
+                if (MovementComponent)
+                {
+                    MovementComponent->MaxWalkSpeed = OriginalSpeed;
+                }
+            }
         }
 
-        // Notify the client about the updated time
+        // 클라이언트에게 남은 시간 알림
         OnRep_BoostTime();
     }
 }
 
 void AEatCoinPlayerState::OnRep_BoostTime()
 {
-    // 클라이언트에서 UI 업데이트 등의 작업을 수행
     if (APlayerController* PlayerController = GetPlayerController())
     {
         if (AEatCoinHUD* CoinHUD = PlayerController->GetHUD<AEatCoinHUD>())
@@ -73,29 +88,21 @@ void AEatCoinPlayerState::OnRep_BoostTime()
     }
 }
 
+
 void AEatCoinPlayerState::AddCoinScore(int32 CoinAmount)
 {
-    // Retrieve the player's name
-    FString CurrentPlayerName = GetPlayerName();
-
-    // Log the information including the player name and the amount of score added
-    UE_LOG(LogTemp, Warning, TEXT("%s에게 %d점을 추가했습니다. 현재 총 점수: %d"),
-        *CurrentPlayerName, CoinAmount, static_cast<int32>(GetScore() + CoinAmount));
-
-
-    CoinScore += CoinAmount;
-
-    // Notify clients about the score change
-    OnRep_CoinScore();
+    SetCoinScore(GetCoinScore() + CoinAmount);
 }
 
 void AEatCoinPlayerState::OnRep_CoinScore() const
 {
+    UE_LOG(LogTemp, Warning, TEXT("CoinScore updated: %d"), CoinScore);
+    UE_LOG(LogTemp, Warning, TEXT("왜 작동하지?"));
+
     if (GetWorld()->GetGameState<AEatCoinGameState>())
     {
         AEatCoinGameState* EatCoinGameState = GetWorld()->GetGameState<AEatCoinGameState>();
-      //  EatCoinGameState->
-            //OnRep_PlayerCoinScores();
+        EatCoinGameState->OnRep_PlayerCoinScores();
     }
 }
 

@@ -116,21 +116,6 @@ void AMainGameModeBase::SetGameRules()
 	// 특정 조건, 아이템 스폰 등등
 }
 
-// From Coin Serve RPC
-//void AMainGameModeBase::AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount)
-//{
-//	AGeniusPlayerState *GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
-//	if (GeniusPlayerState)
-//	{
-//		GeniusPlayerState->AddScore(ScoreAmount);
-//
-//		if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
-//		{
-//			MainGameState->ShowWidgetPlayerRanking();
-//		}
-//	}
-//}
-
 void AMainGameModeBase::SetCountdownRule()
 {
 	if (AMainGameStateBase* MainGameState = GetGameState<AMainGameStateBase>())

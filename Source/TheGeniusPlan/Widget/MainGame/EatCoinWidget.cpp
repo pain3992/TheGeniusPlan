@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "TheGeniusPlan/Widget/MainGame/EatCoinWidget.h"
 #include "Components/ListView.h"
 #include "Blueprint/UserWidget.h"
@@ -31,48 +30,40 @@ void UEatCoinWidget::NativeConstruct()
 
 void UEatCoinWidget::UpdateEatCoinPlayerList(const TArray<AEatCoinPlayerState*>& PlayerCoinScoresArray)
 {
-    UE_LOG(LogTemp, Warning, TEXT("UpdateEatCoinPlayerList함수 실행")); //
+    UE_LOG(LogTemp, Warning, TEXT("UpdateEatCoinPlayerList function executed"));
+
     if (ListView_CoinScore == nullptr || CoinScoreItemWidgetClass == nullptr)
     {
         UE_LOG(LogTemp, Warning, TEXT("ListView_CoinScore or CoinScoreItemWidgetClass is not assigned."));
         return;
     }
 
-    // Create and add items
     TArray<UPlayerRankingData*> PlayerRankingDataArray;
 
-    for (AEatCoinPlayerState* EatCoinPlayerState : PlayerCoinScoresArray) 
+    for (AEatCoinPlayerState* EatCoinPlayerState : PlayerCoinScoresArray)
     {
         if (EatCoinPlayerState)
         {
             UPlayerRankingData* PlayerRankingData = NewObject<UPlayerRankingData>(this);
             PlayerRankingData->PlayerName = EatCoinPlayerState->GetPlayerName();
             PlayerRankingData->CoinScore = EatCoinPlayerState->GetCoinScore();
-           
-
             PlayerRankingDataArray.Add(PlayerRankingData);
         }
     }
 
-
-    // Sort the array based on scores
     PlayerRankingDataArray.Sort([](const UPlayerRankingData& A, const UPlayerRankingData& B)
-        { return A.Score > B.Score; });
+        {
+            return A.CoinScore > B.CoinScore;
+        });
 
-
-    ListView_CoinScore;
-
-    // Clear and re-add sorted items to the ListView
     ListView_CoinScore->ClearListItems();
     for (UPlayerRankingData* RankingData : PlayerRankingDataArray)
     {
         ListView_CoinScore->AddItem(RankingData);
     }
 
-    // Refresh the ListView
     ListView_CoinScore->RequestRefresh();
 }
-
 
 void UEatCoinWidget::UpdateBoostTimer()
 {

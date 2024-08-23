@@ -10,18 +10,58 @@
 #include "GameFramework/Actor.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "TheGeniusPlan/Widget/MainGame/EatCoinWidget.h"
+#include "TheGeniusPlan/Widget/MainGame/EatCoinEndWidget.h"
 #include "TheGeniusPlan/HUD/EatCoinHUD.h"
 #include "TheGeniusPlan/Player/EatCoinPlayerState.h"
 #include "TheGeniusPlan/GameModes/MainGame/EatCoinGameState.h"
 
 AEatCoinGameMode::AEatCoinGameMode()
 {
+    // 라운드 시간
 	CountdownTimeInSeconds = 180;
+
+    // EatCoin 게임 시작까지 남은 시간
+    ECGameStartCountdownTimeInSeconds = 10;
 }
 
 void AEatCoinGameMode::BeginPlay()
 {
-    Super::BeginPlay();
+    SetECGameStartCountdownRule();
+}
+
+void AEatCoinGameMode::PostLogin(APlayerController* NewPlayer)
+{
+    Super::PostLogin(NewPlayer);
+
+    if (AEatCoinGameState* EatCoinGameState = GetGameState<AEatCoinGameState>())
+    {
+        // 플레이어가 게임에 들어올 때, GameState의 플레이어 점수 목록을 업데이트합니다.
+        EatCoinGameState->UpdatePlayerCoinScores();
+
+        // 초기 상태를 UI에 반영할 수 있도록 모든 클라이언트에 UI 업데이트를 요청할 수 있습니다.
+        EatCoinGameState->OnRep_PlayerCoinScores();
+    }
+}
+
+void AEatCoinGameMode::HandleRoundEnd()
+{
+    // 게임 종료! 위젯 띄우고 우승자 위젯 띄우기
+
+    Super::HandleRoundEnd();
+    UE_LOG(LogTemp, Log, TEXT("게임 종료"));
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        APlayerController* PlayerController = It->Get();
+        if (PlayerController)
+        {
+            AEatCoinHUD* EatCoinHUD = Cast<AEatCoinHUD>(PlayerController->GetHUD());
+            if (EatCoinHUD && EatCoinHUD->GetEatCoinEndWidget())
+            {
+                UE_LOG(LogTemp, Log, TEXT("게임 종료 위젯 호출"));
+                EatCoinHUD->GetEatCoinEndWidget()->SetVisibility(ESlateVisibility::Visible);
+            }
+        }
+    }
 }
 
 void AEatCoinGameMode::ApplySpeedBoost(ACharacter* PlayerCharacter)
@@ -29,82 +69,48 @@ void AEatCoinGameMode::ApplySpeedBoost(ACharacter* PlayerCharacter)
     if (!PlayerCharacter) return;
 
     AEatCoinPlayerState* PlayerState = PlayerCharacter->GetPlayerState<AEatCoinPlayerState>();
-    if (PlayerState)
+    if (PlayerState && PlayerState->bIsBoostActive == false) // PlayerState에서 부스트 활성화 여부를 확인
     {
         UCharacterMovementComponent* MovementComponent = PlayerCharacter->GetCharacterMovement();
         if (MovementComponent)
         {
-            if (!bIsBoostActive)
-            {
-                // 부스트 활성화 되지 않은 상태일 경우 원래 속도 저장
-                OriginalSpeed = MovementComponent->MaxWalkSpeed;
+            // 기존 속도를 저장하고 부스트 속도 적용
+            PlayerState->OriginalSpeed = MovementComponent->MaxWalkSpeed;
+            MovementComponent->MaxWalkSpeed *= SpeedMultiplier;
 
-                // 부스트 속도 적용(2배)
-                MovementComponent->MaxWalkSpeed *= SpeedMultiplier;
-                bIsBoostActive = true;
-
-                // 부스트 카운트다운 시작(또는 재시작)
-                PlayerState->StartBoostCountdown(BoostDuration);
-            }
-            else
-            {
-                GetWorld()->GetTimerManager().ClearTimer(BoostTimerHandle);
-            }
-
-            // 부스터 타이머 시작(또는 재시작)
-            GetWorld()->GetTimerManager().SetTimer(
-                BoostTimerHandle,
-                [this, PlayerCharacter]()
-                {
-                    UCharacterMovementComponent* MovementComponent = PlayerCharacter->GetCharacterMovement();
-                    if (MovementComponent)
-                    {
-                        // Reset the speed to the original value
-                        MovementComponent->MaxWalkSpeed = OriginalSpeed;
-
-                        // Log output (for testing)
-                        if (GEngine)
-                        {
-                            FString SpeedText = FString::Printf(TEXT("Speed Reset to Original: %f"), MovementComponent->MaxWalkSpeed);
-                            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, SpeedText);
-                        }
-                    }
-                    bIsBoostActive = false;
-
-                    // 부스터 효과가 끝났음을 PlayerState에 알림
-                    if (PlayerCharacter)
-                    {
-                        AEatCoinPlayerState* PlayerState = PlayerCharacter->GetPlayerState<AEatCoinPlayerState>();
-                        if (PlayerState)
-                        {
-                            PlayerState->BoostTimeLeft = 0;
-                            PlayerState->bIsBoostActive = false;
-                        }
-                    }
-                },
-                BoostDuration,
-                false
-            );
-
-            // 새로운 부스트 지속시간을 PlayerState에 반영
-            PlayerState->BoostTimeLeft = BoostDuration;
+            // 부스트 상태를 활성화하고 타이머 시작
             PlayerState->bIsBoostActive = true;
+            PlayerState->StartBoostCountdown(BoostDuration);
         }
+    }
+    else if (PlayerState && PlayerState->bIsBoostActive) // 이미 부스트가 활성화된 상태일 때
+    {
+        // 기존 타이머를 연장하여 지속 시간을 리셋
+        PlayerState->StartBoostCountdown(BoostDuration);
     }
 }
 
 void AEatCoinGameMode::AddCoinScoreRule(APlayerState* PlayerState, int32 ScoreAmount)
 {
     AEatCoinPlayerState* EatCoinPlayerState = Cast<AEatCoinPlayerState>(PlayerState);
+    if (EatCoinPlayerState)
     {
-        if (EatCoinPlayerState)
-        {
-            EatCoinPlayerState->AddCoinScore(ScoreAmount);
+        EatCoinPlayerState->AddCoinScore(ScoreAmount);
 
-            if (AEatCoinGameState* EatCoinGameState = GetGameState <AEatCoinGameState>())
+        if (HasAuthority())
+        {
+            if (AEatCoinGameState* EatCoinGameState = GetGameState<AEatCoinGameState>())
             {
-                EatCoinGameState->ShowWidgetCoinRanking();
+                EatCoinGameState->UpdatePlayerCoinScores();
             }
         }
+    }
+}
+
+void AEatCoinGameMode::SetECGameStartCountdownRule()
+{
+    if (AEatCoinGameState* EatCoinGameState = GetGameState<AEatCoinGameState>())
+    {
+        EatCoinGameState->StartECGameCount(ECGameStartCountdownTimeInSeconds);
     }
 }

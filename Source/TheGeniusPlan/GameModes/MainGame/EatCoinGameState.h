@@ -18,9 +18,6 @@ class THEGENIUSPLAN_API AEatCoinGameState : public AMainGameStateBase
 public:
 	AEatCoinGameState();
 
-	//  virtual void OnRep_Score() override;
-	//virtual void OnRep_PlayingPlayers() const override;
-	//virtual void ShowWidgetPlayerRanking_Implementation() override;
 
 	// 코인 점수 목록
 	UPROPERTY(ReplicatedUsing = OnRep_PlayerCoinScores, VisibleAnywhere, BlueprintReadOnly, Category = "GameState")
@@ -30,13 +27,42 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Coin Data")
 	TArray<AEatCoinPlayerState*> GetAllPlayerCoinScores() const;
 
+	// 코인 점수 업데이트
 	void UpdatePlayerCoinScores();
 
 	UFUNCTION()
 	virtual void OnRep_PlayerCoinScores() const;
 
+	// (라운드)카운트다운 종료
+	virtual void CountdownFinished() override; 
+
 	UFUNCTION(NetMulticast, Reliable)
-	virtual void ShowWidgetCoinRanking();
+	void Multicast_OnCountdownFinished();
+
+
+
+	// EatCoin 게임시작까지 남은 카운트다운 시작 함수
+	UFUNCTION(BlueprintCallable, Category = "Countdown")
+	void StartECGameCount(int32 InitialCountdownTime);
+
+	// EatCoin 게임시작까지 남은 시간 카운트다운 업데이트 함수
+	void UpdateECGameCount();
+
+	UFUNCTION()
+	void OnRep_ECGameCountdownTime() const;
+
+	UPROPERTY(ReplicatedUsing = OnRep_ECGameCountdownTime)
+	int32 ECGameCountdownTime;
+
+	// EatCoin 게임시작까지 남은 카운트다운 종료됐을 때 실행되는 함수
+	void ECGameCountdownFinished();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_OnECGameCountdownFinished();
+
+	
+	FTimerHandle ECGameCountdownTimerHandle;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 };

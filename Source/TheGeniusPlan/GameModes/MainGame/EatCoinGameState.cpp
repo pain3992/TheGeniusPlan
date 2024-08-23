@@ -1,75 +1,17 @@
 #include "EatCoinGameState.h"
 #include "TheGeniusPlan/HUD/EatCoinHUD.h"
 #include "TheGeniusPlan/Widget/MainGame/EatCoinWidget.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameMode.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
+#include "TheGeniusPlan/Widget/MainGame/EatCoinMenualWidget.h"
+#include "TheGeniusPlan/Widget/MainGame/EatCoinEndWidget.h"
 
 
 AEatCoinGameState::AEatCoinGameState()
 {
 }
-
-//void AEatCoinGameState::OnRep_PlayingPlayers() const
-//{
-//    Super::OnRep_PlayingPlayers();
-//
-//    // Additional logic for EatCoinHUD and EatCoinWidget
-//    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-//    {
-//        if (AEatCoinHUD* CoinHUD = (*It)->GetHUD<AEatCoinHUD>())
-//        {
-//            if (UEatCoinWidget* EatCoinWidget = CoinHUD->GetEatCoinWidget())
-//            {
-//                EatCoinWidget->UpdateEatCoinPlayerList(PlayingPlayers);
-//            }
-//        }
-//    }
-//}
-
-//void AEatCoinGameState::ShowWidgetPlayerRanking_Implementation()
-//{
-//    // Call the base class implementation first to ensure the existing logic runs
-//    Super::ShowWidgetPlayerRanking_Implementation();
-//
-//    // Additional logic for EatCoinHUD and EatCoinWidget
-//   /* for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-//    {
-//        if (AEatCoinHUD* CoinHUD = (*It)->GetHUD<AEatCoinHUD>())
-//        {
-//            if (UEatCoinWidget* EatCoinWidget = CoinHUD->GetEatCoinWidget())
-//            {
-//                for (AGeniusPlayerState* PlayerState : PlayingPlayers)
-//                {
-//                    if (PlayerState)
-//                    {
-//                        OnRep_PlayingPlayers();
-//                    }
-//                }
-//            }
-//        }
-//    }*/
-//
-//    // Additional logic for EatCoinHUD and EatCoinWidget
-//    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-//    {
-//        AEatCoinHUD* CoinHUD = (*It)->GetHUD<AEatCoinHUD>();
-//        if (IsValid(CoinHUD) == false)
-//            continue;
-//
-//        UEatCoinWidget * EatCoinWidget = CoinHUD->GetEatCoinWidget();
-//        if (IsValid(EatCoinWidget) == false)
-//            continue;
-//
-//        for (AGeniusPlayerState* PlayerState : PlayingPlayers)
-//        {
-//            if (PlayerState)
-//            {
-//                OnRep_PlayingPlayers();
-//            }
-//        }
-//    }
-//}
 
 TArray<AEatCoinPlayerState*> AEatCoinGameState::GetAllPlayerCoinScores() const
 {
@@ -78,14 +20,11 @@ TArray<AEatCoinPlayerState*> AEatCoinGameState::GetAllPlayerCoinScores() const
 
 void AEatCoinGameState::UpdatePlayerCoinScores()
 {
-    PlayerCoinScores.Empty(); // 기존 목록을 비웁니다.
+    PlayerCoinScores.Empty();
 
-    // 모든 플레이어를 순회하여 점수를 가져옵니다.
     for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
     {
-        TWeakObjectPtr<APlayerController> WeakPlayerController = *It;
-        APlayerController* PlayerController = WeakPlayerController.Get(); // Get() 메서드를 사용
-
+        APlayerController* PlayerController = It->Get();
         if (PlayerController)
         {
             AEatCoinPlayerState* PlayerState = PlayerController->GetPlayerState<AEatCoinPlayerState>();
@@ -96,10 +35,9 @@ void AEatCoinGameState::UpdatePlayerCoinScores()
         }
     }
 
-    // UI 업데이트
+    // Notify all clients about the updated player scores
     OnRep_PlayerCoinScores();
 }
-
 
 void AEatCoinGameState::OnRep_PlayerCoinScores() const
 {
@@ -115,19 +53,85 @@ void AEatCoinGameState::OnRep_PlayerCoinScores() const
     }
 }
 
-void AEatCoinGameState::ShowWidgetCoinRanking_Implementation()
+void AEatCoinGameState::CountdownFinished()
 {
-    if (PlayerCoinScores.Num() > 0)
-    {
-        // Get the first player controller
-        APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+    Super::CountdownFinished();
 
-        if (AEatCoinHUD* CoinHUD = PlayerController ? PlayerController->GetHUD<AEatCoinHUD>() : nullptr)
+    Multicast_OnCountdownFinished();
+}
+
+void AEatCoinGameState::Multicast_OnCountdownFinished_Implementation()
+{
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        if (AEatCoinHUD* EatCoinHUD = (*It)->GetHUD<AEatCoinHUD>())
         {
-            if (UEatCoinWidget* EatCoinWidget = CoinHUD->GetEatCoinWidget())
+            EatCoinHUD->ShowEatCoinEndWidget();
+        }
+    }
+}
+
+void AEatCoinGameState::StartECGameCount(int32 InitialCountdownTime)
+{
+    if (HasAuthority())
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("StartECCountdown"));
+        ECGameCountdownTime = InitialCountdownTime;
+        OnRep_ECGameCountdownTime();
+
+        GetWorld()->GetTimerManager().SetTimer(ECGameCountdownTimerHandle, this, &AEatCoinGameState::UpdateECGameCount, 1.0f, true);
+    }
+}
+
+void AEatCoinGameState::UpdateECGameCount()
+{
+    if (ECGameCountdownTime > 0)
+    {
+        ECGameCountdownTime--;
+        OnRep_ECGameCountdownTime();
+    }
+    else
+    {
+        ECGameCountdownFinished();
+    }
+}
+
+void AEatCoinGameState::OnRep_ECGameCountdownTime() const
+{
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        if (AEatCoinHUD* EatCoinHUD = (*It)->GetHUD<AEatCoinHUD>())
+        {
+            if (UEatCoinMenualWidget* ECMenualWidget = EatCoinHUD->GetEatCoinMenualWidget())
             {
-                EatCoinWidget->UpdateEatCoinPlayerList(PlayerCoinScores);
+                ECMenualWidget->UpdateStartEatCoinCountdownDisplay(ECGameCountdownTime);
             }
+        }
+    }
+}
+
+void AEatCoinGameState::ECGameCountdownFinished()
+{
+    GetWorld()->GetTimerManager().ClearTimer(ECGameCountdownTimerHandle);
+
+    Multicast_OnECGameCountdownFinished();
+}
+
+void AEatCoinGameState::Multicast_OnECGameCountdownFinished_Implementation()
+{
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        if (AEatCoinHUD* EatCoinHUD = (*It)->GetHUD<AEatCoinHUD>())
+        {
+            EatCoinHUD->CollapsedECMenualWidget();
+            EatCoinHUD->ShowGameStartWidget();
+        }
+    }
+    if (HasAuthority())
+    {
+        if (AEatCoinGameMode* EatCoinGameMode = GetWorld()->GetAuthGameMode<AEatCoinGameMode>())
+        {
+            EatCoinGameMode->SetCountdownRule();
         }
     }
 }
@@ -137,5 +141,5 @@ void AEatCoinGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     DOREPLIFETIME(AEatCoinGameState, PlayerCoinScores);
-
+    DOREPLIFETIME(AEatCoinGameState, ECGameCountdownTime);
 }
