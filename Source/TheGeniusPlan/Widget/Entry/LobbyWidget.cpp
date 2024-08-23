@@ -37,6 +37,10 @@ void ULobbyWidget::NativeConstruct()
 	{
 		ButtonServerJoin->OnClicked.AddDynamic(this, &ULobbyWidget::ClickedJoinServer);
 	}
+	if (ButtonServerCreate)
+	{
+		ButtonServerCreate->OnClicked.AddDynamic(this, &ULobbyWidget::ClickedCreate);
+	}
 }
 
 void ULobbyWidget::ChangeCharacterMesh()
@@ -52,7 +56,10 @@ void ULobbyWidget::ChangeCharacterMesh()
 
 void ULobbyWidget::ClickedJoinServer()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), FName(TEXT("Lobby")), true, FString(TEXT("127.0.0.1:7777")));
+	FString ServerAddress = TEXT("127.0.0.1");
+	GetWorld()->GetFirstPlayerController()->ClientTravel(ServerAddress, ETravelType::TRAVEL_Absolute);
+	//UGameplayStatics::OpenLevel(GetWorld(), FName("LobbyLevel"), true, "127.0.0.1");
+	
 }
 
 void ULobbyWidget::ClickedQuit()
@@ -68,4 +75,9 @@ void ULobbyWidget::ClickedLogout()
 void ULobbyWidget::ClickedOption()
 {
 	EntryHUD->ShowWidget(EntryWidgetType::OptionWidget);
+}
+
+void ULobbyWidget::ClickedCreate()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), FName("LobbyLevel"), true, "listen");
 }

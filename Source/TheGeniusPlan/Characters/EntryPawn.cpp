@@ -44,7 +44,7 @@ AEntryPawn::AEntryPawn()
 		SelectedSkeletaMesh->SetRelativeLocation(FVector(0.0, 0.0, -90.0));
 	}
 
-	UClass* MenAnimBlueprint = LoadObject<UClass>(nullptr, TEXT("/Script/Engine.AnimBlueprint'/Game/Characters/Mannequins/Animations/ABP_Manny.ABP_Manny_C'"));
+	UClass* MenAnimBlueprint = LoadObject<UClass>(nullptr, TEXT("/Script/Engine.AnimBlueprint'/Game/Characters/Mannequins/Animations/ABP_Quinn.ABP_Quinn_C'"));
 
 	if (MenAnimBlueprint)
 	{
