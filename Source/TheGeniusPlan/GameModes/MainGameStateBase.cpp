@@ -4,6 +4,7 @@
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"
+#include "MainGameModeBase.h"
 
 
 void AMainGameStateBase::AddPlayer(AGeniusPlayerState *NewPlayerState)
