@@ -28,7 +28,7 @@ void UMainMenuUserWidgetOption::ClickedGameStart()
 {
 	if(EntryHUD)
 	{
-		EntryHUD->ShowWidget(WidgetType::LobbyWidget);
+		EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);
 	}
 }
 
@@ -36,7 +36,7 @@ void UMainMenuUserWidgetOption::ClickedOption()
 {
 	if(EntryHUD)
 	{
-		EntryHUD->ShowWidget(WidgetType::OptionWidget);
+		EntryHUD->ShowWidget(EntryWidgetType::OptionWidget);
 	}
 
 }
@@ -45,6 +45,6 @@ void UMainMenuUserWidgetOption::ClickedQuit()
 {
 	if (EntryHUD)
 	{
-		EntryHUD->ShowWidget(WidgetType::LoginWidget);
+		EntryHUD->ShowWidget(EntryWidgetType::LoginWidget);
 	}
 }

@@ -7,15 +7,15 @@
 #include "EntryHUD.generated.h"
 
 UENUM()
-enum class WidgetType : uint8
+enum class EntryWidgetType : uint8
 {
 	NONE UMETA(DisplayName = "NONE"),
-	LoginWidget UMETA(DisplayName = "LoginWidet"),
-	StartWidget UMETA(DisplayName = "StartWidget"),
-	LobbyWidget UMETA(DisplayName = "LobbyWidget"),
+	LoginWidget UMETA(DisplayName = "LoginWidget"),
+	SignupWidget UMETA(DisplayName = "SignupWidget"),
+	EntryWidget UMETA(DisplayName = "EntrynWidget"),
 	OptionWidget UMETA(DisplayName = "OptionWidget"),
 	LoadingWidget UMETA(DisplayName = "LoadingWidget"),
-	SignupWidget UMETA(DisplayName = "SignupWidget"),
+	LobbyWidget UMETA(DisplayName = "LobbyWidget"),
 	MAX UMETA(DisplayName = "MAX")
 };
 
@@ -32,16 +32,16 @@ public:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void ShowWidget(WidgetType type) const;
+	void ShowWidget(EntryWidgetType type) const;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
-	TSubclassOf<class UMainMenuUserWidget> LoginWidgetClass;
+	TSubclassOf<class ULoginWidget> LoginWidgetClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
-	TSubclassOf<class UMainMenuUserWidgetOption> GameStartWidgetClass;
+	TSubclassOf<class UEntryWidget> EntryWidgetClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
-	TSubclassOf<class UMainMenuUserWidgetLobby> LobbyWidgetClass;
+	TSubclassOf<class ULobbyWidget> LobbyWidgetClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
 	TSubclassOf<class UUserWidget> LoadingWidgetClass;
@@ -52,24 +52,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
 	TSubclassOf<class UOptionWidget> OptionWidgetClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "WidgetClass")
-	TSubclassOf<class UMainMenuUserWidget> MainMenuWidgetClass;
-
 protected:
-	UPROPERTY(BlueprintReadWrite, Category = "WidgetClass")
-	TObjectPtr<class UMainMenuUserWidget> MainMenuWidget;
+	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+	TObjectPtr<class ULoginWidget> LoginWidget;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
-	TObjectPtr<class UMainMenuUserWidget> LoginWidget;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
-	TObjectPtr<class UMainMenuUserWidgetOption> GameStartWidget;
+	TObjectPtr<class UEntryWidget> EntryWidget;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
 	TObjectPtr<class UUserWidget> LoadingWidget;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
-	TObjectPtr<class UMainMenuUserWidgetLobby> LobbyWidget;
+	TObjectPtr<class ULobbyWidget> LobbyWidget;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
 	TObjectPtr<class USignupWidget> SignupWidget;

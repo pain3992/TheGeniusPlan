@@ -1,23 +1,24 @@
 #include "TheGeniusPlan/HUD/EntryHUD.h"
-#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidget.h"
-#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetLobby.h"
-#include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetOption.h"
-#include "TheGeniusPlan/Widget/Lobby/OptionWidget.h"
-#include "TheGeniusPlan/Widget/Lobby/SignupWidget.h"
+
+#include "TheGeniusPlan/Widget/Entry/EntryWidget.h"
+#include "TheGeniusPlan/Widget/Entry/LobbyWidget.h"
+#include "TheGeniusPlan/Widget/Entry/LoginWidget.h"
+#include "TheGeniusPlan/Widget/Entry/OptionWidget.h"
+#include "TheGeniusPlan/Widget/Entry/SignupWidget.h"
 
 AEntryHUD::AEntryHUD()
 {
-	static ConstructorHelpers::FClassFinder<UMainMenuUserWidget> CLoginWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_MainMenuLogin.WG_MainMenuLogin_C'"));
-	static ConstructorHelpers::FClassFinder<UMainMenuUserWidgetOption> CGameStartWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_MainMenuGameStart.WG_MainMenuGameStart_C'"));
-	static ConstructorHelpers::FClassFinder<UMainMenuUserWidgetLobby> CLobbyWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_MainMenuLobbyWidget.WG_MainMenuLobbyWidget_C'"));
-	static ConstructorHelpers::FClassFinder<UUserWidget> CLoadingWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_Loading.WG_Loading_C'"));
-	static ConstructorHelpers::FClassFinder<USignupWidget> CSignupWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_Signup.WG_Signup_C'"));
-	static ConstructorHelpers::FClassFinder<UOptionWidget> COptionWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Mainmenu/Widget/WG_OptionWidget.WG_OptionWidget_C'"));
+	static ConstructorHelpers::FClassFinder<ULoginWidget> CLoginWidget(TEXT("/Game/UI/Widget/Entry/WBP_Login.WBP_Login_C"));
+	static ConstructorHelpers::FClassFinder<UEntryWidget> CEntryWidget(TEXT("/Game/UI/Widget/Entry/WBP_Entry.WBP_Entry_C"));
+	static ConstructorHelpers::FClassFinder<ULobbyWidget> CLobbyWidget(TEXT("/Game/UI/Widget/Lobby/WBP_Lobby.WBP_Lobby_C"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> CLoadingWidget(TEXT("/Game/UI/Widget/WBP_Loading.WBP_Loading_C"));
+	static ConstructorHelpers::FClassFinder<USignupWidget> CSignupWidget(TEXT("/Game/UI/Widget/Entry/WBP_Signup.WBP_Signup_C"));
+	static ConstructorHelpers::FClassFinder<UOptionWidget> COptionWidget(TEXT("/Game/UI/Widget/Entry/WBP_GameOption.WBP_GameOption_C"));
 
-	if(CLoginWidget.Succeeded() && CGameStartWidget.Succeeded() && CLobbyWidget.Succeeded() && CLoadingWidget.Succeeded() && CSignupWidget.Succeeded() && COptionWidget.Succeeded())
+	if(CLoginWidget.Succeeded() && CEntryWidget.Succeeded() && CLobbyWidget.Succeeded() && CLoadingWidget.Succeeded() && CSignupWidget.Succeeded() && COptionWidget.Succeeded())
 	{
 		LoginWidgetClass = CLoginWidget.Class;
-		GameStartWidgetClass = CGameStartWidget.Class;
+		EntryWidgetClass = CEntryWidget.Class;
 		LobbyWidgetClass = CLobbyWidget.Class;
 		LoadingWidgetClass = CLoadingWidget.Class;
 		SignupWidgetClass = CSignupWidget.Class;
@@ -30,13 +31,18 @@ void AEntryHUD::BeginPlay()
 	Super::BeginPlay();
 
 	check(LoginWidgetClass)
-check(GameStartWidgetClass)
-check(LobbyWidgetClass)
-check(LoadingWidgetClass)
-check(OptionWidgetClass)
-check(SignupWidgetClass)
+	check(SignupWidgetClass)
+	check(EntryWidgetClass)
+	check(OptionWidgetClass)
+	check(LobbyWidgetClass)
+	check(LoadingWidgetClass)
 
-LoginWidget = Cast<UMainMenuUserWidget>(CreateWidget(GetWorld(), LoginWidgetClass, TEXT("LoginMenuHUD")));
+	LoginWidget = Cast<ULoginWidget>(CreateWidget(GetWorld(), LoginWidgetClass, TEXT("LoginMenuHUD")));
+	EntryWidget = Cast<UEntryWidget>(CreateWidget(GetWorld(), EntryWidgetClass, TEXT("GameStartMenuHUD")));
+	LobbyWidget = Cast<ULobbyWidget>(CreateWidget(GetWorld(), LobbyWidgetClass, TEXT("LobbyMenuHUD")));
+	LoadingWidget = Cast<UUserWidget>(CreateWidget(GetWorld(), LoadingWidgetClass));
+	SignupWidget = Cast<USignupWidget>(CreateWidget(GetWorld(), SignupWidgetClass, TEXT("SignupMenuHUD")));
+	OptionWidget = Cast<UOptionWidget>(CreateWidget(GetWorld(), OptionWidgetClass, TEXT("OptionMenuHUD")));
 
 	if (LoginWidget)
 	{
@@ -44,15 +50,11 @@ LoginWidget = Cast<UMainMenuUserWidget>(CreateWidget(GetWorld(), LoginWidgetClas
 		LoginWidget->AddToViewport();
 	}
 
-	GameStartWidget = Cast<UMainMenuUserWidgetOption>(CreateWidget(GetWorld(), GameStartWidgetClass, TEXT("GameStartMenuHUD")));
-
-	if (GameStartWidget)
+	if (EntryWidget)
 	{
-		GameStartWidget->EntryHUD = this;
-		GameStartWidget->AddToViewport();
+		EntryWidget->EntryHUD = this;
+		EntryWidget->AddToViewport();
 	}
-
-	LobbyWidget = Cast<UMainMenuUserWidgetLobby>(CreateWidget(GetWorld(), LobbyWidgetClass, TEXT("LobbyMenuHUD")));
 
 	if (LobbyWidget)
 	{
@@ -60,15 +62,11 @@ LoginWidget = Cast<UMainMenuUserWidget>(CreateWidget(GetWorld(), LoginWidgetClas
 		LobbyWidget->AddToViewport();
 	}
 
-	LoadingWidget = Cast<UUserWidget>(CreateWidget(GetWorld(), LoadingWidgetClass));
-
 	if(LoadingWidget)
 	{
 		LoadingWidget->AddToViewport();
 		LoadingWidget->SetVisibility(ESlateVisibility::Collapsed);
 	}
-
-	SignupWidget = Cast<USignupWidget>(CreateWidget(GetWorld(), SignupWidgetClass, TEXT("SignupMenuHUD")));
 
 	if (SignupWidget)
 	{
@@ -76,52 +74,50 @@ LoginWidget = Cast<UMainMenuUserWidget>(CreateWidget(GetWorld(), LoginWidgetClas
 		SignupWidget->AddToViewport();
 	}
 
-	OptionWidget = Cast<UOptionWidget>(CreateWidget(GetWorld(), OptionWidgetClass, TEXT("OptionMenuHUD")));
-
 	if (OptionWidget)
 	{
 		OptionWidget->EntryHUD = this;
 		OptionWidget->AddToViewport();
 	}
 
-	ShowWidget(WidgetType::LoginWidget);
-
+	// 초기시작 위젯
+	ShowWidget(EntryWidgetType::LoginWidget);
 }
 
-void AEntryHUD::ShowWidget(WidgetType type) const
+void AEntryHUD::ShowWidget(EntryWidgetType type) const
 {
 	switch (type)
 	{
-	case WidgetType::NONE:
+	case EntryWidgetType::NONE:
 		break;
-	case WidgetType::LoginWidget:
+	case EntryWidgetType::LoginWidget:
 		LoginWidget->SetVisibility(ESlateVisibility::Visible);
-		GameStartWidget->SetVisibility(ESlateVisibility::Collapsed);
+		EntryWidget->SetVisibility(ESlateVisibility::Collapsed);
 		LobbyWidget->SetVisibility(ESlateVisibility::Collapsed);
 		SignupWidget->SetVisibility(ESlateVisibility::Collapsed);
 		OptionWidget->SetVisibility(ESlateVisibility::Collapsed);
 		break;
-	case WidgetType::StartWidget:
+	case EntryWidgetType::EntryWidget:
 		LoginWidget->SetVisibility(ESlateVisibility::Collapsed);
-		GameStartWidget->SetVisibility(ESlateVisibility::Visible);
+		EntryWidget->SetVisibility(ESlateVisibility::Visible);
 		LobbyWidget->SetVisibility(ESlateVisibility::Collapsed);
 		SignupWidget->SetVisibility(ESlateVisibility::Collapsed);
 		OptionWidget->SetVisibility(ESlateVisibility::Collapsed);
 		break;
-	case WidgetType::LobbyWidget:
+	case EntryWidgetType::LobbyWidget:
 		LoginWidget->SetVisibility(ESlateVisibility::Collapsed);
-		GameStartWidget->SetVisibility(ESlateVisibility::Collapsed);
+		EntryWidget->SetVisibility(ESlateVisibility::Collapsed);
 		LobbyWidget->SetVisibility(ESlateVisibility::Visible);
 		SignupWidget->SetVisibility(ESlateVisibility::Collapsed);
 		OptionWidget->SetVisibility(ESlateVisibility::Collapsed);
 		break;
-	case WidgetType::OptionWidget:
+	case EntryWidgetType::OptionWidget:
 		OptionWidget->SetVisibility(ESlateVisibility::Visible);
 		break;
-	case WidgetType::SignupWidget:
+	case EntryWidgetType::SignupWidget:
 		SignupWidget->SetVisibility(ESlateVisibility::Visible);
 		break;
-	case WidgetType::MAX:
+	case EntryWidgetType::MAX:
 		break;
 	default:
 		break;

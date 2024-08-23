@@ -50,8 +50,6 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
     // Sort the array based on scores
     PlayerRankingDataArray.Sort([](const UPlayerRankingData &A, const UPlayerRankingData &B)
                                 { return A.Score > B.Score; });
-
-    // Clear and re-add sorted items to the ListView
     ListView_PlayerRanking->ClearListItems();
     for (UPlayerRankingData *RankingData : PlayerRankingDataArray)
     {

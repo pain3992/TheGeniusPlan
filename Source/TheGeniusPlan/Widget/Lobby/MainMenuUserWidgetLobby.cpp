@@ -73,12 +73,12 @@ void UMainMenuUserWidgetLobby::ClickedQuit()
 
 void UMainMenuUserWidgetLobby::ClickedLogout()
 {
-	EntryHUD->ShowWidget(WidgetType::LoginWidget);
+	EntryHUD->ShowWidget(EntryWidgetType::LoginWidget);
 }
 
 void UMainMenuUserWidgetLobby::ClickedOption()
 {
-	EntryHUD->ShowWidget(WidgetType::OptionWidget);
+	EntryHUD->ShowWidget(EntryWidgetType::OptionWidget);
 }
 
 void UMainMenuUserWidgetLobby::ClickedCreate()

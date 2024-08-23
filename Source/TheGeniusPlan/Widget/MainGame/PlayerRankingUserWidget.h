@@ -19,6 +19,7 @@ class THEGENIUSPLAN_API UPlayerRankingUserWidget : public UUserWidget , public I
     GENERATED_BODY()
 
 public:
+    // virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
     virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
