@@ -1,16 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "TheGeniusPlan/GameModes/MainGame/MainGameModeBase.h"
+#include "TheGeniusPlan/GameModes/MainGameModeBase.h"
 
-#include "GyulhapGameMode.h"
 #include "MainGameStateBase.h"
-#include "OpenPassGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "TheGeniusPlan/HUD/ChangeGameModeHUD.h"
+#include "MainGame/GyulhapGameMode.h"
+#include "MainGame/OpenPassGameMode.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
-#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
 
 AMainGameModeBase::AMainGameModeBase()
 {
@@ -22,8 +20,6 @@ AMainGameModeBase::AMainGameModeBase()
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
 	if (PlayerPawnBPClass.Class != nullptr)
 	{
-		// HUDClass = AMainGameHUD::StaticClass();
-		// HUDClass = AChangeGameModeHUD::StaticClass();
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 		HUDClass = AMainGameHUD::StaticClass();
 		GameStateClass = AMainGameStateBase::StaticClass();

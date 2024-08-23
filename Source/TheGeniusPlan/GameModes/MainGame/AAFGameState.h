@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MainGameStateBase.h"
+#include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "AAFGameState.generated.h"
 
 UENUM()

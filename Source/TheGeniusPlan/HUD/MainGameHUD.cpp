@@ -5,7 +5,7 @@
 #include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/HelpUserWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
-#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
+#include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "TheGeniusPlan/Widget/MainGame/AAFSelectWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/ShowPlayerSeletedLandWidget.h"

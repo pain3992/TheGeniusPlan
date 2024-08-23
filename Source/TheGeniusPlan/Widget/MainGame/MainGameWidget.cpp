@@ -6,7 +6,6 @@
 #include "Blueprint/UserWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/Data/PlayerRankingData.h"
-#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "Components/TextBlock.h"
@@ -46,7 +45,6 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
             PlayerRankingDataArray.Add(PlayerRankingData);
         }
     }
-
     // Sort the array based on scores
     PlayerRankingDataArray.Sort([](const UPlayerRankingData &A, const UPlayerRankingData &B)
                                 { return A.Score > B.Score; });

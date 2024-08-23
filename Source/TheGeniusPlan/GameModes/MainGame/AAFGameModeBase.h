@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MainGameModeBase.h"
+#include "TheGeniusPlan/GameModes/MainGameModeBase.h"
 #include "AAFGameModeBase.generated.h"
 
 UCLASS()

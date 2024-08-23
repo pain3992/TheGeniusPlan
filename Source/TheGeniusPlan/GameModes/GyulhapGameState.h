@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
+#include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "GyulhapGameState.generated.h"
 
 class UTexture2D;

@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MainMenuPlayerController.h"
+#include "TheGeniusPlan/Player/EntryPlayerController.h"
 
-AMainMenuPlayerController::AMainMenuPlayerController()
+AEntryPlayerController::AEntryPlayerController()
 {
 	bShowMouseCursor = true;
 }
