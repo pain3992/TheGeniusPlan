@@ -10,6 +10,7 @@
 void AAAFPlayerState::BeginPlay()
 {
 	Super::BeginPlay();
+	Lose = false;
 }
 
 AAAFPlayerState::AAAFPlayerState()

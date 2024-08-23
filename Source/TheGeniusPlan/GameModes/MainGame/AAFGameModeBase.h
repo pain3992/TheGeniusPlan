@@ -10,5 +10,15 @@ UCLASS()
 class THEGENIUSPLAN_API AAAFGameModeBase : public AMainGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	virtual void Tick(float DeltaSeconds) override;
+	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	TObjectPtr<class AAAFGameState> CastGameState;
+
+	AAAFGameModeBase();
 };
+

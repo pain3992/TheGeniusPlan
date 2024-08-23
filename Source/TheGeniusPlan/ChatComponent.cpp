@@ -20,11 +20,9 @@ UChatComponent::UChatComponent()
 	if (ChatClass.Succeeded())
 	{
 		ChatWidgetClass = ChatClass.Class;
-		UE_LOG(LogTemp, Error, TEXT("ChatClass Setting Succeeded!"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("ChatClass Setting Failed!"));
 	}
 
 	ChatWidget = nullptr;
@@ -48,13 +46,11 @@ void UChatComponent::CreateChatWidget(uint8 RoomType)
 {
 	if(!ChatWidgetClass)
 	{
-		UE_LOG(LogTemp, Error, TEXT("ChatWidgetclass is Null"));
 		return;
 	}
 
 	if (ChatWidget != nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("you have ChatWidget"));
 		ChatWidget->AddToViewport();
 		ChatWidget->ChatRoomType = RoomType;
 	}
@@ -65,7 +61,6 @@ void UChatComponent::CreateChatWidget(uint8 RoomType)
 		ChatWidget->ChatRoomType = RoomType;
 	}
 
-	UE_LOG(LogTemp, Error, TEXT("Create Chat Widget Succeeded!"));
 	bIsChatVaild = true;
 
 }

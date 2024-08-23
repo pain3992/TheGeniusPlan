@@ -6,5 +6,4 @@
 
 void ATheGeniusPlanController::BeginPlay()
 {
-
 }

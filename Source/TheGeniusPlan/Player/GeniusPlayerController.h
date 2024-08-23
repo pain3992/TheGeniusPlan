@@ -44,15 +44,6 @@ public:
     UPROPERTY()
     FTimerHandle TimerHandletwo;
 
-    UPROPERTY()
-    float DeltaTimer;
-
-    UPROPERTY()
-    float Timer;
-
-    UPROPERTY()
-    uint8 ActiveTimer;
-
     UFUNCTION()
     void GameStepChange(EGameStep NewStep);
 
@@ -72,15 +63,33 @@ public:
     UFUNCTION(Server, Reliable)
     void RequestChangetStepOnServer(EGameStep NewStep, uint8 FirstLand, uint8 SecondsLand);
 
-    UFUNCTION()
-    void SetTimerWidget();
-
-    UFUNCTION(Server, Reliable)
-    void ServerRequestCurrentTime();
-
-    UFUNCTION(Client, Reliable)
-    void ClientReciveCurrentTime(float Time);
-
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
     TObjectPtr<class UChatComponent> ChatComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
+    TSubclassOf<class UTimerWidget> TimerWidgetClass;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
+    TObjectPtr<class UTimerWidget> TimerWidget;
+
+    UFUNCTION(Client, Reliable)
+    void CreateTimerWidget();
+
+    UFUNCTION()
+    void UpdateTimerWidget(double NewTime);
+
+    virtual void Tick(float DeltaSeconds) override;
+    
+    UPROPERTY()
+    TObjectPtr<AAAFGameState> GameState;
+
+    bool IsCreateWidget;
+
+    FTimerHandle TimerHandlePC;
+
+    UFUNCTION()
+    void RequestServerChangeStep();
+
+    UFUNCTION()
+    void MoveActor();
 };

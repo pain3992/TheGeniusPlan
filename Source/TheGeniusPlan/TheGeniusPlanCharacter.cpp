@@ -15,6 +15,7 @@
 #include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Widget/MainGame/HelpUserWidget.h"
+#include "InputMappingContext.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -57,6 +58,8 @@ ATheGeniusPlanCharacter::ATheGeniusPlanCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character)
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	bCanMove = true;
 }
 
 void ATheGeniusPlanCharacter::changeCameraMode()
@@ -82,12 +85,13 @@ void ATheGeniusPlanCharacter::BeginPlay()
 
 void ATheGeniusPlanCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 {
+	UInputMappingContext* NewIMC = LoadObject<UInputMappingContext>(nullptr, TEXT("/Script/EnhancedInput.InputMappingContext'/Game/ThirdPerson/Input/IMC_Default.IMC_Default'"));
 	// Add Input Mapping Context
 	if (APlayerController *PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem *Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			Subsystem->AddMappingContext(NewIMC, 0);
 		}
 	}
 
@@ -116,24 +120,27 @@ void ATheGeniusPlanCharacter::SetupPlayerInputComponent(UInputComponent *PlayerI
 
 void ATheGeniusPlanCharacter::Move(const FInputActionValue &Value)
 {
-	// input is a Vector2D
-	FVector2D MovementVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
+	if (bCanMove)
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		// input is a Vector2D
+		FVector2D MovementVector = Value.Get<FVector2D>();
 
-		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		if (Controller != nullptr)
+		{
+			// find out which way is forward
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get right vector
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			// get forward vector
+			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
-		// add movement
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
+			// get right vector
+			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+			// add movement
+			AddMovementInput(ForwardDirection, MovementVector.Y);
+			AddMovementInput(RightDirection, MovementVector.X);
+		}
 	}
 }
 
@@ -146,7 +153,7 @@ void ATheGeniusPlanCharacter::Look(const FInputActionValue &Value)
 	{
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
+		AddControllerPitchInput((LookAxisVector.Y * -1));
 	}
 }
 
@@ -166,6 +173,7 @@ void ATheGeniusPlanCharacter::ChatFocus(const FInputActionValue &Value)
 
 		UE_LOG(LogTemp, Error, TEXT("Chat is Not Vaild"));
 	}
+	
 }
 
 void ATheGeniusPlanCharacter::Hint(const FInputActionValue &Value)

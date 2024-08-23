@@ -12,6 +12,7 @@ enum class EGameStep : uint8
 	None UMETA(Displayname = "None"),
 	Vote UMETA(Displayname = "Vote"),
 	Result UMETA(Displayname = "Result"),
+	MoveActor UMETA(DisplayName = "MoveActor"),
 	GameEnd UMETA(DisplayName = "GameEnd")
 
 };
@@ -49,6 +50,9 @@ public:
 	UPROPERTY(Replicated)
 	uint8 FamineLand;
 
+	//UPROPERTY(Replicated)
+	//double Timer;
+
 protected:
 	UPROPERTY()
 	uint8 StageCount;
@@ -60,9 +64,6 @@ protected:
 
 	UFUNCTION()
 	void OnReq_GameStepChange();
-
-	UPROPERTY()
-	FTimerHandle GameStateTimerHandle;
 
 
 };

@@ -44,5 +44,7 @@ public:
 	ESelectedLand GetSelectedLand();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	
+
+	UPROPERTY()
+	bool Lose;
 };

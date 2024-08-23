@@ -38,6 +38,8 @@ void UAAFSelectWidget::ClickedAbundance()
 	SelectedAbundance->SetVisibility(ESlateVisibility::Collapsed);
 	SelectedFamine->SetVisibility(ESlateVisibility::Collapsed);
 
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
+
 }
 
 void UAAFSelectWidget::ClickedFamine()
@@ -52,6 +54,8 @@ void UAAFSelectWidget::ClickedFamine()
 	
 	SelectedAbundance->SetVisibility(ESlateVisibility::Collapsed);
 	SelectedFamine->SetVisibility(ESlateVisibility::Collapsed);
+
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 }
 
 void UAAFSelectWidget::SetTimer(float Time)
