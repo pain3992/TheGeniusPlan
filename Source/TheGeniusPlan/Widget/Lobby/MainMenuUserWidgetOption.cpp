@@ -3,7 +3,7 @@
 
 #include "TheGeniusPlan/Widget/Lobby/MainMenuUserWidgetOption.h"
 #include "Components/Button.h"
-#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
+#include "TheGeniusPlan/HUD/EntryHUD.h"
 
 void UMainMenuUserWidgetOption::NativeConstruct()
 {
@@ -26,25 +26,25 @@ void UMainMenuUserWidgetOption::NativeConstruct()
 
 void UMainMenuUserWidgetOption::ClickedGameStart()
 {
-	if(GameStartMenuHUD)
+	if(EntryHUD)
 	{
-		GameStartMenuHUD->ShowWidget(WidgetType::LobbyWidget);
+		EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);
 	}
 }
 
 void UMainMenuUserWidgetOption::ClickedOption()
 {
-	if(GameStartMenuHUD)
+	if(EntryHUD)
 	{
-		GameStartMenuHUD->ShowWidget(WidgetType::OptionWidget);
+		EntryHUD->ShowWidget(EntryWidgetType::OptionWidget);
 	}
 
 }
 
 void UMainMenuUserWidgetOption::ClickedQuit()
 {
-	if (GameStartMenuHUD)
+	if (EntryHUD)
 	{
-		GameStartMenuHUD->ShowWidget(WidgetType::LoginWidget);
+		EntryHUD->ShowWidget(EntryWidgetType::LoginWidget);
 	}
 }

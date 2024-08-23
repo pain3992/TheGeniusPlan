@@ -4,46 +4,36 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainMenuUserWidget.generated.h"
+#include "EntryWidget.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class THEGENIUSPLAN_API UMainMenuUserWidget : public UUserWidget
+class THEGENIUSPLAN_API UEntryWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
 public:
-
 	virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
-	void ClickedLogin();
+	void ClickedGameStart();
+
+	UFUNCTION(BlueprintCallable)
+	void ClickedOption();
 
 	UFUNCTION(BlueprintCallable)
 	void ClickedQuit();
 
-	UFUNCTION(BlueprintCallable)
-	void ClickedSignUp();
-
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
 	TObjectPtr<class AEntryHUD> EntryHUD;
-
-	void TestFunction();
-	
 protected:
-	
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UButton> ButtonLogin;
+UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UButton> ButtonGameStart;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UButton> ButtonSignUp;
+	TObjectPtr<class UButton> ButtonOption;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonQuit;
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditableTextID;
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditableTextPassword;
-
 };

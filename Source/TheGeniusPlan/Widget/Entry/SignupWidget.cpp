@@ -3,7 +3,6 @@
 
 #include "SignupWidget.h"
 #include "Components/Button.h"
-#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 
 void USignupWidget::NativeConstruct()
 {

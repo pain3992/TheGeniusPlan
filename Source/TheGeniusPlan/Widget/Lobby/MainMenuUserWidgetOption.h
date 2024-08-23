@@ -28,7 +28,7 @@ public:
 	void ClickedQuit();
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	TObjectPtr<class AMainMenuHUD> GameStartMenuHUD;
+	TObjectPtr<class AEntryHUD> EntryHUD;
 
 protected:
 

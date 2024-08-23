@@ -1,11 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TheGeniusPlan/Widget/Lobby/OptionWidget.h"
+#include "TheGeniusPlan/Widget/Entry/OptionWidget.h"
 #include "Components/Slider.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
-#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 #include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
 #include "AudioDevice.h"

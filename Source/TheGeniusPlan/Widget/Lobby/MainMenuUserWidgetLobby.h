@@ -19,7 +19,7 @@ public:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	TObjectPtr<class AMainMenuHUD> LobbyMenuHUD;
+	TObjectPtr<class AEntryHUD> EntryHUD;
 
 	UFUNCTION()
 	void ChangeCharacterMesh();

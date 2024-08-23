@@ -24,7 +24,7 @@ public:
 	void ClickedButtonCansel();
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	TObjectPtr<class AMainMenuHUD> SignupMenuHUD;
+	TObjectPtr<class AEntryHUD> EntryHUD;
 
 protected:
 

@@ -4,15 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainMenuUserWidget.generated.h"
+#include "LoginWidget.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class THEGENIUSPLAN_API UMainMenuUserWidget : public UUserWidget
+class THEGENIUSPLAN_API ULoginWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
 public:
-
 	virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
@@ -26,11 +27,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
 	TObjectPtr<class AEntryHUD> EntryHUD;
-
-	void TestFunction();
-	
 protected:
-	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonLogin;
 
@@ -45,5 +42,4 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UEditableTextBox> EditableTextPassword;
-
 };

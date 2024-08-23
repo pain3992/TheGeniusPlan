@@ -2,12 +2,12 @@
 
 
 #include "MainMenuUserWidgetLobby.h"
-#include "TheGeniusPlan/GameModes/Lobby/MainMenuHUD.h"
 #include "Components/Button.h"
 #include "TheGeniusPlan/Characters/MainMenuPawn.h"
 #include "TheGeniusPlan/GameModes/Lobby/MainMenuPlayerController.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "TheGeniusPlan/HUD/EntryHUD.h"
 
 void UMainMenuUserWidgetLobby::NativeConstruct()
 {
@@ -47,7 +47,7 @@ void UMainMenuUserWidgetLobby::NativeConstruct()
 void UMainMenuUserWidgetLobby::ChangeCharacterMesh()
 {
 
-	AMainMenuPlayerController* Controller = Cast<AMainMenuPlayerController>(LobbyMenuHUD->GetOwner());
+	AMainMenuPlayerController* Controller = Cast<AMainMenuPlayerController>(EntryHUD->GetOwner());
 
 	if (Controller)
 	{
@@ -73,12 +73,12 @@ void UMainMenuUserWidgetLobby::ClickedQuit()
 
 void UMainMenuUserWidgetLobby::ClickedLogout()
 {
-	LobbyMenuHUD->ShowWidget(WidgetType::LoginWidget);
+	EntryHUD->ShowWidget(EntryWidgetType::LoginWidget);
 }
 
 void UMainMenuUserWidgetLobby::ClickedOption()
 {
-	LobbyMenuHUD->ShowWidget(WidgetType::OptionWidget);
+	EntryHUD->ShowWidget(EntryWidgetType::OptionWidget);
 }
 
 void UMainMenuUserWidgetLobby::ClickedCreate()

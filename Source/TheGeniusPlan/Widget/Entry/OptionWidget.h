@@ -25,7 +25,7 @@ public:
 	void LoadUserSetting();
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	TObjectPtr<class AMainMenuHUD> OptionMenuHUD;
+	TObjectPtr<class AEntryHUD> EntryHUD;
 
 
 protected:
