@@ -4,7 +4,7 @@
 #include "Components/ListView.h"
 #include "Blueprint/UserWidget.h"
 #include "TheGeniusPlan/Data/PlayerRankingData.h"
-#include "TheGeniusPlan/GameModes/MainGame/MainGameStateBase.h"
+#include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Widget/MainGame/CoinScoreItemWidget.h"
