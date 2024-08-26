@@ -1,10 +1,10 @@
 #include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
+#include "TheGeniusPlan/GameModes/MainGameModeBase.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"
-#include "MainGameModeBase.h"
 
 
 void AMainGameStateBase::AddPlayer(AGeniusPlayerState *NewPlayerState)

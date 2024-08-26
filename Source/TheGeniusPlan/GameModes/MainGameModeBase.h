@@ -32,7 +32,7 @@ public:
 	void CheckRoundWinner();
 
 	// 다음 라운드로 전환하는 함수
-	void TransitionToNextRound();
+	virtual void TransitionToNextRound();
 
 	// 게임 종료 및 승자 결정하는 함수
 	void EndGame(int32 WinningPlayerId);

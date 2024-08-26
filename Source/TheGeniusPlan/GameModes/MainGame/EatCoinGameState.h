@@ -60,9 +60,20 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_OnECGameCountdownFinished();
 
+	// 1-3위에게 랭크 점수 부여
+	void AwardTopPlayers();
+
 	
 	FTimerHandle ECGameCountdownTimerHandle;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+protected:
+	// 10초 후에 레벨 이동을 처리하는 함수 선언
+	// void TravelToNextLevel();
+
+private:
+	// 타이머 핸들러
+	// FTimerHandle ServerTravelTimerHandle;
 
 };

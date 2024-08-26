@@ -14,9 +14,22 @@
 #include "TheGeniusPlan/HUD/EatCoinHUD.h"
 #include "TheGeniusPlan/Player/EatCoinPlayerState.h"
 #include "TheGeniusPlan/GameModes/MainGame/EatCoinGameState.h"
+#include "TheGeniusPlan/Player/EatCoinPlayerController.h"
 
 AEatCoinGameMode::AEatCoinGameMode()
 {
+    static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Script/Engine.Blueprint'/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter_C'"));
+    if (PlayerPawnBPClass.Succeeded())
+    {
+        DefaultPawnClass = PlayerPawnBPClass.Class;
+    }
+    
+    HUDClass = AEatCoinHUD::StaticClass();
+    PlayerControllerClass = AEatCoinPlayerController::StaticClass();
+    GameStateClass = AEatCoinGameState::StaticClass();
+    PlayerStateClass = AEatCoinPlayerState::StaticClass();
+
+
     // 라운드 시간
 	CountdownTimeInSeconds = 180;
 

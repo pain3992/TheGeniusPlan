@@ -14,7 +14,6 @@ class THEGENIUSPLAN_API AEatCoinGameMode : public AMainGameModeBase
 {
 	GENERATED_BODY()
 
-
 public:
 
     AEatCoinGameMode();
@@ -43,6 +42,9 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Eat Coin Game Rules", meta = (AllowPrivateAccess = "true"))
     int32 ECGameStartCountdownTimeInSeconds;
+
+    UPROPERTY()
+    TSubclassOf<class AEatCoinGameMode> StartEatCoinGameMode;
 
 protected:
     virtual void BeginPlay() override;

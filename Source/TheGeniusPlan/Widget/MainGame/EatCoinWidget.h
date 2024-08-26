@@ -26,6 +26,10 @@ public:
 
 	FTimerHandle UpdateTimerHandle;
 
+	// 리스트뷰를 화면 중앙으로 이동시키는 함수
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void MoveListViewToCenter();
+
 protected:
 	virtual void NativeConstruct() override;
 

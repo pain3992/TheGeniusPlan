@@ -37,4 +37,10 @@ public:
     // Overlap event
     UFUNCTION()
     void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+private:
+    FVector InitialLocation; // 초기 위치 저장
+    float RunningTime; // 시간 누적 변수
+    float FloatSpeed; // 부스터가 움직이는 속도
+    float FloatAmplitude; // 부스터가 이동할 최대 높이
 };
