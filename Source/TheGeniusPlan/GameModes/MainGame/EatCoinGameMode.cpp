@@ -41,8 +41,7 @@ AEatCoinGameMode::AEatCoinGameMode()
 
 void AEatCoinGameMode::BeginPlay()
 {
-  //  SetECGameStartCountdownRule();
-    HandleGameStart();
+    Super::BeginPlay();
 }
 
 void AEatCoinGameMode::PostLogin(APlayerController* NewPlayer)
@@ -68,14 +67,7 @@ void AEatCoinGameMode::HandleGameStart()
 
 void AEatCoinGameMode::TransitionToNextRound()
 {
-    if (CurrentRound < TotalRound)
-    {
-        CurrentRound++;
-        UE_LOG(LogTemp, Log, TEXT("라운드 %d 시작!"), CurrentRound);
-
-        // 라운드가 시작되도록 필요한 초기화 로직 추가 가능
-      //  HandleGameStart();  // 새로운 라운드를 시작합니다.
-    }
+    Super::TransitionToNextRound();
 }
 
 void AEatCoinGameMode::HandleRoundEnd()

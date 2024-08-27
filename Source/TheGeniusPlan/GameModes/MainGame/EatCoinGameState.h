@@ -61,8 +61,8 @@ public:
 	// 1-3위에게 랭크 점수 부여
 	void AwardTopPlayers();
 
-	// 플레이어 스타트 위치로 이동 
-	void MovePlayersToStart();
+	UFUNCTION()
+	void OnRep_MovePlayersToStart() const;
 
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -71,6 +71,11 @@ private:
 	// EC 카운트다운 타이머 핸들러
 	FTimerHandle ECGameCountdownTimerHandle;
 
-	// 플레이어 스타트 위치로 이동 여부를 체크할 플래그
-	bool bHasMovedPlayersToStart = false;
+	// 10초 후에 레벨 이동을 처리하는 함수 선언
+	void TravelToNextLevel();
+
+	// 마지막 라운드인지 여부를 체크
+	
+	// 레벨 이동 타이머 핸들러
+	FTimerHandle ServerTravelTimerHandle;
 };

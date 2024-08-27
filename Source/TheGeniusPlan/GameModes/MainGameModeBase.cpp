@@ -36,9 +36,26 @@ AMainGameModeBase::AMainGameModeBase()
 	CountdownTimeInSeconds = 300;
 }
 
+int32 AMainGameModeBase::GetTotalRound() const
+{
+	return TotalRound;
+}
+
+int32 AMainGameModeBase::GetCurrentRound() const
+{
+	return CurrentRound;
+}
+
 void AMainGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 게임 스테이트에 라운드 정보 전달
+	if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
+	{
+		MainGameState->SetTotalRound(TotalRound);
+		MainGameState->SetCurrentRound(CurrentRound);
+	}
 
 	// TEST: 메인 게임모드 시작시, 메인매치 게임 등록 (결합게임 모드, 오픈패스 게임 모드)
 	if (PossibleGameModes.Num() == 0)
@@ -46,6 +63,28 @@ void AMainGameModeBase::BeginPlay()
 		PossibleGameModes.Add(AGyulhapGameMode::StaticClass());
 		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
 	}
+
+	//UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
+	//if(GameInstance)
+	//{
+	//	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	//	{
+	//		APlayerController* PlayerController = It->Get();
+	//		if (PlayerController)
+	//		{
+	//			AGeniusPlayerState* GeniusPlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
+	//			if (GeniusPlayerState)
+	//			{
+	//				// 이전에 저장된 점수를 불러옴
+	//				int32 SavedScore = GameInstance->GetPlayerScore(GeniusPlayerState);
+	//				GeniusPlayerState->SetPlayerScore(SavedScore);
+	//			}
+	//		}
+	//	}
+	//}
+	
+
+
 	// 게임 시작
 
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
@@ -68,6 +107,11 @@ void AMainGameModeBase::TransitionToNextRound()
 	{
 		// 라운드수 적용
 		CurrentRound++;
+
+		if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
+		{
+			MainGameState->SetCurrentRound(CurrentRound);
+		}
 		// 라운드 규칙 적용
 		SetGameRules();
 	}

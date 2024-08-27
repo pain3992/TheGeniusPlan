@@ -63,6 +63,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameRules", meta = (AllowPrivateAccess = "true"))
 	int32 CurrentRound;
 
+	// 전체 라운드 반환 함수
+	UFUNCTION(BlueprintCallable, Category = "Game Rules")
+	int32 GetTotalRound() const;
+
+	// 현재 라운드 반환 함수
+	UFUNCTION(BlueprintCallable, Category = "Game Rules")
+	int32 GetCurrentRound() const;
+
 	// 플레이어 ID, 스코어를 기록
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameRules", meta = (AllowPrivateAccess = "true"))
 	TMap<int32, int32> PlayerScores;

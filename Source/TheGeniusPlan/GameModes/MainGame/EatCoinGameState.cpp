@@ -14,6 +14,7 @@
 #include "EngineUtils.h"
 #include "TimerManager.h"
 #include "GameFramework/PlayerStart.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 
 AEatCoinGameState::AEatCoinGameState()
 {
@@ -63,11 +64,19 @@ void AEatCoinGameState::CountdownFinished()
 {
     Super::CountdownFinished();
 
-    AwardTopPlayers();
+    // 마지막 라운드인지 확인
+    if (AEatCoinGameMode* EatCoinGameMode = GetWorld()->GetAuthGameMode<AEatCoinGameMode>())
+    {
+        if (EatCoinGameMode->GetCurrentRound() == EatCoinGameMode->GetTotalRound())
+        {
+            AwardTopPlayers();
+            GetWorldTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameState::TravelToNextLevel, 10.0f, false);
+        }
+    }
 
     Multicast_OnCountdownFinished();
-
 }
+
 
 void AEatCoinGameState::Multicast_OnCountdownFinished_Implementation()
 {
@@ -109,6 +118,8 @@ void AEatCoinGameState::StartECGameCount(int32 InitialCountdownTime)
         OnRep_ECGameCountdownTime();
 
         GetWorld()->GetTimerManager().SetTimer(ECGameCountdownTimerHandle, this, &AEatCoinGameState::UpdateECGameCount, 1.0f, true);
+
+        OnRep_MovePlayersToStart();
     }
 }
 
@@ -127,6 +138,7 @@ void AEatCoinGameState::UpdateECGameCount()
 
 void AEatCoinGameState::OnRep_ECGameCountdownTime() const
 {
+    // 플레이어 컨트롤러를 순회하며 플레이어를 PlayerStart 위치로 이동
     for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
     {
         APlayerController* PlayerController = Cast<APlayerController>(*It);
@@ -159,8 +171,6 @@ void AEatCoinGameState::OnRep_ECGameCountdownTime() const
         }
     }
 }
-
-
 
 void AEatCoinGameState::ECGameCountdownFinished()
 {
@@ -239,8 +249,41 @@ void AEatCoinGameState::AwardTopPlayers()
     }
 }
 
-void AEatCoinGameState::MovePlayersToStart()
+void AEatCoinGameState::OnRep_MovePlayersToStart() const
 {
+    // PlayerStart 액터를 찾기 위한 변수
+    APlayerStart* PlayerStart = nullptr;
+
+    // 레벨에 있는 모든 PlayerStart 액터를 검색
+    for (TActorIterator<APlayerStart> It(GetWorld()); It; ++It)
+    {
+        PlayerStart = *It;
+        break; // 첫 번째 PlayerStart를 찾으면 반복 종료
+    }
+
+    if (!PlayerStart)
+    {
+        UE_LOG(LogTemp, Error, TEXT("레벨에서 PlayerStart 액터를 찾을 수 없습니다."));
+        return;
+    }
+
+    FVector PlayerStartLocation = PlayerStart->GetActorLocation();
+
+    // 플레이어 컨트롤러를 순회하며 플레이어를 PlayerStart 위치로 이동
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        APlayerController* PlayerController = Cast<APlayerController>(*It);
+        if (PlayerController)
+        {
+            ATheGeniusPlanCharacter* TheGeniusPlanCharacter = Cast<ATheGeniusPlanCharacter>(PlayerController->GetPawn());
+            if (TheGeniusPlanCharacter)
+            {
+               
+                // 플레이어를 PlayerStart 위치로 이동
+                TheGeniusPlanCharacter->SetActorLocation(PlayerStartLocation);
+            }
+        }
+    }
 }
 
 
@@ -249,4 +292,11 @@ void AEatCoinGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     DOREPLIFETIME(AEatCoinGameState, PlayerCoinScores);
     DOREPLIFETIME(AEatCoinGameState, ECGameCountdownTime);
+}
+
+void AEatCoinGameState::TravelToNextLevel()
+{
+    // 특정 레벨로 이동하는 서버 트래블 명령 (임시: MainLevel)
+    UE_LOG(LogTemp, Log, TEXT("동작"));
+    GetWorld()->ServerTravel("/Game/Levels/MainLevel?listen");
 }

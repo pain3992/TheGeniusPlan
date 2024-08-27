@@ -43,10 +43,32 @@ public:
 
     virtual void CountdownFinished();
 
+    // 전체 라운드
+    UPROPERTY(ReplicatedUsing = OnRep_TotalRound)
+    int32 TotalRound;
+
+    // 현재 라운드
+    UPROPERTY(ReplicatedUsing = OnRep_CurrentRound)
+    int32 CurrentRound;
+
+    // 전체 라운드를 설정하는 함수
+    UFUNCTION(BlueprintCallable, Category = "Game Rules")
+    void SetTotalRound(int32 NewTotalRound);
+
+    // 현재 라운드를 설정하는 함수
+    UFUNCTION(BlueprintCallable, Category = "Game Rules")
+    void SetCurrentRound(int32 NewCurrentRound);
+
 protected:
     // 카운트다운 변수가 변경될 때 클라이언트에서 호출되는 함수
     UFUNCTION()
     void OnRep_CountdownTime() const;
+
+    UFUNCTION()
+    void OnRep_TotalRound() const;
+
+    UFUNCTION()
+    void OnRep_CurrentRound() const;
 
     UPROPERTY(ReplicatedUsing = OnRep_CountdownTime)
     int32 CountdownTime;
