@@ -133,3 +133,46 @@ void UEatCoinWidget::MoveListViewToCenter()
         UE_LOG(LogTemp, Error, TEXT("ListView_CoinScore가 유효하지 않거나 부모가 없습니다."));
     }
 }
+
+void UEatCoinWidget::MoveListViewToOriginalPosition()
+{
+    if (ListView_CoinScore && ListView_CoinScore->GetParent())
+    {
+        UVerticalBox* VerticalBoxParent = Cast<UVerticalBox>(ListView_CoinScore->GetParent());
+
+        if (VerticalBoxParent && VerticalBoxParent->GetParent())
+        {
+            UBorder* BorderParent = Cast<UBorder>(VerticalBoxParent->GetParent());
+
+            if (BorderParent)
+            {
+                UCanvasPanelSlot* CanvasSlot = Cast<UCanvasPanelSlot>(BorderParent->Slot);
+                if (CanvasSlot)
+                {
+                    // X 값을 600으로 설정하고 Y 값은 현재 값을 유지합니다.
+                    FVector2D CurrentPosition = CanvasSlot->GetPosition();
+                    CanvasSlot->SetPosition(FVector2D(600.0f, CurrentPosition.Y));
+
+                    UE_LOG(LogTemp, Warning, TEXT("Border의 X 포지션을 600으로 이동했습니다."));
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Error, TEXT("Border의 Slot을 CanvasPanelSlot으로 캐스팅하는 데 실패했습니다."));
+                }
+            }
+            else
+            {
+                UE_LOG(LogTemp, Error, TEXT("VerticalBox의 부모가 UBorder가 아닙니다."));
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("ListView의 부모가 UVerticalBox가 아닙니다."));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ListView_CoinScore가 유효하지 않거나 부모가 없습니다."));
+    }
+}
+

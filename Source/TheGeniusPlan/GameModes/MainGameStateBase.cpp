@@ -42,7 +42,7 @@ void AMainGameStateBase::StartCountdown(int32 InitialCountdownTime)
 {
     if (HasAuthority())
     {
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("StartCountdown"));
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("StartCountdown"));
         CountdownTime = InitialCountdownTime;
         OnRep_CountdownTime();
 

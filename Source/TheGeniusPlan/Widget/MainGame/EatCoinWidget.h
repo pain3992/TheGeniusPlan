@@ -26,9 +26,13 @@ public:
 
 	FTimerHandle UpdateTimerHandle;
 
-	// 리스트뷰를 화면 중앙으로 이동시키는 함수
+	// 리스트뷰를 화면 중앙으로 이동시키는 함수 (라운드 종료 때마다 보여줌)
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void MoveListViewToCenter();
+
+	// 리스트뷰의 위치를 원위치로 복구시키는 함수 (라운드가 새로 시작할 때마다 실행)
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void MoveListViewToOriginalPosition();
 
 protected:
 	virtual void NativeConstruct() override;

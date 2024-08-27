@@ -13,6 +13,7 @@
 #include "TheGeniusPlan/Actor/EatCoinDoor.h"
 #include "EngineUtils.h"
 #include "TimerManager.h"
+#include "GameFramework/PlayerStart.h"
 
 AEatCoinGameState::AEatCoinGameState()
 {
@@ -53,7 +54,7 @@ void AEatCoinGameState::OnRep_PlayerCoinScores() const
             if (UEatCoinWidget* EatCoinWidget = CoinHUD->GetEatCoinWidget())
             {
                 EatCoinWidget->UpdateEatCoinPlayerList(PlayerCoinScores);
-            }            
+            }
         }
     }
 }
@@ -66,8 +67,6 @@ void AEatCoinGameState::CountdownFinished()
 
     Multicast_OnCountdownFinished();
 
-    // 10초 후에 서버 트래블을 실행하는 타이머 설정
- //   GetWorldTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameState::TravelToNextLevel, 30.0f, false);
 }
 
 void AEatCoinGameState::Multicast_OnCountdownFinished_Implementation()
@@ -105,7 +104,7 @@ void AEatCoinGameState::StartECGameCount(int32 InitialCountdownTime)
 {
     if (HasAuthority())
     {
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("StartECCountdown"));
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("StartECCountdown"));
         ECGameCountdownTime = InitialCountdownTime;
         OnRep_ECGameCountdownTime();
 
@@ -130,15 +129,38 @@ void AEatCoinGameState::OnRep_ECGameCountdownTime() const
 {
     for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
     {
-        if (AEatCoinHUD* EatCoinHUD = (*It)->GetHUD<AEatCoinHUD>())
+        APlayerController* PlayerController = Cast<APlayerController>(*It);
+        if (PlayerController)
         {
-            if (UEatCoinMenualWidget* ECMenualWidget = EatCoinHUD->GetEatCoinMenualWidget())
+            ATheGeniusPlanCharacter* TheGeniusPlanCharacter = Cast<ATheGeniusPlanCharacter>(PlayerController->GetPawn());
+            if (TheGeniusPlanCharacter)
             {
-                ECMenualWidget->UpdateStartEatCoinCountdownDisplay(ECGameCountdownTime);
+                // 캐릭터의 이동 컴포넌트를 다시 활성화
+                if (UCharacterMovementComponent* MoveComp = TheGeniusPlanCharacter->GetCharacterMovement())
+                {
+                    MoveComp->SetMovementMode(MOVE_Walking); // 기본 이동 모드로 설정
+                }
+            }
+
+            if (AEatCoinHUD* EatCoinHUD = PlayerController->GetHUD<AEatCoinHUD>())
+            {
+                EatCoinHUD->ShowECMenualWidget();
+                EatCoinHUD->CollapsedECEndWidget();
+
+                if (UEatCoinMenualWidget* ECMenualWidget = EatCoinHUD->GetEatCoinMenualWidget())
+                {
+                    ECMenualWidget->UpdateStartEatCoinCountdownDisplay(ECGameCountdownTime);
+                }
+                if (UEatCoinWidget* ECWidget = EatCoinHUD->GetEatCoinWidget())
+                {
+                    ECWidget->MoveListViewToOriginalPosition();
+                }
             }
         }
     }
 }
+
+
 
 void AEatCoinGameState::ECGameCountdownFinished()
 {
@@ -217,6 +239,10 @@ void AEatCoinGameState::AwardTopPlayers()
     }
 }
 
+void AEatCoinGameState::MovePlayersToStart()
+{
+}
+
 
 void AEatCoinGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -224,10 +250,3 @@ void AEatCoinGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
     DOREPLIFETIME(AEatCoinGameState, PlayerCoinScores);
     DOREPLIFETIME(AEatCoinGameState, ECGameCountdownTime);
 }
-
-//void AEatCoinGameState::TravelToNextLevel()
-//{
-//    // 특정 레벨로 이동하는 서버 트래블 명령 (임시: MainLevel)
-//    UE_LOG(LogTemp, Log, TEXT("동작"));
-//    GetWorld()->ServerTravel("/Game/Levels/MainLevel?listen");
-//}

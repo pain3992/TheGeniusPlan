@@ -31,13 +31,15 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     UEatCoinStartWidget* GetEatCoinStartWidget() const { return EatCoinStartWidget; }
 
-    // 게임 종료 위젯 띄우기
+    // 게임 종료! 위젯 띄우기 + 없애기
     void ShowEatCoinEndWidget();
+    void CollapsedECEndWidget();
 
-    // 매뉴얼+게임시작까지 남은시간 카운트다운 위젯 지우기
+    // 매뉴얼+게임시작까지 남은시간 카운트다운 위젯 띄우기 + 없애기
+    void ShowECMenualWidget();
     void CollapsedECMenualWidget();
 
-    // 게임 시작 위젯 띄우기 + 없애기
+    // 게임 시작! 위젯 띄우기 + 없애기
     void ShowGameStartWidget();
     void HideGameStartWidget();
 

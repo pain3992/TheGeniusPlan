@@ -29,6 +29,8 @@ AEatCoinGameMode::AEatCoinGameMode()
     GameStateClass = AEatCoinGameState::StaticClass();
     PlayerStateClass = AEatCoinPlayerState::StaticClass();
 
+    // 총 라운드
+    TotalRound = 3;
 
     // 라운드 시간
 	CountdownTimeInSeconds = 180;
@@ -39,7 +41,8 @@ AEatCoinGameMode::AEatCoinGameMode()
 
 void AEatCoinGameMode::BeginPlay()
 {
-    SetECGameStartCountdownRule();
+  //  SetECGameStartCountdownRule();
+    HandleGameStart();
 }
 
 void AEatCoinGameMode::PostLogin(APlayerController* NewPlayer)
@@ -56,26 +59,62 @@ void AEatCoinGameMode::PostLogin(APlayerController* NewPlayer)
     }
 }
 
-void AEatCoinGameMode::HandleRoundEnd()
+void AEatCoinGameMode::HandleGameStart()
 {
-    // 게임 종료! 위젯 띄우고 우승자 위젯 띄우기
+    Super::HandleGameStart();
 
-    Super::HandleRoundEnd();
-    UE_LOG(LogTemp, Log, TEXT("게임 종료"));
-    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    SetECGameStartCountdownRule();
+}
+
+void AEatCoinGameMode::TransitionToNextRound()
+{
+    if (CurrentRound < TotalRound)
     {
-        APlayerController* PlayerController = It->Get();
-        if (PlayerController)
-        {
-            AEatCoinHUD* EatCoinHUD = Cast<AEatCoinHUD>(PlayerController->GetHUD());
-            if (EatCoinHUD && EatCoinHUD->GetEatCoinEndWidget())
-            {
-                UE_LOG(LogTemp, Log, TEXT("게임 종료 위젯 호출"));
-                EatCoinHUD->GetEatCoinEndWidget()->SetVisibility(ESlateVisibility::Visible);
-            }
-        }
+        CurrentRound++;
+        UE_LOG(LogTemp, Log, TEXT("라운드 %d 시작!"), CurrentRound);
+
+        // 라운드가 시작되도록 필요한 초기화 로직 추가 가능
+      //  HandleGameStart();  // 새로운 라운드를 시작합니다.
     }
 }
+
+void AEatCoinGameMode::HandleRoundEnd()
+{
+    Super::HandleRoundEnd();
+
+    if (CurrentRound < TotalRound)
+    {
+        UE_LOG(LogTemp, Log, TEXT("라운드 %d 종료, 다음 라운드 준비 중..."), CurrentRound);
+
+        // 10초 후에 다음 라운드(TransitionToNextRound) 호출
+        GetWorld()->GetTimerManager().SetTimer(RoundTransitionTimerHandle, this, &AEatCoinGameMode::TransitionToNextRound, 10.0f, false);
+
+        // 10초 후에 ECGameStartCountdown을 시작합니다.
+        GetWorld()->GetTimerManager().SetTimer(ECGameCountdownTimerHandle, this, &AEatCoinGameMode::SetECGameStartCountdownRule, 10.0f, false);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Log, TEXT("모든 라운드 종료, 게임 종료!"));
+        for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+        {
+            APlayerController* PlayerController = It->Get();
+            if (PlayerController)
+            {
+                AEatCoinHUD* EatCoinHUD = Cast<AEatCoinHUD>(PlayerController->GetHUD());
+                if (EatCoinHUD && EatCoinHUD->GetEatCoinEndWidget())
+                {
+                    UE_LOG(LogTemp, Log, TEXT("게임 종료 위젯 호출"));
+                    EatCoinHUD->GetEatCoinEndWidget()->SetVisibility(ESlateVisibility::Visible);
+                }
+            }
+        }
+
+        // 게임 종료 처리
+        // 필요에 따라 게임 종료 후 로직 추가 (예: 게임 메인 메뉴로 돌아가기, 서버 종료 등)
+    }
+}
+
+
 
 void AEatCoinGameMode::ApplySpeedBoost(ACharacter* PlayerCharacter)
 {

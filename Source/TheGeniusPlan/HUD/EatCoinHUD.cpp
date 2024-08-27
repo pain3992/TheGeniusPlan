@@ -55,7 +55,7 @@ void AEatCoinHUD::BeginPlay()
         if (EatCoinMenualWidget)
         {
             EatCoinMenualWidget->AddToViewport();
-            EatCoinMenualWidget->SetVisibility(ESlateVisibility::Visible);
+            EatCoinMenualWidget->SetVisibility(ESlateVisibility::Collapsed);
         }
     }
 
@@ -69,12 +69,27 @@ void AEatCoinHUD::BeginPlay()
         }
     }
 }
+void AEatCoinHUD::ShowECMenualWidget()
+{
+    if (EatCoinMenualWidget)
+    {
+        EatCoinMenualWidget->SetVisibility(ESlateVisibility::Visible);
+    }
+}
+
 void AEatCoinHUD::ShowEatCoinEndWidget()
 {
     if (EatCoinEndWidget)
     {
-        UE_LOG(LogTemp, Log, TEXT("EatCoinEndWidget 작동"));
         EatCoinEndWidget->SetVisibility(ESlateVisibility::Visible);
+    }
+}
+
+void AEatCoinHUD::CollapsedECEndWidget()
+{
+    if (EatCoinEndWidget)
+    {
+        EatCoinEndWidget->SetVisibility(ESlateVisibility::Collapsed);
     }
 }
 
@@ -82,7 +97,6 @@ void AEatCoinHUD::CollapsedECMenualWidget()
 {
     if (EatCoinMenualWidget)
     {
-        UE_LOG(LogTemp, Log, TEXT("EatCoinMenualWidget 작동"));
         EatCoinMenualWidget->SetVisibility(ESlateVisibility::Collapsed);
     }
 }
@@ -91,7 +105,6 @@ void AEatCoinHUD::ShowGameStartWidget()
 {
     if (EatCoinStartWidget)
     {
-        UE_LOG(LogTemp, Log, TEXT("EatCoinStartWidget 작동"));
         EatCoinStartWidget->SetVisibility(ESlateVisibility::Visible);
 
         GetWorld()->GetTimerManager().SetTimer(TimerHandle_HideWidget, this, &AEatCoinHUD::HideGameStartWidget, 1.0f, false);
@@ -102,7 +115,6 @@ void AEatCoinHUD::HideGameStartWidget()
 {
     if (EatCoinStartWidget)
     {
-        UE_LOG(LogTemp, Log, TEXT("EatCoinStartWidget 숨기기"));
         EatCoinStartWidget->SetVisibility(ESlateVisibility::Collapsed);
     }
 }
