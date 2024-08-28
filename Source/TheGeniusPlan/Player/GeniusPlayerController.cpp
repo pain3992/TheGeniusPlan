@@ -8,14 +8,12 @@
 #include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/GameModes/MainGame/AAFGameState.h"
-#include "TheGeniusPlan/ChatComponent.h"
 #include "TheGeniusPlan/Widget/TimerWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
 
 
 AGeniusPlayerController::AGeniusPlayerController()
 {
-
 	static ConstructorHelpers::FClassFinder<UShowPlayerSeletedLandWidget> CShowLandWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_ShowSelectedLand.WG_ShowSelectedLand_C'"));
 	static ConstructorHelpers::FClassFinder<UAAFSelectWidget> CSelectWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_SelectedWidget.WG_SelectedWidget_C'"));
 	static ConstructorHelpers::FClassFinder<UTimerWidget> CTimerWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_Timer.WG_Timer_C'"));
@@ -31,13 +29,6 @@ AGeniusPlayerController::AGeniusPlayerController()
 	if (CTimerWidget.Succeeded())
 	{
 		TimerWidgetClass = CTimerWidget.Class;
-	}
-
-	ChatComponent = CreateDefaultSubobject<UChatComponent>(TEXT("ChatComponent"));
-
-	if (ChatComponent)
-	{
-
 	}
 
 	TimerWidget = nullptr;
@@ -74,8 +65,8 @@ void AGeniusPlayerController::BeginPlay()
 
 	BindDispatcher();
 
-	GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
-	GameState->SetGameStep(EGameStep::Vote);
+	//GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
+	//GameState->SetGameStep(EGameStep::Vote);
 
 	//CreateTimerWidget();
 

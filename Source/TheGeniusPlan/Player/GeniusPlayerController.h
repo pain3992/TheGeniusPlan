@@ -63,9 +63,6 @@ public:
     UFUNCTION(Server, Reliable)
     void RequestChangetStepOnServer(EGameStep NewStep, uint8 FirstLand, uint8 SecondsLand);
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-    TObjectPtr<class UChatComponent> ChatComponent;
-
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
     TSubclassOf<class UTimerWidget> TimerWidgetClass;
 

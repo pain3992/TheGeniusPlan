@@ -16,6 +16,7 @@
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Widget/MainGame/HelpUserWidget.h"
 #include "InputMappingContext.h"
+#include "TheGeniusPlan/Player/MainHallPlayerController.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -153,7 +154,7 @@ void ATheGeniusPlanCharacter::Look(const FInputActionValue &Value)
 	{
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput((LookAxisVector.Y * -1));
+		AddControllerPitchInput((LookAxisVector.Y));
 	}
 }
 
@@ -164,7 +165,7 @@ void ATheGeniusPlanCharacter::ChatFocus(const FInputActionValue &Value)
 
 	if (bIsEnter)
 	{
-		AGeniusPlayerController *myController = Cast<AGeniusPlayerController>(GetController());
+		AMainHallPlayerController* myController = Cast<AMainHallPlayerController>(GetController());
 		if (myController->ChatComponent->GetChatVaild())
 		{
 			myController->ChatComponent->ChatWidget->FocusChatWidget();

@@ -15,5 +15,9 @@ class THEGENIUSPLAN_API AMainHallPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+
+	AMainHallPlayerController();
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+	TObjectPtr<class UChatComponent> ChatComponent;
 };

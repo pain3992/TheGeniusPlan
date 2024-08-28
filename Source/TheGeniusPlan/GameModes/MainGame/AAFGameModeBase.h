@@ -19,6 +19,9 @@ public:
 	UPROPERTY()
 	TObjectPtr<class AAAFGameState> CastGameState;
 
+	UFUNCTION()
+	void TravelLevel();
+
 	AAAFGameModeBase();
 };
 

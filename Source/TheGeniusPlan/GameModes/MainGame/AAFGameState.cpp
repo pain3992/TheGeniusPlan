@@ -54,7 +54,6 @@ void AAAFGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 
 void AAAFGameState::OnReq_GameStepChange()
 {
-
 	if (EventDisptacherGameStepChange.IsBound())
 	{
 		EventDisptacherGameStepChange.Broadcast(GameStep);
