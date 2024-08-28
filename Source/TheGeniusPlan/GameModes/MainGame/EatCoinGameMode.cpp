@@ -41,7 +41,8 @@ AEatCoinGameMode::AEatCoinGameMode()
 
 void AEatCoinGameMode::BeginPlay()
 {
-    Super::BeginPlay();
+    // Super::BeginPlay();
+    HandleGameStart();
 }
 
 void AEatCoinGameMode::PostLogin(APlayerController* NewPlayer)
