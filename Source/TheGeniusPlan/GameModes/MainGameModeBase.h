@@ -51,10 +51,6 @@ public:
 
 	FTimerHandle GameModeHandle;
 
-protected:
-	virtual void BeginPlay() override;
-
-private:
 	// 전체 라운드
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameRules", meta = (AllowPrivateAccess = "true"))
 	int32 TotalRound;
@@ -71,6 +67,10 @@ private:
 	UFUNCTION(BlueprintCallable, Category = "Game Rules")
 	int32 GetCurrentRound() const;
 
+protected:
+	virtual void BeginPlay() override;
+
+private:
 	// 플레이어 ID, 스코어를 기록
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameRules", meta = (AllowPrivateAccess = "true"))
 	TMap<int32, int32> PlayerScores;

@@ -5,14 +5,17 @@
 
 void UGeniusGameInstance::SavePlayerScore(APlayerState* PlayerState, int32 Score)
 {
+    
     if (PlayerState)
     {
+        Players.Add(PlayerState);
         PlayerScores.Add(PlayerState, Score);
     }
 }
 
 int32 UGeniusGameInstance::GetPlayerScore(APlayerState* PlayerState) const
 {
+    // PlayerState->Score;
     const int32* FoundScore = PlayerScores.Find(PlayerState);
     return FoundScore ? *FoundScore : 0;
 }

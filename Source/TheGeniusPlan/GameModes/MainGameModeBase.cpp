@@ -10,6 +10,7 @@
 #include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "TheGeniusPlan/GameModes/MainGame/AAFGameModeBase.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameMode.h"
 #include "TheGeniusPlan/Player/MainHallPlayerController.h"
 #include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 
@@ -60,11 +61,12 @@ void AMainGameModeBase::BeginPlay()
 	// TEST: 메인 게임모드 시작시, 메인매치 게임 등록 (결합게임 모드, 오픈패스 게임 모드)
 	if (PossibleGameModes.Num() == 0)
 	{
-		PossibleGameModes.Add(AGyulhapGameMode::StaticClass());
+		PossibleGameModes.Add(AEatCoinGameMode::StaticClass());
 		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
 	}
 
 	// 게임 시작
+	HandleGameStart();
 
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
 }
@@ -205,9 +207,9 @@ void AMainGameModeBase::SelectNextGameMode()
 		{
 			LevelName = TEXT("AAFLevel");
 		}
-		else if(SelectedGameMode == AGyulhapGameMode::StaticClass())
+		else if(SelectedGameMode == AEatCoinGameMode::StaticClass())
 		{
-			LevelName = TEXT("GyulhapLevel");
+			LevelName = TEXT("ECLevel");
 		}
 
 		FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s"), *LevelName,*SelectedGameMode->GetName());

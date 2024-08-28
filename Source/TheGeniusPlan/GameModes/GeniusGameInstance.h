@@ -16,6 +16,7 @@ public:
     // 각 플레이어의 점수를 저장하는 맵
     UPROPERTY(BlueprintReadWrite, Category = "Scores")
     TMap<APlayerState*, int32> PlayerScores;
+    TArray<APlayerState*> Players;
 
     // 점수 저장 함수
     void SavePlayerScore(APlayerState* PlayerState, int32 Score);

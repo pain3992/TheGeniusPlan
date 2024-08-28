@@ -240,7 +240,9 @@ void AEatCoinGameState::AwardTopPlayers()
                 if (GeniusPlayerState)
                 {
                     // 기존 점수에 추가
+                    GeniusPlayerState->Score += ScoreToAward;
                     GameInstance->AddPlayerScore(GeniusPlayerState, ScoreToAward);
+                 //   GameInstance->SavePlayerScore(GeniusPlayerState, ScoreToAward);
 
                     // 점수를 PlayerState에 업데이트
                     int32 UpdatedScore = GameInstance->GetPlayerScore(GeniusPlayerState);
