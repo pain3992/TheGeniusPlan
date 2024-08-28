@@ -77,5 +77,5 @@ private:
 	// 마지막 라운드인지 여부를 체크
 	
 	// 레벨 이동 타이머 핸들러
-	FTimerHandle ServerTravelTimerHandle;
+//	FTimerHandle ServerTravelTimerHandle;
 };

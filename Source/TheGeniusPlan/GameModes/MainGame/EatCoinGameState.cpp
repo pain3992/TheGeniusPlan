@@ -15,6 +15,7 @@
 #include "TimerManager.h"
 #include "GameFramework/PlayerStart.h"
 #include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
+#include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
 
 AEatCoinGameState::AEatCoinGameState()
 {
@@ -70,7 +71,6 @@ void AEatCoinGameState::CountdownFinished()
         if (EatCoinGameMode->GetCurrentRound() == EatCoinGameMode->GetTotalRound())
         {
             AwardTopPlayers();
-            GetWorldTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameState::TravelToNextLevel, 10.0f, false);
         }
     }
 
@@ -211,6 +211,13 @@ void AEatCoinGameState::AwardTopPlayers()
         return A.GetCoinScore() > B.GetCoinScore();
         });
 
+    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
+    if (!GameInstance)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("GameInstance is null in AwardTopPlayers"));
+        return;
+    }
+
     // 상위 3명의 플레이어에게 점수 부여
     const int32 NumTopPlayers = FMath::Min(3, PlayerCoinScores.Num());
     for (int32 i = 0; i < NumTopPlayers; ++i)
@@ -218,7 +225,6 @@ void AEatCoinGameState::AwardTopPlayers()
         AEatCoinPlayerState* TopPlayer = PlayerCoinScores[i];
         if (TopPlayer)
         {
-            // 순위에 따라 플레이어에게 점수를 부여
             int32 ScoreToAward = 0;
             switch (i)
             {
@@ -227,18 +233,33 @@ void AEatCoinGameState::AwardTopPlayers()
             case 2: ScoreToAward = 1; break;  // 3등
             }
 
-            // TheGeniusPlayerState의 Score 속성에 점수 부여
             APlayerController* PlayerController = TopPlayer->GetPlayerController();
             if (PlayerController)
             {
                 AGeniusPlayerState* GeniusPlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
                 if (GeniusPlayerState)
                 {
-                    GeniusPlayerState->AddScore(ScoreToAward); // 점수 추가 함수 호출
+                    // 기존 점수에 추가
+                    GameInstance->AddPlayerScore(GeniusPlayerState, ScoreToAward);
+
+                    // 점수를 PlayerState에 업데이트
+                    int32 UpdatedScore = GameInstance->GetPlayerScore(GeniusPlayerState);
+                    GeniusPlayerState->SetPlayerScore(UpdatedScore);
 
                     // 로그 출력
                     UE_LOG(LogTemp, Log, TEXT("Awarding %d points to %s (Current Score: %d)"),
-                        ScoreToAward, *TopPlayer->GetPlayerName(), GeniusPlayerState->GetPlayerScore());
+                        ScoreToAward, *TopPlayer->GetPlayerName(), UpdatedScore);
+
+                    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+                    {
+                        if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
+                        {
+                            if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
+                            {
+                                MainGameWidget->UpdatePlayerList(PlayingPlayers);
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -248,6 +269,8 @@ void AEatCoinGameState::AwardTopPlayers()
         }
     }
 }
+
+
 
 void AEatCoinGameState::OnRep_MovePlayersToStart() const
 {
@@ -292,11 +315,4 @@ void AEatCoinGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     DOREPLIFETIME(AEatCoinGameState, PlayerCoinScores);
     DOREPLIFETIME(AEatCoinGameState, ECGameCountdownTime);
-}
-
-void AEatCoinGameState::TravelToNextLevel()
-{
-    // 특정 레벨로 이동하는 서버 트래블 명령 (임시: MainLevel)
-    UE_LOG(LogTemp, Log, TEXT("동작"));
-    GetWorld()->ServerTravel("/Game/Levels/MainLevel?listen");
 }

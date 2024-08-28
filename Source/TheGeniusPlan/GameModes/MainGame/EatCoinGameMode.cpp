@@ -60,8 +60,9 @@ void AEatCoinGameMode::PostLogin(APlayerController* NewPlayer)
 
 void AEatCoinGameMode::HandleGameStart()
 {
-    Super::HandleGameStart();
+   // Super::HandleGameStart();
 
+    TransitionToNextRound();
     SetECGameStartCountdownRule();
 }
 
@@ -103,7 +104,16 @@ void AEatCoinGameMode::HandleRoundEnd()
 
         // 게임 종료 처리
         // 필요에 따라 게임 종료 후 로직 추가 (예: 게임 메인 메뉴로 돌아가기, 서버 종료 등)
+        // 10초 후에 서버 트래블로 새 레벨로 이동
+        GetWorld()->GetTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameMode::HandleServerTravel, 10.0f, false);
     }
+}
+
+void AEatCoinGameMode::HandleServerTravel()
+{
+    // 서버 트래블을 통해 새로운 레벨로 이동
+    const FString NewLevelName = TEXT("MainLevel?listen"); // 이동할 레벨의 이름을 설정합니다.
+    GetWorld()->ServerTravel(NewLevelName);
 }
 
 

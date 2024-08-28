@@ -10,6 +10,7 @@
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "Components/TextBlock.h"
 #include "Engine/Engine.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 
 void UMainGameWidget::NativeConstruct()
 {
@@ -40,6 +41,13 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
         return;
     }
 
+    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
+    if (!GameInstance)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("GameInstance is null in AwardTopPlayers"));
+        return;
+    }
+
     // Create and add items
     TArray<UPlayerRankingData *> PlayerRankingDataArray;
 
@@ -50,6 +58,7 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
             UPlayerRankingData *PlayerRankingData = NewObject<UPlayerRankingData>(this);
             PlayerRankingData->PlayerName = PlayerState->GetPlayerName();
             PlayerRankingData->Score = PlayerState->GetPlayerScore();
+            // PlayerRankingData->Score = GameInstance->GetPlayerScore(PlayerState);
 
             PlayerRankingDataArray.Add(PlayerRankingData);
         }

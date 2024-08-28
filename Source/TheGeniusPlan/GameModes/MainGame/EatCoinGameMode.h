@@ -39,6 +39,12 @@ public:
 
     virtual void HandleRoundEnd() override;
 
+    // 게임 종료 후 레벨 이동
+    void HandleServerTravel();
+
+    // 서버 트래블 타이머 핸들러
+    FTimerHandle ServerTravelTimerHandle;
+
    // EatCoin 게임시작까지 남은 시간 카운트다운
     void SetECGameStartCountdownRule();
 

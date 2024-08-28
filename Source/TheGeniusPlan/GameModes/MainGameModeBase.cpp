@@ -33,7 +33,7 @@ AMainGameModeBase::AMainGameModeBase()
 	PlayerControllerClass = AMainHallPlayerController::StaticClass();
 
 	// 카운트다운 시간 (테스트 후 다른 시간으로 변경)
-	CountdownTimeInSeconds = 300;
+	CountdownTimeInSeconds = 60;
 }
 
 int32 AMainGameModeBase::GetTotalRound() const
@@ -64,27 +64,6 @@ void AMainGameModeBase::BeginPlay()
 		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
 	}
 
-	//UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
-	//if(GameInstance)
-	//{
-	//	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-	//	{
-	//		APlayerController* PlayerController = It->Get();
-	//		if (PlayerController)
-	//		{
-	//			AGeniusPlayerState* GeniusPlayerState = PlayerController->GetPlayerState<AGeniusPlayerState>();
-	//			if (GeniusPlayerState)
-	//			{
-	//				// 이전에 저장된 점수를 불러옴
-	//				int32 SavedScore = GameInstance->GetPlayerScore(GeniusPlayerState);
-	//				GeniusPlayerState->SetPlayerScore(SavedScore);
-	//			}
-	//		}
-	//	}
-	//}
-	
-
-
 	// 게임 시작
 
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
@@ -99,6 +78,7 @@ void AMainGameModeBase::HandleGameStart()
 	// }
 	// 첫번째 라운드 시작
 	TransitionToNextRound();
+	SetCountdownRule();
 }
 
 void AMainGameModeBase::TransitionToNextRound()
