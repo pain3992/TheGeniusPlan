@@ -43,6 +43,11 @@ void ACoin::BeginPlay()
 void ACoin::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    // Z축으로 코인을 회전시킴
+    FRotator NewRotation = GetActorRotation();
+    NewRotation.Yaw += DeltaTime * 100.0f; // 회전 속도 조절
+    SetActorRotation(NewRotation);
 }
 
 void ACoin::handleGetCoin_Implementation(AActor *GotCoinPlayer)

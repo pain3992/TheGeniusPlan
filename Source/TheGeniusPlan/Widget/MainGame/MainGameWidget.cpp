@@ -10,11 +10,21 @@
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "Components/TextBlock.h"
 #include "Engine/Engine.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 
 void UMainGameWidget::NativeConstruct()
 {
     Super::NativeConstruct();
     UE_LOG(LogTemp, Log, TEXT("UMainHallUserWidget::NativeConstruct called"));
+
+    // 게임 모드에 대한 참조 가져오기
+    if (GetWorld())
+    {
+        GameMode = Cast<AMainGameModeBase>(GetWorld()->GetAuthGameMode());
+    }
+
+    // 초기 라운드 정보 업데이트
+    UpdateRoundInfo();
 
     // 버튼 클릭 이벤트 처리
     if (Button_Hint)
@@ -31,6 +41,13 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
         return;
     }
 
+    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
+    if (!GameInstance)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("GameInstance is null in AwardTopPlayers"));
+        return;
+    }
+
     // Create and add items
     TArray<UPlayerRankingData *> PlayerRankingDataArray;
 
@@ -41,6 +58,7 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
             UPlayerRankingData *PlayerRankingData = NewObject<UPlayerRankingData>(this);
             PlayerRankingData->PlayerName = PlayerState->GetPlayerName();
             PlayerRankingData->Score = PlayerState->GetPlayerScore();
+          //  PlayerRankingData->Score = GameInstance->GetPlayerScore(PlayerState);
 
             PlayerRankingDataArray.Add(PlayerRankingData);
         }
@@ -78,6 +96,26 @@ void UMainGameWidget::OnHelpButtonClicked()
         MainGameHUD->ShowWidget(MainGameWidgetType::HelpWidget);
     }
 }
+
+void UMainGameWidget::UpdateRoundInfo()
+{
+    if (AMainGameStateBase* GameState = GetWorld()->GetGameState<AMainGameStateBase>())
+    {
+        int32 TotalRounds = GameState->TotalRound;
+        int32 CurrentRounds = GameState->CurrentRound;
+
+        if (Text_TotalRound)
+        {
+            Text_TotalRound->SetText(FText::AsNumber(TotalRounds));
+        }
+
+        if (Text_CurrentRound)
+        {
+            Text_CurrentRound->SetText(FText::AsNumber(CurrentRounds));
+        }
+    }
+}
+
 
 void UMainGameWidget::SetHUD(AMainGameHUD *InHUD)
 {

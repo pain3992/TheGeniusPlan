@@ -39,8 +39,6 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_OnCountdownFinished();
 
-
-
 	// EatCoin 게임시작까지 남은 카운트다운 시작 함수
 	UFUNCTION(BlueprintCallable, Category = "Countdown")
 	void StartECGameCount(int32 InitialCountdownTime);
@@ -60,9 +58,24 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_OnECGameCountdownFinished();
 
-	
-	FTimerHandle ECGameCountdownTimerHandle;
+	// 1-3위에게 랭크 점수 부여
+	void AwardTopPlayers();
 
+	UFUNCTION()
+	void OnRep_MovePlayersToStart() const;
+
+protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+private:
+	// EC 카운트다운 타이머 핸들러
+	FTimerHandle ECGameCountdownTimerHandle;
+
+	// 10초 후에 레벨 이동을 처리하는 함수 선언
+	void TravelToNextLevel();
+
+	// 마지막 라운드인지 여부를 체크
+	
+	// 레벨 이동 타이머 핸들러
+//	FTimerHandle ServerTravelTimerHandle;
 };

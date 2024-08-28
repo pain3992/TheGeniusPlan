@@ -97,7 +97,6 @@ void AEatCoinPlayerState::AddCoinScore(int32 CoinAmount)
 void AEatCoinPlayerState::OnRep_CoinScore() const
 {
     UE_LOG(LogTemp, Warning, TEXT("CoinScore updated: %d"), CoinScore);
-    UE_LOG(LogTemp, Warning, TEXT("왜 작동하지?"));
 
     if (GetWorld()->GetGameState<AEatCoinGameState>())
     {

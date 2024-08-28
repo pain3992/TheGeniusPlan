@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/PlayerRankingUserWidget.h"
 #include "TheGeniusPlan/gameModes/MainGameStateBase.h"
+#include "TheGeniusPlan/gameModes/MainGameModeBase.h"
 #include "TheGeniusPlan/Data/PlayerRankingData.h"
 #include "Components/ListView.h"
 #include "MainGameWidget.generated.h"
@@ -25,6 +26,10 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Countdown")
     void UpdateCountdownDisplay(int32 CountdownTimeInSeconds);
+
+    // 게임모드로부터 라운드 정보를 받아와 업데이트
+    UFUNCTION(BlueprintCallable, Category = "Game Info")
+    void UpdateRoundInfo();
 
 protected:
     virtual void NativeConstruct() override;
@@ -48,4 +53,15 @@ private:
 
     UPROPERTY(meta = (BindWidget))
     class UTextBlock *Text_Countdown;
+
+    // 게임 모드 참조
+    UPROPERTY()
+    AMainGameModeBase* GameMode;
+
+    // 위젯 텍스트 블록
+    UPROPERTY(meta = (BindWidget))
+    UTextBlock* Text_CurrentRound;
+
+    UPROPERTY(meta = (BindWidget))
+    UTextBlock* Text_TotalRound;
 };

@@ -10,6 +10,7 @@
 #include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "TheGeniusPlan/GameModes/MainGame/AAFGameModeBase.h"
+#include "TheGeniusPlan/GameModes/MainGame/EatCoinGameMode.h"
 #include "TheGeniusPlan/Player/MainHallPlayerController.h"
 #include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 
@@ -33,20 +34,39 @@ AMainGameModeBase::AMainGameModeBase()
 	PlayerControllerClass = AMainHallPlayerController::StaticClass();
 
 	// 카운트다운 시간 (테스트 후 다른 시간으로 변경)
-	CountdownTimeInSeconds = 300;
+	CountdownTimeInSeconds = 60;
+}
+
+int32 AMainGameModeBase::GetTotalRound() const
+{
+	return TotalRound;
+}
+
+int32 AMainGameModeBase::GetCurrentRound() const
+{
+	return CurrentRound;
 }
 
 void AMainGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// 게임 스테이트에 라운드 정보 전달
+	if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
+	{
+		MainGameState->SetTotalRound(TotalRound);
+		MainGameState->SetCurrentRound(CurrentRound);
+	}
+
 	// TEST: 메인 게임모드 시작시, 메인매치 게임 등록 (결합게임 모드, 오픈패스 게임 모드)
 	if (PossibleGameModes.Num() == 0)
 	{
-		PossibleGameModes.Add(AGyulhapGameMode::StaticClass());
+		PossibleGameModes.Add(AEatCoinGameMode::StaticClass());
 		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
 	}
+
 	// 게임 시작
+	HandleGameStart();
 
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
 }
@@ -60,6 +80,7 @@ void AMainGameModeBase::HandleGameStart()
 	// }
 	// 첫번째 라운드 시작
 	TransitionToNextRound();
+	SetCountdownRule();
 }
 
 void AMainGameModeBase::TransitionToNextRound()
@@ -68,6 +89,11 @@ void AMainGameModeBase::TransitionToNextRound()
 	{
 		// 라운드수 적용
 		CurrentRound++;
+
+		if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
+		{
+			MainGameState->SetCurrentRound(CurrentRound);
+		}
 		// 라운드 규칙 적용
 		SetGameRules();
 	}
@@ -181,9 +207,9 @@ void AMainGameModeBase::SelectNextGameMode()
 		{
 			LevelName = TEXT("AAFLevel");
 		}
-		else if(SelectedGameMode == AGyulhapGameMode::StaticClass())
+		else if(SelectedGameMode == AEatCoinGameMode::StaticClass())
 		{
-			LevelName = TEXT("GyulhapLevel");
+			LevelName = TEXT("ECLevel");
 		}
 
 		FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s"), *LevelName,*SelectedGameMode->GetName());

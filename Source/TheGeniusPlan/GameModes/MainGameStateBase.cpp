@@ -1,10 +1,10 @@
 #include "TheGeniusPlan/GameModes/MainGameStateBase.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
+#include "TheGeniusPlan/GameModes/MainGameModeBase.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"
-#include "MainGameModeBase.h"
 
 
 void AMainGameStateBase::AddPlayer(AGeniusPlayerState *NewPlayerState)
@@ -42,11 +42,29 @@ void AMainGameStateBase::StartCountdown(int32 InitialCountdownTime)
 {
     if (HasAuthority())
     {
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("StartCountdown"));
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("StartCountdown"));
         CountdownTime = InitialCountdownTime;
         OnRep_CountdownTime();
 
         GetWorld()->GetTimerManager().SetTimer(CountdownTimerHandle, this, &AMainGameStateBase::UpdateCountdown, 1.0f, true);
+    }
+}
+
+void AMainGameStateBase::SetTotalRound(int32 NewTotalRound)
+{
+    if (HasAuthority())
+    {
+        TotalRound = NewTotalRound;
+        OnRep_TotalRound();
+    }
+}
+
+void AMainGameStateBase::SetCurrentRound(int32 NewCurrentRound)
+{
+    if (HasAuthority())
+    {
+        CurrentRound = NewCurrentRound;
+        OnRep_CurrentRound();
     }
 }
 
@@ -59,6 +77,34 @@ void AMainGameStateBase::OnRep_CountdownTime() const
             if (UMainGameWidget *MainGameWidget = HUD->GetMainGameWidget())
             {
                 MainGameWidget->UpdateCountdownDisplay(CountdownTime);
+            }
+        }
+    }
+}
+
+void AMainGameStateBase::OnRep_TotalRound() const
+{
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
+        {
+            if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
+            {
+                MainGameWidget->UpdateRoundInfo();
+            }
+        }
+    }
+}
+
+void AMainGameStateBase::OnRep_CurrentRound() const
+{
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
+        {
+            if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
+            {
+                MainGameWidget->UpdateRoundInfo();
             }
         }
     }
@@ -107,4 +153,6 @@ void AMainGameStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &O
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     DOREPLIFETIME(AMainGameStateBase, CountdownTime);
     DOREPLIFETIME(AMainGameStateBase, PlayingPlayers);
+    DOREPLIFETIME(AMainGameStateBase, TotalRound);
+    DOREPLIFETIME(AMainGameStateBase, CurrentRound);
 }

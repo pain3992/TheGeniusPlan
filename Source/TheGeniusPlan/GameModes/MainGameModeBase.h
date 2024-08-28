@@ -22,7 +22,6 @@ public:
 	void SelectNextGameMode();
 
 	// 게임 시작 함수
-	UFUNCTION(BlueprintCallable, Category = "GameMode")
 	virtual void HandleGameStart();
 
 	// 라운드 종료 함수
@@ -32,7 +31,7 @@ public:
 	void CheckRoundWinner();
 
 	// 다음 라운드로 전환하는 함수
-	void TransitionToNextRound();
+	virtual void TransitionToNextRound();
 
 	// 게임 종료 및 승자 결정하는 함수
 	void EndGame(int32 WinningPlayerId);
@@ -46,19 +45,12 @@ public:
 	virtual void PostLogin(APlayerController *NewPlayer) override;
 	virtual void Logout(AController *Exiting) override;
 
-	// 코인 습득 시 점수가 오르는 함수 (테스트 후 삭제 예정)
-	//void AddCoinScore(APlayerState *PlayerState, int32 ScoreAmount);
-
 	// 카운트다운
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Rules", meta = (AllowPrivateAccess = "true"))
 	int32 CountdownTimeInSeconds;
 
 	FTimerHandle GameModeHandle;
 
-protected:
-	virtual void BeginPlay() override;
-
-private:
 	// 전체 라운드
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameRules", meta = (AllowPrivateAccess = "true"))
 	int32 TotalRound;
@@ -67,6 +59,18 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameRules", meta = (AllowPrivateAccess = "true"))
 	int32 CurrentRound;
 
+	// 전체 라운드 반환 함수
+	UFUNCTION(BlueprintCallable, Category = "Game Rules")
+	int32 GetTotalRound() const;
+
+	// 현재 라운드 반환 함수
+	UFUNCTION(BlueprintCallable, Category = "Game Rules")
+	int32 GetCurrentRound() const;
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
 	// 플레이어 ID, 스코어를 기록
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameRules", meta = (AllowPrivateAccess = "true"))
 	TMap<int32, int32> PlayerScores;
