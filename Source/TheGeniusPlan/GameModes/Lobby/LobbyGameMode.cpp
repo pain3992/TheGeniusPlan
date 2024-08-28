@@ -59,7 +59,7 @@ void ALobbyGameMode::HandleStartingNewPlayer_Implementation(APlayerController* N
 
 void ALobbyGameMode::TravelNewLevel()
 {
-	FString TravelURL = FString::Printf(TEXT("/Game/Levels/MainLevel?game=/Script/TheGeniusPlan.AAFGameModeBase"));
+	FString TravelURL = FString::Printf(TEXT("/Game/Levels/MainLevel?game=/Script/TheGeniusPlan.MainGameModeBase"));
 	GetWorld()->ServerTravel(TravelURL);
 }
 

@@ -31,6 +31,12 @@ void AAAFGameModeBase::BeginPlay()
 	}
 }
 
+void AAAFGameModeBase::TravelLevel()
+{
+	//FString TravelURL = FString::Printf(TEXT("/Game/Levels/MainLevel?game=/Script/TheGeniusPlan.AAFGameModeBase"));
+	//GetWorld()->ServerTravel(TravelURL);
+}
+
 AAAFGameModeBase::AAAFGameModeBase()
 {
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Script/Engine.Blueprint'/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter_C'"));

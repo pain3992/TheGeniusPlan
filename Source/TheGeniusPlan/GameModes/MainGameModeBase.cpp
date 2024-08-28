@@ -9,6 +9,9 @@
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
+#include "TheGeniusPlan/GameModes/MainGame/AAFGameModeBase.h"
+#include "TheGeniusPlan/Player/MainHallPlayerController.h"
+#include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 
 AMainGameModeBase::AMainGameModeBase()
 {
@@ -17,14 +20,17 @@ AMainGameModeBase::AMainGameModeBase()
 	CurrentRound = 0;
 	WinningScore = 10;
 
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
-	if (PlayerPawnBPClass.Class != nullptr)
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Script/Engine.Blueprint'/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter_C'"));
+
+	if (PlayerPawnBPClass.Succeeded())
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
-		HUDClass = AMainGameHUD::StaticClass();
-		GameStateClass = AMainGameStateBase::StaticClass();
-		PlayerStateClass = AGeniusPlayerState::StaticClass();
 	}
+
+	HUDClass = AMainGameHUD::StaticClass();
+	GameStateClass = AMainGameStateBase::StaticClass();
+	PlayerStateClass = AGeniusPlayerState::StaticClass();
+	PlayerControllerClass = AMainHallPlayerController::StaticClass();
 
 	// 카운트다운 시간 (테스트 후 다른 시간으로 변경)
 	CountdownTimeInSeconds = 300;
@@ -38,11 +44,11 @@ void AMainGameModeBase::BeginPlay()
 	if (PossibleGameModes.Num() == 0)
 	{
 		PossibleGameModes.Add(AGyulhapGameMode::StaticClass());
-		PossibleGameModes.Add(AOpenPassGameMode::StaticClass());
+		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
 	}
 	// 게임 시작
-	HandleGameStart();
-	SetCountdownRule();
+
+	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
 }
 
 void AMainGameModeBase::HandleGameStart()
@@ -92,7 +98,7 @@ void AMainGameModeBase::HandleRoundEnd()
 
 void AMainGameModeBase::CheckRoundWinner()
 {
-	for (const auto &PlayerScore : PlayerScores)
+	for (const auto& PlayerScore : PlayerScores)
 	{
 		if (PlayerScore.Value >= WinningScore)
 		{
@@ -124,13 +130,13 @@ void AMainGameModeBase::SetCountdownRule()
 	}
 }
 
-void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
+void AMainGameModeBase::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
+	if (AMainGameStateBase* MainGameState = GetGameState<AMainGameStateBase>())
 	{
-		if (AGeniusPlayerState *NewPlayerState = NewPlayer->GetPlayerState<AGeniusPlayerState>())
+		if (AGeniusPlayerState* NewPlayerState = NewPlayer->GetPlayerState<AGeniusPlayerState>())
 		{
 			MainGameState->AddPlayer(NewPlayerState);
 			// 플레이어 컨트롤러의 이름을 PlayerState에 설정합니다.
@@ -142,13 +148,13 @@ void AMainGameModeBase::PostLogin(APlayerController *NewPlayer)
 	}
 }
 
-void AMainGameModeBase::Logout(AController *Exiting)
+void AMainGameModeBase::Logout(AController* Exiting)
 {
 	Super::Logout(Exiting);
 
-	if (APlayerController *PlayerController = Cast<AGeniusPlayerController>(Exiting))
+	if (APlayerController* PlayerController = Cast<AGeniusPlayerController>(Exiting))
 	{
-		if (AMainGameStateBase *MainGameState = GetGameState<AMainGameStateBase>())
+		if (AMainGameStateBase* MainGameState = GetGameState<AMainGameStateBase>())
 		{
 			MainGameState->RemovePlayer(PlayerController->GetPlayerState<AGeniusPlayerState>());
 		}
@@ -167,9 +173,21 @@ void AMainGameModeBase::SelectNextGameMode()
 	{
 		int32 RandomIndex = FMath::RandRange(0, PossibleGameModes.Num() - 1);
 		TSubclassOf<AGameMode> SelectedGameMode = PossibleGameModes[RandomIndex];
+		PossibleGameModes.Remove(SelectedGameMode);
 
-		FString Options = FString::Printf(TEXT("?game=/Script/CoreUObject.Class'/Script/TheGeniusPlan.%s'"), *SelectedGameMode->GetName());
-		UGameplayStatics::OpenLevel(GetWorld(), FName(*GetWorld()->GetName()), true, Options);
+		FString LevelName;
+
+		if(SelectedGameMode == AAAFGameModeBase::StaticClass())
+		{
+			LevelName = TEXT("AAFLevel");
+		}
+		else if(SelectedGameMode == AGyulhapGameMode::StaticClass())
+		{
+			LevelName = TEXT("GyulhapLevel");
+		}
+
+		FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s"), *LevelName,*SelectedGameMode->GetName());
+		GetWorld()->ServerTravel(TravelURL);
 	}
 }
 

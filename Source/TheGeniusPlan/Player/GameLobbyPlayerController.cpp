@@ -10,7 +10,6 @@ void AGameLobbyPlayerController::BeginPlay()
 	Super::BeginPlay();
 	BindDispatcher();
 	CreateLobbyWidget();
-
 }
 
 AGameLobbyPlayerController::AGameLobbyPlayerController()

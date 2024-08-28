@@ -12,6 +12,7 @@ enum class RoomType : uint8
 	NONE UMETA(DisplayName = "NONE"),
 	WaitingRoom UMETA(DisplayName = "WaitingRoom"),
 	StudyRoom UMETA(DisplayName = "StudyRoom"),
+	MainHall UMETA(DisplayName = "MainHall"),
 
 };
 

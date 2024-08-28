@@ -53,6 +53,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Rules", meta = (AllowPrivateAccess = "true"))
 	int32 CountdownTimeInSeconds;
 
+	FTimerHandle GameModeHandle;
+
 protected:
 	virtual void BeginPlay() override;
 
