@@ -21,6 +21,10 @@ public:
     // 점수 저장 함수
     void SavePlayerScore(APlayerState* PlayerState, int32 Score);
 
+	// JangHun93
+	void SavePlayer(APlayerState* PlayerState);
+	APlayerState* FindPlayer(const APlayerState *PlayerState);
+
     // 점수 가져오기 함수
     int32 GetPlayerScore(APlayerState* PlayerState) const;
 
