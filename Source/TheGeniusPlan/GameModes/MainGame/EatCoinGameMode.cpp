@@ -15,6 +15,7 @@
 #include "TheGeniusPlan/Player/EatCoinPlayerState.h"
 #include "TheGeniusPlan/GameModes/MainGame/EatCoinGameState.h"
 #include "TheGeniusPlan/Player/EatCoinPlayerController.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 
 AEatCoinGameMode::AEatCoinGameMode()
 {
@@ -41,7 +42,13 @@ AEatCoinGameMode::AEatCoinGameMode()
 
 void AEatCoinGameMode::BeginPlay()
 {
-    // Super::BeginPlay();
+    UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GetClass()->GetName());
+    if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
+    {
+        MainGameState->SetTotalRound(TotalRound);
+        MainGameState->SetCurrentRound(CurrentRound);
+    }
+
     HandleGameStart();
 }
 
@@ -106,16 +113,42 @@ void AEatCoinGameMode::HandleRoundEnd()
         // 게임 종료 처리
         // 필요에 따라 게임 종료 후 로직 추가 (예: 게임 메인 메뉴로 돌아가기, 서버 종료 등)
         // 10초 후에 서버 트래블로 새 레벨로 이동
-        GetWorld()->GetTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameMode::HandleServerTravel, 10.0f, false);
+        GetWorld()->GetTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameMode::HandleServerTravel, 5.0f, false);
     }
 }
 
 void AEatCoinGameMode::HandleServerTravel()
 {
-    // 서버 트래블을 통해 새로운 레벨로 이동
-    const FString NewLevelName = TEXT("MainLevel?listen"); // 이동할 레벨의 이름을 설정합니다.
-    GetWorld()->ServerTravel(NewLevelName);
+    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
+    if (GameInstance)
+    {
+        GameInstance->SavedPlayerScores.Empty(); // 기존 데이터 초기화
+
+        for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+        {
+            APlayerController* PlayerController = It->Get();
+            if (PlayerController)
+            {
+                AEatCoinPlayerState* PlayerState = PlayerController->GetPlayerState<AEatCoinPlayerState>();
+                if (PlayerState)
+                {
+                    FPlayerScoreData ScoreData;
+                    ScoreData.PlayerName = PlayerState->GetPlayerName();
+                    ScoreData.Score = PlayerState->GetScore();
+                    GameInstance->SavedPlayerScores.Add(ScoreData);
+                }
+            }
+        }
+    }
+
+    FString LevelName = TEXT("MainLevel"); // 이동할 레벨의 이름을 설정
+    FString GameModeName = TEXT("AMainGameModeBase"); // 사용할 게임 모드의 이름을 설정
+
+    // ServerTravel 호출 시 게임 모드를 URL에 포함
+    FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s?listen"), *LevelName, *GameModeName);
+    GetWorld()->ServerTravel(TravelURL);
 }
+
 
 
 

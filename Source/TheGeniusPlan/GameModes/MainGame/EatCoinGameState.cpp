@@ -240,21 +240,8 @@ void AEatCoinGameState::AwardTopPlayers()
                 if (GeniusPlayerState)
                 {
                     // GeniusPlayerState에 점수 저장. 
-                    GeniusPlayerState->SetScore(ScoreToAward);
-                    // JangHun93: 잇코인에서 게임인스턴스의 Players에 GeniusPlayerState 저장
-                    GameInstance->SavePlayer(GeniusPlayerState);
-                    // Basak26: 기존 정상작동 코드
-                    // GameInstance->SavePlayerScore(GeniusPlayerState, ScoreToAward);
-                    // GameInstance->AddPlayerScore(GeniusPlayerState, ScoreToAward);
-
-                    // 점수를 PlayerState에 업데이트
-                    int32 UpdatedScore = GameInstance->GetPlayerScore(GeniusPlayerState);
-                    GeniusPlayerState->SetPlayerScore(UpdatedScore);
-
-                    // 로그 출력
-                    UE_LOG(LogTemp, Log, TEXT("Awarding %d points to %s (Current Score: %d)"),
-                        ScoreToAward, *TopPlayer->GetPlayerName(), UpdatedScore);
-
+                    GeniusPlayerState->AddScore(ScoreToAward);
+            
                     for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
                     {
                         if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
