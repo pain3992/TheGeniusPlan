@@ -34,8 +34,6 @@ void UAAFSelectWidget::ClickedAbundance()
 	{
 		UE_LOG(LogTemp, Error, TEXT("ClickedAbundance"));
 		PlayerState->ChangeLand(ESelectedLand::AbundanceLand);
-		UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(GetGameInstance());
-		GameInstance->GI_SelectedLand = ESelectedLand::AbundanceLand;
 	}
 
 	SelectedAbundance->SetVisibility(ESlateVisibility::Collapsed);
@@ -53,8 +51,6 @@ void UAAFSelectWidget::ClickedFamine()
 	{
 		UE_LOG(LogTemp, Error, TEXT("ClickedFamine"));
 		PlayerState->ChangeLand(ESelectedLand::FamineLand);
-		UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(GetGameInstance());
-		GameInstance->GI_SelectedLand = ESelectedLand::FamineLand;
 	}
 	
 	SelectedAbundance->SetVisibility(ESlateVisibility::Collapsed);

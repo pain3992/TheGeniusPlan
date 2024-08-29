@@ -23,5 +23,18 @@ public:
 	void TravelLevel();
 
 	AAAFGameModeBase();
+
+	UFUNCTION()
+	void BindGameState();
+
+	UFUNCTION()
+	void GameStepChange(EGameStep NewStep);
+
+	FTimerHandle GameModeTimerHandle;
+
+	UFUNCTION()
+	void ChangeEndGame();
+
+	FTimerHandle GameModeSecondHandle;
 };
 

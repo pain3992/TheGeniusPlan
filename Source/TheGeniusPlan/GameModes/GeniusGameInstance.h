@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "../Player/AAFPlayerState.h"
 #include "GeniusGameInstance.generated.h"
 
 
@@ -79,6 +78,9 @@ class THEGENIUSPLAN_API UGeniusGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 public:
+
+	UGeniusGameInstance();
+
 	UPROPERTY()
 	ESelectedLand GI_SelectedLand;
 
@@ -89,8 +91,18 @@ public:
 	TArray<FPlayerScoreData> SavedPlayerScores;
 
 	FOnLoginInfoUpdated OnLoginInfoUpdated;
+
 	void SetLoginInfo(const FLoginInfo& NewLoginInfo);
 	
 	UPROPERTY(BlueprintReadWrite, Category = "GameTracking")
 	TArray<FString> PlayedGameModes;
+
+	UPROPERTY()
+	uint8 Number;
+
+	UFUNCTION()
+	void SetWinnerPlayer();
+
+	UFUNCTION()
+	void PrintWinnerPlayer();
 };

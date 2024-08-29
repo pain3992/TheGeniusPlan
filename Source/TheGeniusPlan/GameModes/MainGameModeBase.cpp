@@ -260,6 +260,11 @@ void AMainGameModeBase::SelectNextGameMode()
 		FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s"), *LevelName,*SelectedGameMode->GetName());
 		GetWorld()->ServerTravel(TravelURL);
 	}
+	else
+	{
+		FString TravelURL = FString::Printf(TEXT("/Game/Levels/EndLevel?game=/Script/TheGeniusPlan.EndGameModeBase"));
+		GetWorld()->ServerTravel(TravelURL);
+	}
 }
 
 // void AMainGameModeBase::TransitionToNextRound()

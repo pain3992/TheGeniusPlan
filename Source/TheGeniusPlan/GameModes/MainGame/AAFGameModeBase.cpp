@@ -6,6 +6,7 @@
 #include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "TheGeniusPlan/Player/AAFPlayerState.h"
 #include "TheGeniusPlan/TheGeniusPlanCharacter.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 
 void AAAFGameModeBase::Tick(float DeltaSeconds)
 {
@@ -25,10 +26,19 @@ void AAAFGameModeBase::BeginPlay()
 {
 	CastGameState = Cast<AAAFGameState>(GameState);
 
-	if(CastGameState)
+	if (CastGameState)
 	{
-		UE_LOG(LogTemp, Error, TEXT("GameState Cast Success"));
+		UE_LOG(LogTemp, Error, TEXT("AAAFGameMode Base Start"));
 	}
+
+	UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(GetGameInstance());
+
+	if (GameInstance)
+	{
+		GameInstance->Number = 8;
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(GameModeSecondHandle, this, &AAAFGameModeBase::ChangeEndGame, 10.0f, false);
 }
 
 void AAAFGameModeBase::TravelLevel()
@@ -47,5 +57,34 @@ AAAFGameModeBase::AAAFGameModeBase()
 	PlayerControllerClass = AGeniusPlayerController::StaticClass();
 	GameStateClass = AAAFGameState::StaticClass();
 	PlayerStateClass = AAAFPlayerState::StaticClass();
+}
 
+void AAAFGameModeBase::BindGameState()
+{
+	if (CastGameState)
+	{
+		if (!CastGameState->EventDisptacherGameStepChange.IsBound())
+		{
+			CastGameState->EventDisptacherGameStepChange.AddDynamic(this, &AAAFGameModeBase::GameStepChange);
+			return;
+		}
+	}
+
+	FTimerManager& timerManger = GetWorld()->GetTimerManager();
+	timerManger.SetTimer(GameModeTimerHandle, this, &AAAFGameModeBase::BindGameState, 0.1f, false);
+}
+
+void AAAFGameModeBase::GameStepChange(EGameStep NewStep)
+{
+	if (NewStep == EGameStep::GameEnd)
+	{
+
+	}
+
+}
+
+void AAAFGameModeBase::ChangeEndGame()
+{
+	FString TravelURL = FString::Printf(TEXT("/Game/Levels/EndLevel?game=/Script/TheGeniusPlan.MainGameModeBase"));
+	GetWorld()->ServerTravel(TravelURL);
 }
