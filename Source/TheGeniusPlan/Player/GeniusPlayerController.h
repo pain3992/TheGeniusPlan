@@ -89,4 +89,7 @@ public:
 
     UFUNCTION()
     void MoveActor();
+
+    UPROPERTY()
+    TSubclassOf<class AAAFLandLoction> LandClass;
 };

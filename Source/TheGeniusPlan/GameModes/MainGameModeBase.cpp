@@ -78,8 +78,13 @@ void AMainGameModeBase::BeginPlay()
 
 	// 게임 시작
 	HandleGameStart();
+<<<<<<< HEAD
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
 
+=======
+
+	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 60.0f, false);
+>>>>>>> 05a74a1 (Location Actor 추가)
 }
 
 void AMainGameModeBase::HandleGameStart()

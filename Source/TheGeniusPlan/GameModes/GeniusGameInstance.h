@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "../Player/AAFPlayerState.h"
 #include "GeniusGameInstance.generated.h"
 
 

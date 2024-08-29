@@ -10,6 +10,8 @@
 #include "TheGeniusPlan/GameModes/MainGame/AAFGameState.h"
 #include "TheGeniusPlan/Widget/TimerWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
+#include "Kismet/GameplayStatics.h"
+#include "TheGeniusPlan/Actor/AAFLandLoction.h"
 
 
 AGeniusPlayerController::AGeniusPlayerController()
@@ -17,6 +19,7 @@ AGeniusPlayerController::AGeniusPlayerController()
 	static ConstructorHelpers::FClassFinder<UShowPlayerSeletedLandWidget> CShowLandWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_ShowSelectedLand.WG_ShowSelectedLand_C'"));
 	static ConstructorHelpers::FClassFinder<UAAFSelectWidget> CSelectWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_SelectedWidget.WG_SelectedWidget_C'"));
 	static ConstructorHelpers::FClassFinder<UTimerWidget> CTimerWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/SeongWon/MainGame/Widget/WG_Timer.WG_Timer_C'"));
+	static ConstructorHelpers::FClassFinder<AAAFLandLoction> ActorLocation(TEXT("/Script/CoreUObject.Class'/Script/TheGeniusPlan.AAFLandLoction'"));
 
 	if (CShowLandWidget.Succeeded())
 	{
@@ -29,6 +32,10 @@ AGeniusPlayerController::AGeniusPlayerController()
 	if (CTimerWidget.Succeeded())
 	{
 		TimerWidgetClass = CTimerWidget.Class;
+	}
+	if (ActorLocation.Succeeded())
+	{
+		LandClass = ActorLocation.Class;
 	}
 
 	TimerWidget = nullptr;
@@ -65,8 +72,8 @@ void AGeniusPlayerController::BeginPlay()
 
 	BindDispatcher();
 
-	//GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
-	//GameState->SetGameStep(EGameStep::Vote);
+	GameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
+	GameState->SetGameStep(EGameStep::Vote);
 
 	//CreateTimerWidget();
 
@@ -116,28 +123,8 @@ void AGeniusPlayerController::GameStepChange(EGameStep NewStep)
 			break;
 		case EGameStep::MoveActor:
 			SelectResultWidget->RemoveFromParent();
-			{
-				AAAFPlayerState* CastPlayerState = Cast<AAAFPlayerState>(PlayerState);
-
-				if (CastPlayerState)
-				{
-					switch (CastPlayerState->SelectedLand)
-					{
-					case ESelectedLand::FamineLand:
-						break;
-					case ESelectedLand::AbundanceLand:
-						break;
-
-					case ESelectedLand::None:
-						break;
-
-					default:
-						break;
-					}
-				}
-			}
+			MoveActor();
 			break;
-
 		case EGameStep::GameEnd:
 			GetPawn()->SetActorLocation(FVector(0, 0, 0));
 			break;
@@ -250,11 +237,11 @@ void AGeniusPlayerController::UpdateTimerWidget(double NewTime)
 
 	if (GameHUD)
 	{
-		if(GameHUD->MainGameWidget)
+		if (GameHUD->MainGameWidget)
 		{
 			GameHUD->MainGameWidget->UpdateCountdownDisplay(60);
 		}
-		
+
 	}
 
 	//if(TimerWidget != nullptr && TimerWidget->IsInViewport())
@@ -298,20 +285,29 @@ void AGeniusPlayerController::RequestServerChangeStep()
 void AGeniusPlayerController::MoveActor()
 {
 	AAAFPlayerState* CastPlayerState = Cast<AAAFPlayerState>(PlayerState);
+	TArray<AActor*> Locations = {};
+	FVector PlayerLocation = {};
+	check(LandClass);
 
-	UE_LOG(LogTemp, Error, TEXT("MoveActor Function Play"));
-	
-	switch (CastPlayerState->SelectedLand)
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), LandClass, Locations);
+
+	for (int i = 0; i < Locations.Num(); ++i)
 	{
-	case ESelectedLand::AbundanceLand:
-		break;
-	case ESelectedLand::FamineLand:
-		break;
-	case ESelectedLand::None:
-		break;
-	default:
-		break;
+		AAAFLandLoction* CastLocation = Cast<AAAFLandLoction>(Locations[i]);
+
+		if (CastLocation->LandType == ELandType::AbundanceLand)
+		{
+			if (CastPlayerState->SelectedLand == ESelectedLand::AbundanceLand)
+			{
+				PlayerLocation = Locations[i]->GetActorLocation();
+			}
+		}
+		else
+		{
+			PlayerLocation = Locations[i]->GetActorLocation();
+		}
 	}
+	GetPawn()->SetActorLocation(PlayerLocation);
 
 }
 
@@ -321,8 +317,8 @@ void AGeniusPlayerController::RequestChangetStepOnServer_Implementation(EGameSte
 	{
 		GameState->SetGameStep(NewStep);
 		GameState->SetLandCount(FirstLand, SecondsLand);
-		
-		GetWorld()->GetTimerManager().SetTimer(TimerHandlePC, this, &AGeniusPlayerController::RequestServerChangeStep, 10.0f, false);
+
+		GetWorld()->GetTimerManager().SetTimer(TimerHandlePC, this, &AGeniusPlayerController::RequestServerChangeStep, 20.0f, false);
 	}
 
 }
