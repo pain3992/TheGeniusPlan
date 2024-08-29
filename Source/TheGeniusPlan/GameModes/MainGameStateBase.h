@@ -15,6 +15,8 @@ class THEGENIUSPLAN_API AMainGameStateBase : public AGameState
     GENERATED_BODY()
 
 public:
+    virtual void BeginPlay() override;
+
     // 플레이어 목록
     UPROPERTY(ReplicatedUsing = OnRep_PlayingPlayers, VisibleAnywhere, BlueprintReadOnly, Category = "GameState")
     TArray<AGeniusPlayerState *> PlayingPlayers;
@@ -60,6 +62,9 @@ public:
     void SetCurrentRound(int32 NewCurrentRound);
 
 protected:
+    // Function to initialize player states, called with a delay
+  //  void InitializePlayerStates();
+
     // 카운트다운 변수가 변경될 때 클라이언트에서 호출되는 함수
     UFUNCTION()
     void OnRep_CountdownTime() const;

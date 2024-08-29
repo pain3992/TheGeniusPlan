@@ -5,6 +5,15 @@
 #include "TheGeniusPlan/Player/GeniusPlayerState.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
+
+void AMainGameStateBase::BeginPlay()
+{
+    Super::BeginPlay();
+
+    // Delay the player setup by a fraction of a second
+   // GetWorld()->GetTimerManager().SetTimerForNextTick(this, &AMainGameStateBase::InitializePlayerStates);
+}
 
 
 void AMainGameStateBase::AddPlayer(AGeniusPlayerState *NewPlayerState)
@@ -67,6 +76,24 @@ void AMainGameStateBase::SetCurrentRound(int32 NewCurrentRound)
         OnRep_CurrentRound();
     }
 }
+
+//void AMainGameStateBase::InitializePlayerStates()
+//{
+//    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
+//    if (GameInstance)
+//    {
+//        UE_LOG(LogTemp, Warning, TEXT("테스트1."));
+//        for (APlayerState* PlayerState : PlayerArray)
+//        {
+//            AGeniusPlayerState* GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
+//            if (GeniusPlayerState)
+//            {
+//                UE_LOG(LogTemp, Warning, TEXT("테스트2."));
+//                GeniusPlayerState->SetScore(GameInstance->SavedPlayerScore);
+//            }
+//        }
+//    }
+//}
 
 void AMainGameStateBase::OnRep_CountdownTime() const
 {

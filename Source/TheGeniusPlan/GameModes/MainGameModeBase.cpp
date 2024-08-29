@@ -13,6 +13,7 @@
 #include "TheGeniusPlan/GameModes/MainGame/EatCoinGameMode.h"
 #include "TheGeniusPlan/Player/MainHallPlayerController.h"
 #include "TheGeniusPlan/TheGeniusPlanCharacter.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 
 AMainGameModeBase::AMainGameModeBase()
 {
@@ -50,6 +51,8 @@ int32 AMainGameModeBase::GetCurrentRound() const
 void AMainGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+	// 현재 실행 중인 게임 모드의 이름을 로그로 출력
+	UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GetClass()->GetName());
 
 	// 게임 스테이트에 라운드 정보 전달
 	if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
@@ -167,12 +170,29 @@ void AMainGameModeBase::PostLogin(APlayerController* NewPlayer)
 			MainGameState->AddPlayer(NewPlayerState);
 			// 플레이어 컨트롤러의 이름을 PlayerState에 설정합니다.
 			NewPlayerState->PlayerName = NewPlayer->GetName();
-
-			// 기본 점수를 0으로 설정합니다.
-			NewPlayerState->SetPlayerScore(0);
+		}
+	}
+		UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		// NewPlayer에서 PlayerState를 가져옴
+		AGeniusPlayerState* NewPlayerState = NewPlayer->GetPlayerState<AGeniusPlayerState>();
+		if (NewPlayerState)
+		{
+			// 저장된 데이터와 현재 플레이어를 비교하여 점수 복원
+			for (const FPlayerScoreData& ScoreData : GameInstance->SavedPlayerScores)
+			{
+				if (NewPlayerState->GetPlayerName() == ScoreData.PlayerName)
+				{
+					NewPlayerState->SetScore(ScoreData.Score);
+					UE_LOG(LogTemp, Log, TEXT("Restored score for player %s: %d"), *ScoreData.PlayerName, ScoreData.Score);
+					break;
+				}
+			}
 		}
 	}
 }
+
 
 void AMainGameModeBase::Logout(AController* Exiting)
 {
