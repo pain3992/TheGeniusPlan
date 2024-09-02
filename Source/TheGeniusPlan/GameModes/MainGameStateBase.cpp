@@ -10,9 +10,6 @@
 void AMainGameStateBase::BeginPlay()
 {
     Super::BeginPlay();
-
-    // Delay the player setup by a fraction of a second
-   // GetWorld()->GetTimerManager().SetTimerForNextTick(this, &AMainGameStateBase::InitializePlayerStates);
 }
 
 
@@ -77,23 +74,14 @@ void AMainGameStateBase::SetCurrentRound(int32 NewCurrentRound)
     }
 }
 
-//void AMainGameStateBase::InitializePlayerStates()
-//{
-//    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
-//    if (GameInstance)
-//    {
-//        UE_LOG(LogTemp, Warning, TEXT("테스트1."));
-//        for (APlayerState* PlayerState : PlayerArray)
-//        {
-//            AGeniusPlayerState* GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
-//            if (GeniusPlayerState)
-//            {
-//                UE_LOG(LogTemp, Warning, TEXT("테스트2."));
-//                GeniusPlayerState->SetScore(GameInstance->SavedPlayerScore);
-//            }
-//        }
-//    }
-//}
+void AMainGameStateBase::SetPossibleGameModesCount(int32 Count)
+{
+    if (HasAuthority())
+    {
+        PossibleGameModesCount = Count;
+        OnRep_PossibleGameModesCount();
+    }
+}
 
 void AMainGameStateBase::OnRep_CountdownTime() const
 {
@@ -132,6 +120,20 @@ void AMainGameStateBase::OnRep_CurrentRound() const
             if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
             {
                 MainGameWidget->UpdateRoundInfo();
+            }
+        }
+    }
+}
+
+void AMainGameStateBase::OnRep_PossibleGameModesCount() const
+{
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
+        {
+            if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
+            {
+                MainGameWidget->UpdatePossibleGamesDisplay(PossibleGameModesCount);
             }
         }
     }
@@ -182,4 +184,5 @@ void AMainGameStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &O
     DOREPLIFETIME(AMainGameStateBase, PlayingPlayers);
     DOREPLIFETIME(AMainGameStateBase, TotalRound);
     DOREPLIFETIME(AMainGameStateBase, CurrentRound);
+    DOREPLIFETIME(AMainGameStateBase, PossibleGameModesCount);
 }

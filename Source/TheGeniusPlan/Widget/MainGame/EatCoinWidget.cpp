@@ -113,24 +113,8 @@ void UEatCoinWidget::MoveListViewToCenter()
 
                     UE_LOG(LogTemp, Warning, TEXT("Border의 X 포지션을 0으로 이동했습니다."));
                 }
-                else
-                {
-                    UE_LOG(LogTemp, Error, TEXT("Border의 Slot을 CanvasPanelSlot으로 캐스팅하는 데 실패했습니다."));
-                }
-            }
-            else
-            {
-                UE_LOG(LogTemp, Error, TEXT("VerticalBox의 부모가 UBorder가 아닙니다."));
             }
         }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("ListView의 부모가 UVerticalBox가 아닙니다."));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("ListView_CoinScore가 유효하지 않거나 부모가 없습니다."));
     }
 }
 
@@ -155,24 +139,8 @@ void UEatCoinWidget::MoveListViewToOriginalPosition()
 
                     UE_LOG(LogTemp, Warning, TEXT("Border의 X 포지션을 600으로 이동했습니다."));
                 }
-                else
-                {
-                    UE_LOG(LogTemp, Error, TEXT("Border의 Slot을 CanvasPanelSlot으로 캐스팅하는 데 실패했습니다."));
-                }
-            }
-            else
-            {
-                UE_LOG(LogTemp, Error, TEXT("VerticalBox의 부모가 UBorder가 아닙니다."));
             }
         }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("ListView의 부모가 UVerticalBox가 아닙니다."));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("ListView_CoinScore가 유효하지 않거나 부모가 없습니다."));
     }
 }
 

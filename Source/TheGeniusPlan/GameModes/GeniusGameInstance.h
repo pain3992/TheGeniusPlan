@@ -87,4 +87,7 @@ public:
 
 	FOnLoginInfoUpdated OnLoginInfoUpdated;
 	void SetLoginInfo(const FLoginInfo& NewLoginInfo);
+	
+	UPROPERTY(BlueprintReadWrite, Category = "GameTracking")
+	TArray<FString> PlayedGameModes;
 };

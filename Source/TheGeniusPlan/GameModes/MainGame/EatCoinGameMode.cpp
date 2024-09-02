@@ -31,10 +31,10 @@ AEatCoinGameMode::AEatCoinGameMode()
     PlayerStateClass = AEatCoinPlayerState::StaticClass();
 
     // 총 라운드
-    TotalRound = 3;
+    TotalRound = 1;
 
     // 라운드 시간
-	CountdownTimeInSeconds = 180;
+	CountdownTimeInSeconds = 10;
 
     // EatCoin 게임 시작까지 남은 시간
     ECGameStartCountdownTimeInSeconds = 10;
@@ -68,8 +68,6 @@ void AEatCoinGameMode::PostLogin(APlayerController* NewPlayer)
 
 void AEatCoinGameMode::HandleGameStart()
 {
-   // Super::HandleGameStart();
-
     TransitionToNextRound();
     SetECGameStartCountdownRule();
 }
@@ -113,7 +111,7 @@ void AEatCoinGameMode::HandleRoundEnd()
         // 게임 종료 처리
         // 필요에 따라 게임 종료 후 로직 추가 (예: 게임 메인 메뉴로 돌아가기, 서버 종료 등)
         // 10초 후에 서버 트래블로 새 레벨로 이동
-        GetWorld()->GetTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameMode::HandleServerTravel, 5.0f, false);
+        GetWorld()->GetTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameMode::HandleServerTravel, 10.0f, false);
     }
 }
 
@@ -141,7 +139,7 @@ void AEatCoinGameMode::HandleServerTravel()
         }
     }
 
-    FString LevelName = TEXT("MainLevel"); // 이동할 레벨의 이름을 설정
+    FString LevelName = TEXT("MainLevel");
     FString GameModeName = TEXT("AMainGameModeBase"); // 사용할 게임 모드의 이름을 설정
 
     // ServerTravel 호출 시 게임 모드를 URL에 포함

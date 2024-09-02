@@ -211,13 +211,6 @@ void AEatCoinGameState::AwardTopPlayers()
         return A.GetCoinScore() > B.GetCoinScore();
         });
 
-    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
-    if (!GameInstance)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("GameInstance is null in AwardTopPlayers"));
-        return;
-    }
-
     // 상위 3명의 플레이어에게 점수 부여
     const int32 NumTopPlayers = FMath::Min(3, PlayerCoinScores.Num());
     for (int32 i = 0; i < NumTopPlayers; ++i)
@@ -252,10 +245,6 @@ void AEatCoinGameState::AwardTopPlayers()
                             }
                         }
                     }
-                }
-                else
-                {
-                    UE_LOG(LogTemp, Warning, TEXT("Failed to get GeniusPlayerState for player: %s"), *TopPlayer->GetPlayerName());
                 }
             }
         }

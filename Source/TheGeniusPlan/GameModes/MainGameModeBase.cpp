@@ -54,7 +54,7 @@ void AMainGameModeBase::BeginPlay()
 	// 현재 실행 중인 게임 모드의 이름을 로그로 출력
 	UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GetClass()->GetName());
 
-	// 게임 스테이트에 라운드 정보 전달
+	// 게임 스테이트에 라운드 및 플레이 가능한 게임 모드 개수 정보 전달
 	if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
 	{
 		MainGameState->SetTotalRound(TotalRound);
@@ -66,6 +66,11 @@ void AMainGameModeBase::BeginPlay()
 	{
 		PossibleGameModes.Add(AEatCoinGameMode::StaticClass());
 		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
+
+		if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
+		{
+			MainGameState->SetPossibleGameModesCount(PossibleGameModes.Num());
+		}
 	}
 
 	// 게임 시작
@@ -215,11 +220,26 @@ void AMainGameModeBase::SelectNextGameMode()
 	/**
 	 * 1. 매인매치 게임모드 있을경우
 	 */
+
+	UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(GetGameInstance());
+	if (!GameInstance)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("GeniusGameInstance is not valid"));
+		return;
+	}
+
+	// Remove already played game modes
+	PossibleGameModes.RemoveAll([&](TSubclassOf<AGameMode> Mode) {
+		return GameInstance->PlayedGameModes.Contains(Mode->GetName());
+		});
+
 	if (PossibleGameModes.Num() > 0)
 	{
 		int32 RandomIndex = FMath::RandRange(0, PossibleGameModes.Num() - 1);
 		TSubclassOf<AGameMode> SelectedGameMode = PossibleGameModes[RandomIndex];
 		PossibleGameModes.Remove(SelectedGameMode);
+
+		GameInstance->PlayedGameModes.Add(SelectedGameMode->GetName());
 
 		FString LevelName;
 

@@ -31,6 +31,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Game Info")
     void UpdateRoundInfo();
 
+    // PossibleGameModes 개수를 업데이트
+    UFUNCTION(BlueprintCallable, Category = "Game Info")
+    void UpdatePossibleGamesDisplay(int32 PossibleGameModesCount);
+
 protected:
     virtual void NativeConstruct() override;
 
@@ -40,6 +44,9 @@ protected:
 
     UPROPERTY(meta = (BindWidget))
     class UButton *Button_Hint;
+
+    UPROPERTY(meta = (BindWidget))
+    UTextBlock* Text_PossibleGames;
 
     UFUNCTION()
     void OnHelpButtonClicked();
