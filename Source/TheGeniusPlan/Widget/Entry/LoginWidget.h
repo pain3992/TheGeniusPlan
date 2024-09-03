@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Interfaces/IHttpRequest.h"
 #include "LoginWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class THEGENIUSPLAN_API ULoginWidget : public UUserWidget
@@ -27,7 +28,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
 	TObjectPtr<class AEntryHUD> EntryHUD;
+
 protected:
+	void OnHttpResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonLogin;
 
