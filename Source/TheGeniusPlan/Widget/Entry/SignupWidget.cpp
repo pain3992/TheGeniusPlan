@@ -4,7 +4,10 @@
 #include "TheGeniusPlan/widget/Entry/SignupWidget.h"
 #include "Components/Button.h"
 #include "Components/EditableText.h"
+#include "Kismet/GameplayStatics.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 #include "TheGeniusPlan/Http/HttpRequestHelper.h"
+#include "TheGeniusPlan/HUD/EntryHUD.h"
 
 void USignupWidget::NativeConstruct()
 {
@@ -43,7 +46,6 @@ void USignupWidget::ClickedButtonSignup()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("HUD is Null"));
 	}
-	// SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void USignupWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> JsonResponse,
@@ -59,9 +61,25 @@ void USignupWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> 
 		int32 ID = JsonData->GetIntegerField(TEXT("id"));
 		FString LoginID = JsonData->GetStringField(ParseLoginID);
 		FString UserName = JsonData->GetStringField(ParseUserName);
-		// 회원가입 후 바로 로그인 처리
 
+		// 회원가입 후 바로 로그인 처리
 		UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %s"), *LoginID, *UserName);
+
+		// GeniusGameInstance의 LoginInfo에 로그인 정보 저장
+		if (UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+		{
+			GameInstance->LoginInfo.bIsLoggedIn = true;
+			GameInstance->LoginInfo.LoginID = LoginID;
+			GameInstance->LoginInfo.ID = ID;
+			GameInstance->LoginInfo.UserName = UserName;
+
+			SetVisibility(ESlateVisibility::Collapsed);
+			EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("GameInstance is Null"));
+		}
 	}
 	else
 	{
