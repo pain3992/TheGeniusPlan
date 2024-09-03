@@ -27,6 +27,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
 	TObjectPtr<class AEntryHUD> EntryHUD;
+
+	UPROPERTY()
+	TObjectPtr<class ULoginWidget> LoginWidget;
 protected:
 UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonGameStart;

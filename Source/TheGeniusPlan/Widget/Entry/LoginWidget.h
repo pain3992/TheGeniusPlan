@@ -29,6 +29,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
 	TObjectPtr<class AEntryHUD> EntryHUD;
 
+	// 로그인 위젯 입력값 (ID, Password) 초기화
+	void Reset() const;
+
 protected:
 	void OnHttpResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 

@@ -43,6 +43,9 @@ void UEntryWidget::ClickedQuit()
 {
 	if (EntryHUD)
 	{
+		// 로그아웃시 로그인위젯 입력값 초기화
+		EntryHUD->ResetWidget(EntryWidgetType::LoginWidget);
+		// 로그인위젯으로 전환
 		EntryHUD->ShowWidget(EntryWidgetType::LoginWidget);
 	}
 }

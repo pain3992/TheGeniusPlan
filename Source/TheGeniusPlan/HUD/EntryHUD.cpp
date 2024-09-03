@@ -123,3 +123,31 @@ void AEntryHUD::ShowWidget(EntryWidgetType type) const
 		break;
 	}
 }
+
+void AEntryHUD::ResetWidget(const EntryWidgetType type) const
+{
+	switch (type)
+	{
+	case EntryWidgetType::NONE:
+		break;
+	case EntryWidgetType::LoginWidget:
+		LoginWidget->Reset();
+		break;
+	case EntryWidgetType::EntryWidget:
+		// EntryWidget->Reset();
+		break;
+	case EntryWidgetType::LobbyWidget:
+		// LobbyWidget->Reset();
+		break;
+	case EntryWidgetType::OptionWidget:
+		// OptionWidget->Reset();
+		break;
+	case EntryWidgetType::SignupWidget:
+		// SignupWidget->Reset();
+		break;
+	case EntryWidgetType::MAX:
+		break;
+	default:
+		break;
+	}
+}

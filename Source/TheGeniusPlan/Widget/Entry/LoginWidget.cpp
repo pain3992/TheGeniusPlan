@@ -3,6 +3,7 @@
 #include "TheGeniusPlan/Widget/Entry/LoginWidget.h"
 
 #include "Components/Button.h"
+#include "Components/EditableTextBox.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "TheGeniusPlan/Http/HttpRequestHelper.h"
 #include "TheGeniusPlan/HUD/EntryHUD.h"
@@ -32,8 +33,8 @@ void ULoginWidget::ClickedLogin()
 		FString Url = TEXT("http://localhost:3000/user/login");
 		// JSON 객체 생성
 		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
-		JsonObject->SetStringField(TEXT("login_id"), TEXT("123"));
-		JsonObject->SetStringField(TEXT("password"), TEXT("123"));
+		JsonObject->SetStringField(TEXT("login_id"), EditableTextID->GetText().ToString());
+		JsonObject->SetStringField(TEXT("password"), EditableTextPassword->GetText().ToString());
 
 		// HTTP 요청 보내기 (POST 요청 예시)
 		UHttpRequstHelper::SendPostRequest(
@@ -48,6 +49,18 @@ void ULoginWidget::ClickedLogin()
 	}
 }
 
+void ULoginWidget::Reset() const
+{
+	if (EditableTextID)
+	{
+		EditableTextID->SetText(FText::FromString(TEXT("")));
+	}
+	if (EditableTextPassword)
+	{
+		EditableTextPassword->SetText(FText::FromString(TEXT("")));
+	}
+}
+
 void ULoginWidget::OnHttpResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
 {
 	if (bWasSuccessful && Response.IsValid())
@@ -57,13 +70,24 @@ void ULoginWidget::OnHttpResponse(FHttpRequestPtr Request, FHttpResponsePtr Resp
 
 		if (FJsonSerializer::Deserialize(Reader, JsonResponse) && JsonResponse.IsValid())
 		{
-			FStringView ParseLoginID(TEXT("login_id"));
-			FStringView ParseUserName(TEXT("username"));
-			FString LoginID = JsonResponse->GetStringField(ParseLoginID);
-			FString UserName = JsonResponse->GetStringField(ParseUserName);
-			UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %d"), *LoginID, *UserName);
+			if (JsonResponse->HasField(TEXT("data")))
+			{
+				TSharedPtr<FJsonObject> JsonData = JsonResponse->GetObjectField(TEXT("data"));
+				FStringView ParseLoginID(TEXT("login_id"));
+				FStringView ParseUserName(TEXT("username"));
 
-			EntryHUD->ShowWidget(EntryWidgetType::EntryWidget);
+				FString LoginID = JsonData->GetStringField(ParseLoginID);
+				FString UserName = JsonData->GetStringField(ParseUserName);
+				UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %s"), *LoginID, *UserName);
+
+				EntryHUD->ShowWidget(EntryWidgetType::EntryWidget);
+			}
+			else
+			{
+				FStringView ParseErrorMessage(TEXT("message"));
+				FString ErrorMessage = JsonResponse->GetStringField(ParseErrorMessage);
+				UE_LOG(LogTemp, Log, TEXT("ErrorMessage: %s"), *ErrorMessage);
+			}
 		}
 		else
 		{
