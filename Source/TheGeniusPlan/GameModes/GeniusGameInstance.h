@@ -18,6 +18,31 @@ struct FPlayerScoreData
 	UPROPERTY(BlueprintReadWrite, Category = "Score")
 	int32 Score;
 };
+
+USTRUCT(BlueprintType)
+struct FLoginInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	bool bIsLoggedIn;
+
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	FString LoginID;
+
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	int32 ID;
+
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	FString UserName;
+
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	int32 Ranking;
+
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	int32 Score;
+};
+
 UCLASS()
 class THEGENIUSPLAN_API UGeniusGameInstance : public UGameInstance
 {
@@ -26,6 +51,9 @@ class THEGENIUSPLAN_API UGeniusGameInstance : public UGameInstance
 public:
 	UPROPERTY()
 	ESelectedLand GI_SelectedLand;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Player")
+	FLoginInfo LoginInfo;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Score")
 	TArray<FPlayerScoreData> SavedPlayerScores;
