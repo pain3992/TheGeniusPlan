@@ -6,13 +6,15 @@
 #include "Blueprint/UserWidget.h"
 #include "LoginWidget.generated.h"
 
+
 /**
- * 
+ *
  */
 UCLASS()
 class THEGENIUSPLAN_API ULoginWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
 public:
 	virtual void NativeConstruct() override;
 
@@ -27,7 +29,13 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
 	TObjectPtr<class AEntryHUD> EntryHUD;
+
+	// 로그인 위젯 입력값 (ID, Password) 초기화
+	void Reset() const;
+
 protected:
+	void OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> JsonResponse, const FString& ErrorMessage);
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonLogin;
 
@@ -38,8 +46,8 @@ protected:
 	TObjectPtr<class UButton> ButtonQuit;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditableTextID;
+	TObjectPtr<class UEditableTextBox> EditableTextLoginID;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditableTextPassword;
+	TObjectPtr<class UEditableTextBox> EditableTextLoginPassword;
 };

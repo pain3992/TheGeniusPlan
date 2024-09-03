@@ -34,6 +34,9 @@ public:
 	UFUNCTION()
 	void ShowWidget(EntryWidgetType type) const;
 
+	UFUNCTION()
+	void ResetWidget(EntryWidgetType type) const;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "WidgetClass")
 	TSubclassOf<class ULoginWidget> LoginWidgetClass;
 

@@ -16,6 +16,8 @@ Content/.DS_Store
 Content/Characters
 Content/LevelMST
 
+Packaged/
+
 
 # Compiled Object files
 *.slo

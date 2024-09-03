@@ -27,11 +27,23 @@ public:
 	TObjectPtr<class AEntryHUD> EntryHUD;
 
 protected:
-
+	void OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> JsonResponse, const FString& ErrorMessage);
+	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonSignup;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UButton> ButtonCansel;
-	
+	TObjectPtr<class UButton> ButtonCancel;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UEditableText> EditableTextID;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UEditableText> EditableTextUsername;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UEditableText> EditableTextPassword;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UEditableText> EditableTextPasswordCheck;
 };

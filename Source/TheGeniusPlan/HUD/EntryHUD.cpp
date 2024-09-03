@@ -1,5 +1,4 @@
 #include "TheGeniusPlan/HUD/EntryHUD.h"
-
 #include "TheGeniusPlan/Widget/Entry/EntryWidget.h"
 #include "TheGeniusPlan/Widget/Entry/LobbyWidget.h"
 #include "TheGeniusPlan/Widget/Entry/LoginWidget.h"
@@ -11,7 +10,7 @@ AEntryHUD::AEntryHUD()
 	static ConstructorHelpers::FClassFinder<ULoginWidget> CLoginWidget(TEXT("/Game/UI/Widget/Entry/WBP_Login.WBP_Login_C"));
 	static ConstructorHelpers::FClassFinder<UEntryWidget> CEntryWidget(TEXT("/Game/UI/Widget/Entry/WBP_Entry.WBP_Entry_C"));
 	static ConstructorHelpers::FClassFinder<ULobbyWidget> CLobbyWidget(TEXT("/Game/UI/Widget/Lobby/WBP_Lobby.WBP_Lobby_C"));
-	static ConstructorHelpers::FClassFinder<UUserWidget> CLoadingWidget(TEXT("/Game/UI/Widget/WBP_Loading.WBP_Loading_C"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> CLoadingWidget(TEXT("/Game/UI/Widget/Entry/WBP_Loading.WBP_Loading_C"));
 	static ConstructorHelpers::FClassFinder<USignupWidget> CSignupWidget(TEXT("/Game/UI/Widget/Entry/WBP_Signup.WBP_Signup_C"));
 	static ConstructorHelpers::FClassFinder<UOptionWidget> COptionWidget(TEXT("/Game/UI/Widget/Entry/WBP_GameOption.WBP_GameOption_C"));
 
@@ -116,6 +115,34 @@ void AEntryHUD::ShowWidget(EntryWidgetType type) const
 		break;
 	case EntryWidgetType::SignupWidget:
 		SignupWidget->SetVisibility(ESlateVisibility::Visible);
+		break;
+	case EntryWidgetType::MAX:
+		break;
+	default:
+		break;
+	}
+}
+
+void AEntryHUD::ResetWidget(const EntryWidgetType type) const
+{
+	switch (type)
+	{
+	case EntryWidgetType::NONE:
+		break;
+	case EntryWidgetType::LoginWidget:
+		LoginWidget->Reset();
+		break;
+	case EntryWidgetType::EntryWidget:
+		// EntryWidget->Reset();
+		break;
+	case EntryWidgetType::LobbyWidget:
+		// LobbyWidget->Reset();
+		break;
+	case EntryWidgetType::OptionWidget:
+		// OptionWidget->Reset();
+		break;
+	case EntryWidgetType::SignupWidget:
+		// SignupWidget->Reset();
 		break;
 	case EntryWidgetType::MAX:
 		break;

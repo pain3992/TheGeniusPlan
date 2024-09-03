@@ -298,6 +298,281 @@
 				}
 			},
 			{
+				"label": "TheGeniusPlanClient Mac Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Debug",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Debug",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanClient Mac Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Debug",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"DebugGame",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"DebugGame",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanClient Mac DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"DebugGame",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Development",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Development",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanClient Mac Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Development",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Test Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Test",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Test Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Test",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanClient Mac Test Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Test Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Test",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Shipping Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Shipping",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Shipping Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Shipping",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanClient Mac Shipping Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanClient Mac Shipping Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanClient",
+					"Mac",
+					"Shipping",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
 				"label": "TheGeniusPlanEditor Mac Debug Build",
 				"group": "build",
 				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
@@ -461,6 +736,281 @@
 				"options": {
 					"cwd": "/Users/Shared/Epic Games/UE_5.4"
 				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Debug",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Debug",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanServer Mac Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Debug",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"DebugGame",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"DebugGame",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanServer Mac DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"DebugGame",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Development",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Development",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanServer Mac Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Development",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Test Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Test",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Test Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Test",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanServer Mac Test Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Test Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Test",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Shipping Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Shipping",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Shipping Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Shipping",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TheGeniusPlanServer Mac Shipping Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TheGeniusPlanServer Mac Shipping Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TheGeniusPlanServer",
+					"Mac",
+					"Shipping",
+					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
 			}
 		]
 	},
@@ -518,6 +1068,56 @@
 				"type": "lldb"
 			},
 			{
+				"name": "Launch TheGeniusPlanClient (Debug)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealClient-Mac-Debug.app/Contents/MacOS/UnrealClient-Mac-Debug",
+				"preLaunchTask": "TheGeniusPlanClient Mac Debug Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanClient (DebugGame)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealClient-Mac-DebugGame.app/Contents/MacOS/UnrealClient-Mac-DebugGame",
+				"preLaunchTask": "TheGeniusPlanClient Mac DebugGame Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanClient (Development)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealClient.app/Contents/MacOS/UnrealClient",
+				"preLaunchTask": "TheGeniusPlanClient Mac Development Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanClient (Test)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealClient-Mac-Test.app/Contents/MacOS/UnrealClient-Mac-Test",
+				"preLaunchTask": "TheGeniusPlanClient Mac Test Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanClient (Shipping)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealClient-Mac-Shipping.app/Contents/MacOS/UnrealClient-Mac-Shipping",
+				"preLaunchTask": "TheGeniusPlanClient Mac Shipping Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
 				"name": "Launch TheGeniusPlanEditor (Debug)",
 				"request": "launch",
 				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor-Mac-Debug.app/Contents/MacOS/UnrealEditor-Mac-Debug",
@@ -546,6 +1146,56 @@
 				"preLaunchTask": "TheGeniusPlanEditor Mac Development Build",
 				"args": [
 					"/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/TheGeniusPlan.uproject"
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanServer (Debug)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealServer-Mac-Debug.app/Contents/MacOS/UnrealServer-Mac-Debug",
+				"preLaunchTask": "TheGeniusPlanServer Mac Debug Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanServer (DebugGame)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealServer-Mac-DebugGame.app/Contents/MacOS/UnrealServer-Mac-DebugGame",
+				"preLaunchTask": "TheGeniusPlanServer Mac DebugGame Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanServer (Development)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealServer.app/Contents/MacOS/UnrealServer",
+				"preLaunchTask": "TheGeniusPlanServer Mac Development Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanServer (Test)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealServer-Mac-Test.app/Contents/MacOS/UnrealServer-Mac-Test",
+				"preLaunchTask": "TheGeniusPlanServer Mac Test Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TheGeniusPlanServer (Shipping)",
+				"request": "launch",
+				"program": "/Users/janghun/Study/EteverseProjects/Origin/TheGeniusPlan/Binaries/Mac/UnrealServer-Mac-Shipping.app/Contents/MacOS/UnrealServer-Mac-Shipping",
+				"preLaunchTask": "TheGeniusPlanServer Mac Shipping Build",
+				"args": [
 				],
 				"cwd": "/Users/Shared/Epic Games/UE_5.4",
 				"type": "lldb"
