@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TheGeniusPlan/Widget/Entry/LoginWidget.h"
-
 #include "Components/Button.h"
 #include "Components/EditableTextBox.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -28,13 +27,13 @@ void ULoginWidget::NativeConstruct()
 
 void ULoginWidget::ClickedLogin()
 {
-	if (EntryHUD && EditableTextID && EditableTextPassword)
+	if (EntryHUD && EditableTextLoginID && EditableTextLoginPassword)
 	{
 		FString Url = TEXT("http://127.0.0.1:3000/user/login");
 		// JSON 객체 생성
 		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
-		JsonObject->SetStringField(TEXT("login_id"), EditableTextID->GetText().ToString());
-		JsonObject->SetStringField(TEXT("password"), EditableTextPassword->GetText().ToString());
+		JsonObject->SetStringField(TEXT("login_id"), EditableTextLoginID->GetText().ToString());
+		JsonObject->SetStringField(TEXT("password"), EditableTextLoginPassword->GetText().ToString());
 
 		// HTTP 요청 보내기 (POST 요청 예시)
 		// UHttpRequstHelper::SendPostRequest(Url, JsonObject, FHttpResponseDelegate::CreateUObject(this, &ULoginWidget::OnHttpResponse));
@@ -48,13 +47,13 @@ void ULoginWidget::ClickedLogin()
 
 void ULoginWidget::Reset() const
 {
-	if (EditableTextID)
+	if (EditableTextLoginID)
 	{
-		EditableTextID->SetText(FText::FromString(TEXT("")));
+		EditableTextLoginID->SetText(FText::FromString(TEXT("")));
 	}
-	if (EditableTextPassword)
+	if (EditableTextLoginPassword)
 	{
-		EditableTextPassword->SetText(FText::FromString(TEXT("")));
+		EditableTextLoginPassword->SetText(FText::FromString(TEXT("")));
 	}
 }
 
@@ -73,9 +72,7 @@ void ULoginWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> J
 	}
 	else
 	{
-		FStringView ParseErrorMessage(TEXT("message"));
-		FString ErrorMessage = JsonResponse->GetStringField(ParseErrorMessage);
-		UE_LOG(LogTemp, Log, TEXT("ErrorMessage: %s"), *ErrorMessage);
+		UE_LOG(LogTemp, Error, TEXT("HTTP Request failed: %s"), *ErrorMessage);
 	}
 }
 

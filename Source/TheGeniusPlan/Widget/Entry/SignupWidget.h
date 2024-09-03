@@ -33,7 +33,7 @@ protected:
 	TObjectPtr<class UButton> ButtonSignup;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UButton> ButtonCansel;
+	TObjectPtr<class UButton> ButtonCancel;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UEditableText> EditableTextID;
@@ -42,8 +42,8 @@ protected:
 	TObjectPtr<class UEditableText> EditableTextUsername;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableText> EditableSignupPassword;
+	TObjectPtr<class UEditableText> EditableTextPassword;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableText> EditableSignupPasswordCheck;
+	TObjectPtr<class UEditableText> EditableTextPasswordCheck;
 };

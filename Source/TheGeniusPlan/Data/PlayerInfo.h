@@ -1,17 +1,19 @@
 #pragma once
 
-// 유저 로그인 정보
-USTRUCT(BlueprintType)
-struct FPlayerInfo
+struct PlayerInfo
 {
-	GENERATED_BODY()
-
-	UPROPERTY(BlueprintReadWrite, Category = "PlayerInfo")
-	int32 ID;
-
-	UPROPERTY(BlurprintReadWrite, Category = "PlayerInfo")
+	// Player's login id
 	FString LoginID;
 
-	UPROPERTY(BlueprintReadWrite, Category = "PlayerInfo")
-	FString Username;
+	// Player's ID typeof int32
+	int32 ID;
+
+	// Player's Username
+	FString UserName;
+
+	// Player's Ranking
+	int32 Ranking;
+
+	// Player's Score
+	int32 Score;
 };

@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "LoginWidget.generated.h"
 
+
 /**
  *
  */
@@ -45,8 +46,8 @@ protected:
 	TObjectPtr<class UButton> ButtonQuit;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditableTextID;
+	TObjectPtr<class UEditableTextBox> EditableTextLoginID;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditableTextPassword;
+	TObjectPtr<class UEditableTextBox> EditableTextLoginPassword;
 };
