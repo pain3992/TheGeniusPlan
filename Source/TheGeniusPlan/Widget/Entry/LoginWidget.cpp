@@ -30,18 +30,15 @@ void ULoginWidget::ClickedLogin()
 {
 	if (EntryHUD && EditableTextID && EditableTextPassword)
 	{
-		FString Url = TEXT("http://localhost:3000/user/login");
+		FString Url = TEXT("http://127.0.0.1:3000/user/login");
 		// JSON 객체 생성
 		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
 		JsonObject->SetStringField(TEXT("login_id"), EditableTextID->GetText().ToString());
 		JsonObject->SetStringField(TEXT("password"), EditableTextPassword->GetText().ToString());
 
 		// HTTP 요청 보내기 (POST 요청 예시)
-		UHttpRequstHelper::SendPostRequest(
-			Url,
-			JsonObject,
-			FHttpResponseDelegate::CreateUObject(this, &ULoginWidget::OnHttpResponse));
-		UE_LOG(LogTemp, Warning, TEXT("HUD is Vaild"));
+		// UHttpRequstHelper::SendPostRequest(Url, JsonObject, FHttpResponseDelegate::CreateUObject(this, &ULoginWidget::OnHttpResponse));
+		UHttpRequstHelper::SendPostRequest(Url, JsonObject, FHttpResponseDelegate::CreateUObject(this, &ULoginWidget::OnHttpResponse));
 	}
 	else
 	{
@@ -61,42 +58,24 @@ void ULoginWidget::Reset() const
 	}
 }
 
-void ULoginWidget::OnHttpResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+void ULoginWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> JsonResponse, const FString& ErrorMessage)
 {
-	if (bWasSuccessful && Response.IsValid())
+	if (bWasSuccessful)
 	{
-		TSharedPtr<FJsonObject> JsonResponse;
-		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
+		TSharedPtr<FJsonObject> JsonData = JsonResponse->GetObjectField(TEXT("data"));
+		FStringView ParseLoginID(TEXT("login_id"));
+		FStringView ParseUserName(TEXT("username"));
+		FString LoginID = JsonData->GetStringField(ParseLoginID);
+		FString UserName = JsonData->GetStringField(ParseUserName);
 
-		if (FJsonSerializer::Deserialize(Reader, JsonResponse) && JsonResponse.IsValid())
-		{
-			if (JsonResponse->HasField(TEXT("data")))
-			{
-				TSharedPtr<FJsonObject> JsonData = JsonResponse->GetObjectField(TEXT("data"));
-				FStringView ParseLoginID(TEXT("login_id"));
-				FStringView ParseUserName(TEXT("username"));
-
-				FString LoginID = JsonData->GetStringField(ParseLoginID);
-				FString UserName = JsonData->GetStringField(ParseUserName);
-				UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %s"), *LoginID, *UserName);
-
-				EntryHUD->ShowWidget(EntryWidgetType::EntryWidget);
-			}
-			else
-			{
-				FStringView ParseErrorMessage(TEXT("message"));
-				FString ErrorMessage = JsonResponse->GetStringField(ParseErrorMessage);
-				UE_LOG(LogTemp, Log, TEXT("ErrorMessage: %s"), *ErrorMessage);
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to parse JSON response"));
-		}
+		UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %s"), *LoginID, *UserName);
+		EntryHUD->ShowWidget(EntryWidgetType::EntryWidget);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HTTP Request failed"));
+		FStringView ParseErrorMessage(TEXT("message"));
+		FString ErrorMessage = JsonResponse->GetStringField(ParseErrorMessage);
+		UE_LOG(LogTemp, Log, TEXT("ErrorMessage: %s"), *ErrorMessage);
 	}
 }
 

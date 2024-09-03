@@ -2,6 +2,39 @@
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
 
+void UHttpRequstHelper::HandleResponse(FHttpResponsePtr Response, bool bWasSuccessful, FHttpResponseDelegate ResponseDelegate)
+{
+	if (bWasSuccessful && Response.IsValid())
+	{
+		TSharedPtr<FJsonObject> JsonResponse;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
+
+		if (FJsonSerializer::Deserialize(Reader, JsonResponse) && JsonResponse.IsValid())
+		{
+			// 실패 여부 확인: statusCode또는 message 필드가 있는 경우
+			// if (JsonResponse->HasField(TEXT("statusCode")) || JsonResponse->HasField(TEXT("message")))
+			if (JsonResponse->HasField(TEXT("data")))
+			{
+				// 성공적인 응답으로 간주하고 콜백 호출
+				ResponseDelegate.ExecuteIfBound(true, JsonResponse, TEXT(""));
+			}
+			else
+			{
+				// 실패한 응답으로 간주하고 콜백 호출
+				FString ErrorMessage = JsonResponse->GetStringField(TEXT("message"));
+				ResponseDelegate.ExecuteIfBound(false, nullptr, ErrorMessage);
+			}
+		}
+		else
+		{
+			ResponseDelegate.ExecuteIfBound(false, nullptr, TEXT("Failed to parse JSON response"));
+		}
+	}
+	else
+	{
+		ResponseDelegate.ExecuteIfBound(false, nullptr, TEXT("HTTP Request failed"));
+	}
+}
 
 void UHttpRequstHelper::SendHttpRequest(const FString& Url, const TSharedPtr<FJsonObject> JsonObject, const FString& Verb, FHttpResponseDelegate ResponseDelegate)
 {
@@ -25,7 +58,7 @@ void UHttpRequstHelper::SendHttpRequest(const FString& Url, const TSharedPtr<FJs
 	Request->OnProcessRequestComplete().BindLambda([ResponseDelegate](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
 	{
 	   // 콜백 호출
-	   ResponseDelegate.ExecuteIfBound(Request, Response, bWasSuccessful);
+	   HandleResponse(Response, bWasSuccessful, ResponseDelegate);
 	});
 
 	Request->ProcessRequest();

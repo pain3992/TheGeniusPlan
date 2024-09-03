@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Interfaces/IHttpRequest.h"
 #include "LoginWidget.generated.h"
 
 /**
@@ -14,6 +13,7 @@ UCLASS()
 class THEGENIUSPLAN_API ULoginWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
 public:
 	virtual void NativeConstruct() override;
 
@@ -33,7 +33,7 @@ public:
 	void Reset() const;
 
 protected:
-	void OnHttpResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+	void OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> JsonResponse, const FString& ErrorMessage);
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonLogin;

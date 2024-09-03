@@ -6,7 +6,8 @@
 #include "Http.h"
 
 // 콜백 함수의 형태를 정의
-DECLARE_DELEGATE_ThreeParams(FHttpResponseDelegate, FHttpRequestPtr, FHttpResponsePtr, bool);
+// DECLARE_DELEGATE_ThreeParams(FHttpResponseDelegate, FHttpRequestPtr, FHttpResponsePtr, bool);
+DECLARE_DELEGATE_ThreeParams(FHttpResponseDelegate, bool /*bWasSuccessful*/, TSharedPtr<FJsonObject> /*JsonResponse*/, const FString& /*ErrorMessage*/);
 
 class THEGENIUSPLAN_API UHttpRequstHelper
 {
@@ -21,4 +22,6 @@ public:
 	static void SendPatchRequest(const FString& Url, const TSharedPtr<FJsonObject> JsonObject, FHttpResponseDelegate ResponseDelegate);
 	// DELETE 요청을 위한 함수
 	static void SendDeleteRequest(const FString& Url, FHttpResponseDelegate ResponseDelegate);
+private:
+	static void HandleResponse(FHttpResponsePtr Response, bool bWasSuccessful, FHttpResponseDelegate ResponseDelegate);
 };

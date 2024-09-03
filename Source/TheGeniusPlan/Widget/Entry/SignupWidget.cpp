@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SignupWidget.h"
+#include "TheGeniusPlan/widget/Entry/SignupWidget.h"
 #include "Components/Button.h"
+#include "Components/EditableText.h"
 #include "Components/EditableTextBox.h"
 #include "TheGeniusPlan/Http/HttpRequestHelper.h"
 
@@ -21,26 +22,23 @@ void USignupWidget::NativeConstruct()
 
 void USignupWidget::ClickedButtonSignup()
 {
-	if (EntryHUD && EditableUsername && EditableLoginID && EditablePassword && EditablePasswordCheck)
+	if (EntryHUD && EditableTextID && EditableTextUsername && EditableTextUsername && EditableSignupPassword && EditableSignupPasswordCheck)
 	{
-		
-		FString Url = TEXT("http://localhost:3000/user/signup");
+		FString Url = TEXT("http://127.0.0.1:3000/user/signup");
 		
 		// JSON 객체 생성
-		
 		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
-		
-		JsonObject->SetStringField(TEXT("login_id"), EditableLoginID->GetText().ToString());
-		JsonObject->SetStringField(TEXT("username"), EditableUsername->GetText().ToString());
-		JsonObject->SetStringField(TEXT("password"), EditablePassword->GetText().ToString());
-		JsonObject->SetStringField(TEXT("password_check"), EditablePasswordCheck->GetText().ToString());
 
+		JsonObject->SetStringField(TEXT("login_id"), EditableTextID->GetText().ToString());
+		JsonObject->SetStringField(TEXT("username"), EditableTextUsername->GetText().ToString());
+		JsonObject->SetStringField(TEXT("password"), EditableSignupPassword->GetText().ToString());
+		JsonObject->SetStringField(TEXT("password_check"), EditableSignupPasswordCheck->GetText().ToString());
+	
 		// HTTP 요청 보내기 (POST 요청 예시)
 		UHttpRequstHelper::SendPostRequest(
 			Url,
 			JsonObject,
 			FHttpResponseDelegate::CreateUObject(this, &USignupWidget::OnHttpResponse));
-		UE_LOG(LogTemp, Warning, TEXT("HUD is Vaild"));
 	}
 	else
 	{
@@ -49,28 +47,25 @@ void USignupWidget::ClickedButtonSignup()
 	// SetVisibility(ESlateVisibility::Collapsed);
 }
 
-void USignupWidget::OnHttpResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+void USignupWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> JsonResponse,
+	const FString& ErrorMessage)
 {
 	if (bWasSuccessful)
 	{
-		TSharedPtr<FJsonObject> JsonResponse;
-		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
-
-		if (FJsonSerializer::Deserialize(Reader, JsonResponse) && JsonResponse.IsValid())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Request Success"));
-			UE_LOG(LogTemp, Warning, TEXT("Response : %s"), *Response->GetContentAsString());
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Request Fail"));
-		}
+		TSharedPtr<FJsonObject> JsonData = JsonResponse->GetObjectField(TEXT("data"));
+		FStringView ParseLoginID(TEXT("login_id"));
+		FStringView ParseUserName(TEXT("username"));
+		int32 ID = JsonData->GetIntegerField(TEXT("id"));
+		FString LoginID = JsonData->GetStringField(ParseLoginID);
+		FString UserName = JsonData->GetStringField(ParseUserName);
+		// 회원가입 후 바로 로그인 처리
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Request Fail"));
+		
 	}
 }
+
 
 void USignupWidget::ClickedButtonCansel()
 {

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Interfaces/IHttpRequest.h"
 #include "SignupWidget.generated.h"
 
 /**
@@ -28,7 +27,7 @@ public:
 	TObjectPtr<class AEntryHUD> EntryHUD;
 
 protected:
-	void OnHttpResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+	void OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> JsonResponse, const FString& ErrorMessage);
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonSignup;
@@ -37,14 +36,14 @@ protected:
 	TObjectPtr<class UButton> ButtonCansel;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditableLoginID;
+	TObjectPtr<class UEditableText> EditableTextID;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditableUsername;
+	TObjectPtr<class UEditableText> EditableTextUsername;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditablePassword;
+	TObjectPtr<class UEditableText> EditableSignupPassword;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UEditableTextBox> EditablePasswordCheck;
+	TObjectPtr<class UEditableText> EditableSignupPasswordCheck;
 };
