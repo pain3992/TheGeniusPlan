@@ -23,11 +23,27 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	class UStaticMeshComponent* StaticMeshComponent;
+    // Box component for collision
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+    class UBoxComponent* BoxComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Meshes")
-	TArray<UStaticMesh*> StaticMeshes;
+    // Static mesh component
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+    class UStaticMeshComponent* StaticMeshComponent;
 
-	void SelectRandomMesh();
+    // Array of static meshes
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Meshes")
+    TArray<UStaticMesh*> StaticMeshes;
+
+    // Function to select a random mesh
+    void SelectRandomMesh();
+
+    UFUNCTION()
+    void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+        const FHitResult& SweepResult);
+
+    UFUNCTION()
+    void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };

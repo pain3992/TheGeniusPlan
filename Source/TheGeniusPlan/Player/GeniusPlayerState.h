@@ -25,5 +25,16 @@ public:
 
     virtual void OnRep_Score() override;
 
+    UPROPERTY(ReplicatedUsing = OnRep_GarnetCount, BlueprintReadOnly, Category = "Garnet")
+    int GarnetCount;
+
+    UFUNCTION()
+    void OnRep_GarnetCount();
+   
+    void AddGarnetCount(int32 GarnetAmount);
+
+    int32 GetGarnetCount() const;
+    void SetGarnetCount(int32 NewGarnetCount);
+
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
 };

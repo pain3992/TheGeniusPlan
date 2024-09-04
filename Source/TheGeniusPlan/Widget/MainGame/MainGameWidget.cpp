@@ -14,8 +14,6 @@
 void UMainGameWidget::NativeConstruct()
 {
     Super::NativeConstruct();
-    UE_LOG(LogTemp, Log, TEXT("UMainHallUserWidget::NativeConstruct called"));
-
     // 게임 모드에 대한 참조 가져오기
     if (GetWorld())
     {
@@ -80,7 +78,6 @@ void UMainGameWidget::UpdateCountdownDisplay(int32 CountdownTimeInSeconds)
 
 void UMainGameWidget::OnHelpButtonClicked()
 {
-    UE_LOG(LogTemp, Log, TEXT("Is Work!"));
     if (MainGameHUD)
     {
         MainGameHUD->ShowWidget(MainGameWidgetType::HelpWidget);
@@ -114,9 +111,29 @@ void UMainGameWidget::UpdatePossibleGamesDisplay(int32 PossibleGameModesCount)
     }
 }
 
+void UMainGameWidget::UpdateGarnetCount()
+{
+    if (Text_GarnetCount)
+    {
+        APlayerController* PlayerController = GetOwningPlayer();
+        if (PlayerController)
+        {
+            AGeniusPlayerState* GPS = PlayerController->GetPlayerState<AGeniusPlayerState>();
+            if (GPS)
+            {
+                int32 GarnetCount = GPS->GetGarnetCount();
+                Text_GarnetCount->SetText(FText::AsNumber(GarnetCount));
+            }
+            else
+            {
+                UE_LOG(LogTemp, Error, TEXT("PlayerState is null."));
+            }
+        }
+    }
+}
+
 
 void UMainGameWidget::SetHUD(AMainGameHUD *InHUD)
 {
     MainGameHUD = InHUD;
-    UE_LOG(LogTemp, Log, TEXT("HUD successfully set in MainGameWidget."));
 }

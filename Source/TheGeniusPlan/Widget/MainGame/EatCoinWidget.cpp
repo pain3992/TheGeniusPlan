@@ -36,8 +36,6 @@ void UEatCoinWidget::NativeConstruct()
 
 void UEatCoinWidget::UpdateEatCoinPlayerList(const TArray<AEatCoinPlayerState*>& PlayerCoinScoresArray)
 {
-    UE_LOG(LogTemp, Warning, TEXT("UpdateEatCoinPlayerList function executed"));
-
     if (ListView_CoinScore == nullptr || CoinScoreItemWidgetClass == nullptr)
     {
         UE_LOG(LogTemp, Warning, TEXT("ListView_CoinScore or CoinScoreItemWidgetClass is not assigned."));
@@ -110,8 +108,6 @@ void UEatCoinWidget::MoveListViewToCenter()
 
                     // X 값을 0으로 설정하고 Y 값은 기존 값으로 유지합니다.
                     CanvasSlot->SetPosition(FVector2D(0.0f, CurrentPosition.Y));
-
-                    UE_LOG(LogTemp, Warning, TEXT("Border의 X 포지션을 0으로 이동했습니다."));
                 }
             }
         }
@@ -136,8 +132,6 @@ void UEatCoinWidget::MoveListViewToOriginalPosition()
                     // X 값을 600으로 설정하고 Y 값은 현재 값을 유지합니다.
                     FVector2D CurrentPosition = CanvasSlot->GetPosition();
                     CanvasSlot->SetPosition(FVector2D(600.0f, CurrentPosition.Y));
-
-                    UE_LOG(LogTemp, Warning, TEXT("Border의 X 포지션을 600으로 이동했습니다."));
                 }
             }
         }

@@ -54,7 +54,6 @@ void AItemSpawner::SpawnRandomActor()
 
     if (SpawnedActor)
     {
-        UE_LOG(LogTemp, Warning, TEXT("아이템 정상 스폰: %s"), *SpawnedActor->GetName());
         SpawnedActor->OnDestroyed.AddDynamic(this, &AItemSpawner::OnItemDestroyed);
     }
 }

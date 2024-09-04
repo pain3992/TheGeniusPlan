@@ -14,6 +14,7 @@
 #include "TheGeniusPlan/Player/MainHallPlayerController.h"
 #include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 #include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
+#include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
 
 AMainGameModeBase::AMainGameModeBase()
 {
@@ -51,9 +52,7 @@ int32 AMainGameModeBase::GetCurrentRound() const
 void AMainGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	// 현재 실행 중인 게임 모드의 이름을 로그로 출력
-	UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GetClass()->GetName());
-
+	
 	// 게임 스테이트에 라운드 및 플레이 가능한 게임 모드 개수 정보 전달
 	if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
 	{
@@ -75,7 +74,6 @@ void AMainGameModeBase::BeginPlay()
 
 	// 게임 시작
 	HandleGameStart();
-
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
 }
 
@@ -177,6 +175,7 @@ void AMainGameModeBase::PostLogin(APlayerController* NewPlayer)
 			NewPlayerState->PlayerName = NewPlayer->GetName();
 		}
 	}
+
 		UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(GetGameInstance());
 	if (GameInstance)
 	{
@@ -190,14 +189,15 @@ void AMainGameModeBase::PostLogin(APlayerController* NewPlayer)
 				if (NewPlayerState->GetPlayerName() == ScoreData.PlayerName)
 				{
 					NewPlayerState->SetScore(ScoreData.Score);
-					UE_LOG(LogTemp, Log, TEXT("Restored score for player %s: %d"), *ScoreData.PlayerName, ScoreData.Score);
+					NewPlayerState->SetGarnetCount(ScoreData.GarnetCount);
+					UE_LOG(LogTemp, Log, TEXT("Restored data for player %s: Score: %d, Garnet: %d"),
+						*ScoreData.PlayerName, ScoreData.Score, ScoreData.GarnetCount);
 					break;
 				}
 			}
 		}
 	}
 }
-
 
 void AMainGameModeBase::Logout(AController* Exiting)
 {

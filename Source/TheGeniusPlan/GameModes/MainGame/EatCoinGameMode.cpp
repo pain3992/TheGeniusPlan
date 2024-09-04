@@ -31,7 +31,7 @@ AEatCoinGameMode::AEatCoinGameMode()
     PlayerStateClass = AEatCoinPlayerState::StaticClass();
 
     // 총 라운드
-    TotalRound = 1;
+    TotalRound = 2;
 
     // 라운드 시간
 	CountdownTimeInSeconds = 10;
@@ -42,7 +42,6 @@ AEatCoinGameMode::AEatCoinGameMode()
 
 void AEatCoinGameMode::BeginPlay()
 {
-    UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GetClass()->GetName());
     if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
     {
         MainGameState->SetTotalRound(TotalRound);
@@ -102,14 +101,10 @@ void AEatCoinGameMode::HandleRoundEnd()
                 AEatCoinHUD* EatCoinHUD = Cast<AEatCoinHUD>(PlayerController->GetHUD());
                 if (EatCoinHUD && EatCoinHUD->GetEatCoinEndWidget())
                 {
-                    UE_LOG(LogTemp, Log, TEXT("게임 종료 위젯 호출"));
                     EatCoinHUD->GetEatCoinEndWidget()->SetVisibility(ESlateVisibility::Visible);
                 }
             }
         }
-
-        // 게임 종료 처리
-        // 필요에 따라 게임 종료 후 로직 추가 (예: 게임 메인 메뉴로 돌아가기, 서버 종료 등)
         // 10초 후에 서버 트래블로 새 레벨로 이동
         GetWorld()->GetTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameMode::HandleServerTravel, 10.0f, false);
     }
@@ -133,7 +128,9 @@ void AEatCoinGameMode::HandleServerTravel()
                     FPlayerScoreData ScoreData;
                     ScoreData.PlayerName = PlayerState->GetPlayerName();
                     ScoreData.Score = PlayerState->GetScore();
+                    ScoreData.GarnetCount = PlayerState->GetGarnetCount();
                     GameInstance->SavedPlayerScores.Add(ScoreData);
+ 
                 }
             }
         }

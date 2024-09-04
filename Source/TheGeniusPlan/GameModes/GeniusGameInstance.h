@@ -18,6 +18,9 @@ struct FPlayerScoreData
 
 	UPROPERTY(BlueprintReadWrite, Category = "Score")
 	int32 Score;
+
+	UPROPERTY(BlueprintReadWrite, Category = "PlayerData")
+	int32 GarnetCount;
 };
 
 USTRUCT(BlueprintType)

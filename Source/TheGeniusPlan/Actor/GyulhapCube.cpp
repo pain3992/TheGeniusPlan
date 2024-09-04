@@ -3,16 +3,35 @@
 
 #include "TheGeniusPlan/Actor/GyulhapCube.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "UObject/ConstructorHelpers.h"
+#include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 
 // Sets default values
 AGyulhapCube::AGyulhapCube()
 {
 	PrimaryActorTick.bCanEverTick = true;
+    bReplicates = true;
 
-    // Create the static mesh component and attach it to the root
+    // Create the Box Component and set it as the root
+    BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
+    RootComponent = BoxComponent;
+
+    // Set collision properties for BoxComponent
+    BoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    BoxComponent->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+    BoxComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+
+    // Create the static mesh component and attach it to the box
     StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-    RootComponent = StaticMeshComponent;
+    StaticMeshComponent->SetupAttachment(BoxComponent);
+
+    // Set collision properties for StaticMeshComponent
+    StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    StaticMeshComponent->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
+    StaticMeshComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+
+    BoxComponent->SetBoxExtent(FVector(80.0f, 80.0f, 80.0f)); // 적절한 크기로 설정
 
     // Load and add static meshes to the array
     static ConstructorHelpers::FObjectFinder<UStaticMesh> Mesh1(TEXT("StaticMesh'/Game/JiYoung/Gyulhap/StaticMesh/SM_B_Lightning_G.SM_B_Lightning_G'"));
@@ -26,17 +45,17 @@ AGyulhapCube::AGyulhapCube()
     if (Mesh3.Succeeded()) StaticMeshes.Add(Mesh3.Object);
     if (Mesh4.Succeeded()) StaticMeshes.Add(Mesh4.Object);
     // Continue for all 27 meshes
+    BoxComponent->SetSimulatePhysics(true);
 }
 
 void AGyulhapCube::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Ensure the work is done in the game thread
-    if (IsInGameThread())
-    {
-        SelectRandomMesh();
-    }
+    SelectRandomMesh();
+
+    BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AGyulhapCube::OnOverlapBegin);
+    BoxComponent->OnComponentEndOverlap.AddDynamic(this, &AGyulhapCube::OnOverlapEnd);
 }
 
 void AGyulhapCube::Tick(float DeltaTime)
@@ -54,7 +73,30 @@ void AGyulhapCube::SelectRandomMesh()
         if (SelectedMesh)
         {
             StaticMeshComponent->SetStaticMesh(SelectedMesh);
-            StaticMeshComponent->SetSimulatePhysics(true); // Enable physics
+
+        }
+    }
+}
+
+void AGyulhapCube::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    // You can use this to check if the overlapped actor is the player character
+    if (OtherActor && OtherActor != this && OtherComp)
+    {
+        ATheGeniusPlanCharacter* Character = Cast<ATheGeniusPlanCharacter>(OtherActor);
+        if (Character)
+        {
+        }
+    }
+}
+
+void AGyulhapCube::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    if (OtherActor && OtherActor != this && OtherComp)
+    {
+        ATheGeniusPlanCharacter* Character = Cast<ATheGeniusPlanCharacter>(OtherActor);
+        if (Character)
+        {
         }
     }
 }
