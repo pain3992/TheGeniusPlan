@@ -68,7 +68,7 @@ void ULoginWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> J
 		FString UserName = JsonData->GetStringField(ParseUserName);
 
 		UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %s"), *LoginID, *UserName);
-		EntryHUD->ShowWidget(EntryWidgetType::EntryWidget);
+		EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);
 	}
 	else
 	{
