@@ -48,25 +48,19 @@ void ULobbyWidget::NativeConstruct()
 	{
 		ButtonServerCreate->OnClicked.AddDynamic(this, &ULobbyWidget::ClickedCreate);
 	}
-	
-	// GameInstance에서 LoginInfo를 가져와
-	// TextProfileName에 값을 설정한다
-	if (UGeniusGameInstance* GI = Cast<UGeniusGameInstance>(GetWorld()->GetGameInstance()))
-	{
-		UE_LOG(LogTemp, Log, TEXT("LoginInfo!!: %s"), *GI->LoginInfo.UserName);
-		if (GI->LoginInfo.bIsLoggedIn)
-		{
-			TextProfileName->SetText(FText::FromString(GI->LoginInfo.UserName));
-		}
-	}
 }
 
 void ULobbyWidget::UpdateLoginInfo(const FLoginInfo& LoginInfo)
 {
-	// LoginInfo가 갱신되면 TextProfileName도 갱신
+	// LoginInfo가 갱신되면 프로필 정보 업데이트
 	if (LoginInfo.bIsLoggedIn)
 	{
+		// 플레이어 닉네임
 		TextProfileName->SetText(FText::FromString(LoginInfo.UserName));
+		// 플레이어 전적
+		TextProfileStatistics->SetText(FText::FromString(FString::FromInt(LoginInfo.TotalGame) + TEXT("전 ") + FString::FromInt(LoginInfo.TotalWin) + TEXT("승 (") + FString::FromInt(LoginInfo.WinRate) + TEXT("%)")));
+		// 플레이어 랭킹
+		TextProfileRanking->SetText(FText::FromString(FString::FromInt(LoginInfo.Rank) + TEXT("등/") + FString::FromInt(LoginInfo.RankPlayers) + TEXT("명")));
 	}
 }
 

@@ -25,25 +25,49 @@ struct FLoginInfo
 {
 	GENERATED_BODY()
 
+	// 로그인 여부
 	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
 	bool bIsLoggedIn;
 
+	// DB에 저장된 ID
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	int32 ID;
+	
+	// 로그인 ID
 	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
 	FString LoginID;
 
-	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
-	int32 ID;
-
+	// 플레이어 닉네임
 	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
 	FString UserName;
 
+	// 랭킹
 	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
-	int32 Ranking;
+	int32 Rank;
 
+	// 랭크 포인트
 	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
-	int32 Score;
+	int32 RankPoint;
+
+	// 랭크 플레이어 수
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	int32 RankPlayers;
+
+	// 플레이 게임 횟수
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	int32 TotalGame;
+
+	// 승리 횟수
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	int32 TotalWin;
+	
+	// 승률
+	UPROPERTY(BlueprintReadWrite, Category = "LoginInfo")
+	float WinRate;
 };
 
+// 델리게이트 선언
+// 로그인 정보 갱신 시 호출
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoginInfoUpdated, const FLoginInfo&, LoginInfo);
 
 UCLASS()

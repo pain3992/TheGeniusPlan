@@ -62,17 +62,13 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonServerCreate;
 
-	// TextProfileName
+	// TextBox 닉네임
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UTextBlock> TextProfileName;
-
-	// TextProfileGame
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UTextBlock> TextProfileGame;
 	
-	// TextBox 승리(승률)
+	// TextBox 전적
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UTextBlock> TextProfileWin;
+	TObjectPtr<class UTextBlock> TextProfileStatistics;
 	
 	// TextBox 랭킹
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
