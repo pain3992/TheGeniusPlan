@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TheGeniusPlan/widget/Entry/SignupWidget.h"
+#include "TheGeniusPlan/Widget/Entry/SignupWidget.h"
 #include "Components/Button.h"
 #include "Components/EditableText.h"
 #include "Kismet/GameplayStatics.h"
