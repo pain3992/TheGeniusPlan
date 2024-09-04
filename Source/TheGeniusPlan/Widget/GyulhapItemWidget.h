@@ -6,9 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
-#include "Components/Tileview.h"
 #include "Components/Button.h"
-#include "TheGeniusPlan/Data/GyulhapData.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "GyulhapItemWidget.generated.h"
 

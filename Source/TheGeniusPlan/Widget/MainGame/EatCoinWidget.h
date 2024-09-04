@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "TheGeniusPlan/gameModes/MainGameStateBase.h"
-#include "TheGeniusPlan/Data/PlayerRankingData.h"
 #include "Components/ListView.h"
 #include "TheGeniusPlan/Widget/MainGame/CoinScoreItemWidget.h"
 #include "EatCoinWidget.generated.h"

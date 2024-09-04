@@ -3,14 +3,22 @@
 
 #include "TheGeniusPlan/Widget/Entry/LobbyWidget.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "TheGeniusPlan/Characters/EntryPawn.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 #include "TheGeniusPlan/HUD/EntryHUD.h"
 #include "TheGeniusPlan/Player/EntryPlayerController.h"
 
 void ULobbyWidget::NativeConstruct()
 {
+	UE_LOG(LogTemp, Log, TEXT("LobbyWidget NativeConstruct"));
 	Super::NativeConstruct();
+	
+	if (UGeniusGameInstance* GI = Cast<UGeniusGameInstance>(GetWorld()->GetGameInstance()))
+	{
+		GI->OnLoginInfoUpdated.AddDynamic(this, &ULobbyWidget::UpdateLoginInfo);  // Delegate 구독
+	}
 	
 	if(ButtonLeft)
 	{
@@ -39,6 +47,26 @@ void ULobbyWidget::NativeConstruct()
 	if (ButtonServerCreate)
 	{
 		ButtonServerCreate->OnClicked.AddDynamic(this, &ULobbyWidget::ClickedCreate);
+	}
+	
+	// GameInstance에서 LoginInfo를 가져와
+	// TextProfileName에 값을 설정한다
+	if (UGeniusGameInstance* GI = Cast<UGeniusGameInstance>(GetWorld()->GetGameInstance()))
+	{
+		UE_LOG(LogTemp, Log, TEXT("LoginInfo!!: %s"), *GI->LoginInfo.UserName);
+		if (GI->LoginInfo.bIsLoggedIn)
+		{
+			TextProfileName->SetText(FText::FromString(GI->LoginInfo.UserName));
+		}
+	}
+}
+
+void ULobbyWidget::UpdateLoginInfo(const FLoginInfo& LoginInfo)
+{
+	// LoginInfo가 갱신되면 TextProfileName도 갱신
+	if (LoginInfo.bIsLoggedIn)
+	{
+		TextProfileName->SetText(FText::FromString(LoginInfo.UserName));
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "../Player/AAFPlayerState.h"
 #include "GeniusGameInstance.generated.h"
 
+
 USTRUCT(BlueprintType)
 struct FPlayerScoreData
 {
@@ -43,6 +44,8 @@ struct FLoginInfo
 	int32 Score;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoginInfoUpdated, const FLoginInfo&, LoginInfo);
+
 UCLASS()
 class THEGENIUSPLAN_API UGeniusGameInstance : public UGameInstance
 {
@@ -57,4 +60,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Score")
 	TArray<FPlayerScoreData> SavedPlayerScores;
+
+	FOnLoginInfoUpdated OnLoginInfoUpdated;
+	void SetLoginInfo(const FLoginInfo& NewLoginInfo);
 };

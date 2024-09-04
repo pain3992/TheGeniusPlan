@@ -3,7 +3,9 @@
 #include "TheGeniusPlan/Widget/Entry/LoginWidget.h"
 #include "Components/Button.h"
 #include "Components/EditableTextBox.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 #include "TheGeniusPlan/Http/HttpRequestHelper.h"
 #include "TheGeniusPlan/HUD/EntryHUD.h"
 
@@ -68,7 +70,25 @@ void ULoginWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> J
 		FString UserName = JsonData->GetStringField(ParseUserName);
 
 		UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %s"), *LoginID, *UserName);
-		EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);
+
+
+		// GeniusGameInstance의 LoginInfo에 로그인 정보 저장
+		if (UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+		{
+			// GameInstance->LoginInfo.ID = ID;
+			FLoginInfo LoginInfo;
+			LoginInfo.bIsLoggedIn = true;
+			LoginInfo.LoginID = LoginID;
+			LoginInfo.UserName = UserName;
+			GameInstance->SetLoginInfo(LoginInfo);
+
+			SetVisibility(ESlateVisibility::Collapsed);
+			EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("GameInstance is Null"));
+		}
 	}
 	else
 	{
