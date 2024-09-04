@@ -68,10 +68,12 @@ void USignupWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> 
 		// GeniusGameInstance의 LoginInfo에 로그인 정보 저장
 		if (UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
 		{
-			GameInstance->LoginInfo.bIsLoggedIn = true;
-			GameInstance->LoginInfo.LoginID = LoginID;
-			GameInstance->LoginInfo.ID = ID;
-			GameInstance->LoginInfo.UserName = UserName;
+			// GameInstance->LoginInfo.ID = ID;
+			FLoginInfo LoginInfo;
+			LoginInfo.bIsLoggedIn = true;
+			LoginInfo.LoginID = LoginID;
+			LoginInfo.UserName = UserName;
+			GameInstance->SetLoginInfo(LoginInfo);
 
 			SetVisibility(ESlateVisibility::Collapsed);
 			EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);

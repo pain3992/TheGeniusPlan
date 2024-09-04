@@ -2,3 +2,8 @@
 
 #include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 
+void UGeniusGameInstance::SetLoginInfo(const FLoginInfo& NewLoginInfo)
+{
+	LoginInfo = NewLoginInfo;
+	OnLoginInfoUpdated.Broadcast(LoginInfo);
+}

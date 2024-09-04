@@ -2,7 +2,6 @@
 
 
 #include "TheGeniusPlan/HUD/EatCoinHUD.h"
-#include "BluePrint/UserWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/EatCoinWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/EatCoinEndWidget.h"
 #include "TheGeniusPlan/Widget/MainGame/EatCoinMenualWidget.h"

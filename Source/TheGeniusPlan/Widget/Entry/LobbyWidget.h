@@ -36,6 +36,10 @@ public:
     
 	UFUNCTION()
 	void ClickedCreate();
+
+	UFUNCTION()
+	void UpdateLoginInfo(const FLoginInfo& LoginInfo);
+
 protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
     TObjectPtr<class UButton> ButtonLeft;
@@ -57,4 +61,21 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonServerCreate;
+
+	// TextProfileName
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> TextProfileName;
+
+	// TextProfileGame
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> TextProfileGame;
+	
+	// TextBox 승리(승률)
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> TextProfileWin;
+	
+	// TextBox 랭킹
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> TextProfileRanking;
+
 };
