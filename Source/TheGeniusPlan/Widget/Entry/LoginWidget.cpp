@@ -31,7 +31,10 @@ void ULoginWidget::ClickedLogin()
 {
 	if (EntryHUD && EditableTextLoginID && EditableTextLoginPassword)
 	{
-		FString Url = TEXT("http://127.0.0.1:3000/user/login");
+		// 로컬 API에 연결시 (테스트용)
+		// FString Url = TEXT("http://127.0.0.1:3000/user/signup");
+		// API 서버에 연결시 (배포용)
+		FString Url = TEXT("http://34.41.211.121:3000/user/signup");
 		// JSON 객체 생성
 		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
 		JsonObject->SetStringField(TEXT("login_id"), EditableTextLoginID->GetText().ToString());
@@ -64,13 +67,23 @@ void ULoginWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> J
 	if (bWasSuccessful)
 	{
 		TSharedPtr<FJsonObject> JsonData = JsonResponse->GetObjectField(TEXT("data"));
+
 		FStringView ParseLoginID(TEXT("login_id"));
 		FStringView ParseUserName(TEXT("username"));
+
+		// 회원가입한 유저 정보 및 랭킹 정보
+		int32 ID = JsonData->GetIntegerField(TEXT("id"));
 		FString LoginID = JsonData->GetStringField(ParseLoginID);
 		FString UserName = JsonData->GetStringField(ParseUserName);
+		int32 Rank = JsonData->GetIntegerField(TEXT("rank"));
+		int16 RankPoint = JsonData->GetIntegerField(TEXT("rank_point"));
+		int32 RankPlayers = JsonData->GetIntegerField(TEXT("rank_players"));
+		int16 TotalGame = JsonData->GetIntegerField(TEXT("total_game"));
+		int16 TotalWin = JsonData->GetIntegerField(TEXT("total_win"));
+		float WinRate = JsonData->GetIntegerField(TEXT("win_rate"));
 
-		UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %s"), *LoginID, *UserName);
-
+		// 로그인 정보 출력
+		UE_LOG(LogTemp, Log, TEXT("Received Value: %d"), RankPlayers);
 
 		// GeniusGameInstance의 LoginInfo에 로그인 정보 저장
 		if (UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
@@ -80,8 +93,15 @@ void ULoginWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> J
 			LoginInfo.bIsLoggedIn = true;
 			LoginInfo.LoginID = LoginID;
 			LoginInfo.UserName = UserName;
-			GameInstance->SetLoginInfo(LoginInfo);
+			LoginInfo.Rank = Rank;
+			LoginInfo.RankPoint = RankPoint;
+			LoginInfo.RankPlayers = RankPlayers;
+			LoginInfo.TotalGame = TotalGame;
+			LoginInfo.TotalWin = TotalWin;
+			LoginInfo.WinRate = WinRate;
 
+            // 게임인스턴스에 로그인정보 저장 및 델리게이트 호출
+			GameInstance->SetLoginInfo(LoginInfo);
 			SetVisibility(ESlateVisibility::Collapsed);
 			EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);
 		}

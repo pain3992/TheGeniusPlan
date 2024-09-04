@@ -26,7 +26,10 @@ void USignupWidget::ClickedButtonSignup()
 {
 	if (EntryHUD && EditableTextID && EditableTextUsername && EditableTextUsername && EditableTextPassword && EditableTextPasswordCheck)
 	{
-		FString Url = TEXT("http://127.0.0.1:3000/user/signup");
+		// 로컬 API에 연결시 (테스트용)
+		// FString Url = TEXT("http://127.0.0.1:3000/user/signup");
+		// API 서버에 연결시 (배포용)
+		FString Url = TEXT("http://34.41.211.121:3000/user/signup");
 		
 		// JSON 객체 생성
 		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
@@ -57,10 +60,17 @@ void USignupWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> 
 
 		FStringView ParseLoginID(TEXT("login_id"));
 		FStringView ParseUserName(TEXT("username"));
-		
+
+		// 회원가입한 유저 정보 및 랭킹 정보
 		int32 ID = JsonData->GetIntegerField(TEXT("id"));
 		FString LoginID = JsonData->GetStringField(ParseLoginID);
 		FString UserName = JsonData->GetStringField(ParseUserName);
+		int32 Rank = JsonData->GetIntegerField(TEXT("rank"));
+		int32 RankPoint = JsonData->GetIntegerField(TEXT("rank_point"));
+		int32 RankPlayers = JsonData->GetIntegerField(TEXT("rank_players"));
+		int16 TotalGame = JsonData->GetIntegerField(TEXT("total_game"));
+		int16 TotalWin = JsonData->GetIntegerField(TEXT("total_win"));
+		float WinRate = JsonData->GetIntegerField(TEXT("win_rate"));
 
 		// 회원가입 후 바로 로그인 처리
 		UE_LOG(LogTemp, Log, TEXT("Received Value: %s, Number: %s"), *LoginID, *UserName);
@@ -73,8 +83,15 @@ void USignupWidget::OnHttpResponse(bool bWasSuccessful, TSharedPtr<FJsonObject> 
 			LoginInfo.bIsLoggedIn = true;
 			LoginInfo.LoginID = LoginID;
 			LoginInfo.UserName = UserName;
+			LoginInfo.Rank = Rank;
+			LoginInfo.RankPoint = RankPoint;
+			LoginInfo.RankPlayers = RankPlayers;
+			LoginInfo.TotalGame = TotalGame;
+			LoginInfo.TotalWin = TotalWin;
+			LoginInfo.WinRate = WinRate;
+			
+			// 게임인스턴스에 로그인정보 저장 및 델리게이트 호출
 			GameInstance->SetLoginInfo(LoginInfo);
-
 			SetVisibility(ESlateVisibility::Collapsed);
 			EntryHUD->ShowWidget(EntryWidgetType::LobbyWidget);
 		}
