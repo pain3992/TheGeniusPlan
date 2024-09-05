@@ -27,9 +27,9 @@ void USignupWidget::ClickedButtonSignup()
 	if (EntryHUD && EditableTextID && EditableTextUsername && EditableTextUsername && EditableTextPassword && EditableTextPasswordCheck)
 	{
 		// 로컬 API에 연결시 (테스트용)
-		FString Url = TEXT("http://127.0.0.1:3000/user/signup");
+		// FString Url = TEXT("http://127.0.0.1:3000/user/signup");
 		// API 서버에 연결시 (배포용)
-		// FString Url = TEXT("http://34.41.211.121:3000/user/signup");
+		FString Url = TEXT("http://34.41.211.121:3000/user/signup");
 		
 		// JSON 객체 생성
 		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
