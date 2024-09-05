@@ -55,6 +55,11 @@ void AAAFGameDeadZone::OverlapEvent(UPrimitiveComponent* OverlappedComponent, AA
 	}
 }
 
+void AAAFGameDeadZone::ChangeEndStep()
+{
+
+}
+
 void AAAFGameDeadZone::CheckWinner_Implementation()
 {
 	UE_LOG(LogTemp, Error, TEXT("Check"));
@@ -82,11 +87,8 @@ void AAAFGameDeadZone::CheckWinner_Implementation()
 
 		if(LivePlayer > 1)
 		{
+			LivePlayer = 0;
 			return;
-		}
-		else if(LivePlayer < 1)
-		{
-
 		}
 		else
 		{
@@ -94,11 +96,12 @@ void AAAFGameDeadZone::CheckWinner_Implementation()
 
 			if(GameState)
 			{
-				GameState->SetGameStep(EGameStep::GameEnd);
-				UE_LOG(LogTemp, Error, TEXT("Game End"));
+				GameState->SetGameStep(EGameStep::RoundEnd);
+				UE_LOG(LogTemp, Error, TEXT("Round End"));
 
 			}
 		}
 	}
 }
+
 

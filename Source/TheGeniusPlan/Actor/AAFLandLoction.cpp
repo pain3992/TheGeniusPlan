@@ -12,7 +12,7 @@ AAAFLandLoction::AAAFLandLoction()
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
 	LandType = ELandType::None;
-
+	
 }
 
 // Called when the game starts or when spawned

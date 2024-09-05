@@ -33,13 +33,7 @@ void UAAFSelectWidget::ClickedAbundance()
 	if(PlayerState)
 	{
 		UE_LOG(LogTemp, Error, TEXT("ClickedAbundance"));
-		PlayerState->ChangeLand(ESelectedLand::AbundanceLand);
 	}
-
-	SelectedAbundance->SetVisibility(ESlateVisibility::Collapsed);
-	SelectedFamine->SetVisibility(ESlateVisibility::Collapsed);
-
-	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 
 }
 
@@ -50,13 +44,8 @@ void UAAFSelectWidget::ClickedFamine()
 	if (PlayerState)
 	{
 		UE_LOG(LogTemp, Error, TEXT("ClickedFamine"));
-		PlayerState->ChangeLand(ESelectedLand::FamineLand);
 	}
 	
-	SelectedAbundance->SetVisibility(ESlateVisibility::Collapsed);
-	SelectedFamine->SetVisibility(ESlateVisibility::Collapsed);
-
-	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 }
 
 void UAAFSelectWidget::SetTimer(float Time)

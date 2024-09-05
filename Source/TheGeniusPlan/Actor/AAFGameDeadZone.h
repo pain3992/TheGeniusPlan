@@ -33,4 +33,7 @@ public:
 	UFUNCTION(Server, Reliable)
 	void CheckWinner();
 
+	UFUNCTION()
+	void ChangeEndStep();
+
 };

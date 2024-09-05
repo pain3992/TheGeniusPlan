@@ -10,11 +10,10 @@ UENUM()
 enum class EGameStep : uint8
 {
 	None UMETA(Displayname = "None"),
-	Vote UMETA(Displayname = "Vote"),
-	Result UMETA(Displayname = "Result"),
-	MoveActor UMETA(DisplayName = "MoveActor"),
+	SetLocation UMETA(DisplayName = "ResetLocation"),
+	RoundStart UMETA(Displayname = "RoundStart"),
+	RoundEnd UMETA(DisplayName = "RoundEnd"),
 	GameEnd UMETA(DisplayName = "GameEnd")
-
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEventDispatcher_GameStepChange, EGameStep, NewStep);
@@ -36,28 +35,42 @@ public:
 	UFUNCTION()
 	EGameStep GetGameStep();
 
-	//UFUNCTION()
-	//void CheckPlayerAllSelected();
-
 	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UFUNCTION()
-	void SetLandCount(uint8 firstLand, uint8 SecondsLand);
+	void RequestGameStepReset();
 
-	UPROPERTY(Replicated)
-	uint8 AbundanceLand;
+	UFUNCTION(Server, Reliable)
+	void ResponseGameStepReset();
 
-	UPROPERTY(Replicated)
-	uint8 FamineLand;
+	UFUNCTION()
+	void RequestSetPlayerLocation();
 
-	//UPROPERTY(Replicated)
-	//double Timer;
+	UFUNCTION(Server, Reliable)
+	void ResponseSetPlayerLocation();
+
+	UFUNCTION(Server, Reliable)
+	void ResponseSendLocationByClient();
+
+	UFUNCTION(Server, Reliable)
+	void ChangeGameStepByRound();
+
+	UFUNCTION()
+	void RequestGameStepEnd();
+
+	UFUNCTION(Server, Reliable)
+	void ResponseGameStepEnd();
+
+	UFUNCTION()
+	void RequestWinnerCheck();
+
+	UFUNCTION(Server, Reliable)
+	void ResponsetWinnerCheck();
 
 protected:
 	UPROPERTY()
 	uint8 StageCount;
-
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UPROPERTY(ReplicatedUsing = OnReq_GameStepChange)
 	EGameStep GameStep;
@@ -65,5 +78,13 @@ protected:
 	UFUNCTION()
 	void OnReq_GameStepChange();
 
+	FTimerHandle GameModeFirstHandle;
+	FTimerHandle GameModeSecondHandle;
+	FTimerHandle GameModeThirdHandle;
+	FTimerHandle GameModeFHandle;
+	FTimerHandle GameModeFiveHandle;
+
+	UPROPERTY(Replicated)
+	TArray<FVector> PlayerLocations;
 
 };

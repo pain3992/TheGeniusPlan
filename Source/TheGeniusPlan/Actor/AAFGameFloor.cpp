@@ -7,11 +7,12 @@
 #include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 #include "Materials/MaterialInterface.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "TheGeniusPlan/GameModes/MainGame/AAFGameState.h"
 
 // Sets default values
 AAAFGameFloor::AAAFGameFloor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>SM_Mesh(TEXT("/Script/Engine.StaticMesh'/Game/SeongWon/Floor.Floor'"));
@@ -26,7 +27,7 @@ AAAFGameFloor::AAAFGameFloor()
 	BoxCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	Mesh->SetCollisionResponseToAllChannels(ECR_Block);
 
-	if(SM_Mesh.Succeeded())
+	if (SM_Mesh.Succeeded())
 	{
 		Mesh->SetStaticMesh(SM_Mesh.Object);
 	}
@@ -42,7 +43,7 @@ AAAFGameFloor::AAAFGameFloor()
 void AAAFGameFloor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -52,12 +53,12 @@ void AAAFGameFloor::Tick(float DeltaTime)
 
 }
 
-void AAAFGameFloor::OverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
+void AAAFGameFloor::OverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ACharacter* OverlapCharacter = Cast<ACharacter>(OtherActor);
 
-	if(OverlapCharacter)
+	if (OverlapCharacter)
 	{
 		ChangeMaterial();
 		GetWorld()->GetTimerManager().SetTimer(TimerHandleGameActor, this, &AAAFGameFloor::DestroyBox, 4.0f, false);
@@ -70,6 +71,56 @@ void AAAFGameFloor::OverlapEvent(UPrimitiveComponent* OverlappedComponent, AActo
 
 void AAAFGameFloor::DestroyBox()
 {
-	Destroy();
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+}
+
+void AAAFGameFloor::BindDispatcher()
+{
+	AAAFGameState* CastGameState = Cast<AAAFGameState>(GetWorld()->GetGameState());
+
+	if (CastGameState)
+	{
+		if (!CastGameState->EventDisptacherGameStepChange.IsBound())
+		{
+			CastGameState->EventDisptacherGameStepChange.AddDynamic(this, &AAAFGameFloor::GameStepChange);
+			UE_LOG(LogTemp, Error, TEXT("Bind Success"));
+		}
+
+		GetWorld()->GetTimerManager().ClearTimer(TimerHandletwo);
+		return;
+	}
+
+
+	FTimerManager& timerManger = GetWorld()->GetTimerManager();
+	timerManger.SetTimer(TimerHandletwo, this, &AAAFGameFloor::BindDispatcher, 0.1f, false);
+}
+
+void AAAFGameFloor::GameStepChange(EGameStep NewStep)
+{
+	switch (NewStep)
+	{
+	case EGameStep::RoundStart:
+		RequestSetCollision();
+		break;
+	default:
+		break;
+	}
+}
+
+void AAAFGameFloor::RequestSetCollision()
+{
+	ResponseSetCollision();
+}
+
+void AAAFGameFloor::ResponseSetCollision_Implementation()
+{
+	MuliticastSetCollision();
+}
+
+void AAAFGameFloor::MuliticastSetCollision_Implementation()
+{
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
 }
 

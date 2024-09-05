@@ -6,15 +6,6 @@
 #include "GeniusPlayerState.h"
 #include "AAFPlayerState.generated.h"
 
-UENUM()
-enum class ESelectedLand : uint8
-{
-	None UMETA(Displayname = "None"),
-	AbundanceLand UMETA(Displayname = "Abundance"),
-	FamineLand UMETA(Displayname = "FamineLand"),
-
-};
-
 UCLASS()
 class THEGENIUSPLAN_API AAAFPlayerState : public AGeniusPlayerState
 {
@@ -24,27 +15,17 @@ protected:
 
 public:
 
-	virtual void BeginPlay() override;
-
-	UPROPERTY(ReplicatedUsing = OnReq_ChangeLand)
-	ESelectedLand SelectedLand;
-
 	AAAFPlayerState();
 
-	UFUNCTION()
-	void OnReq_ChangeLand();
-
-	UFUNCTION(Server, Reliable)
-	void ChangeLand(ESelectedLand Type);
-
-	UFUNCTION()
-	void ResetLand();
-
-	UFUNCTION()
-	ESelectedLand GetSelectedLand();
-
+	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	bool Lose;
+
+	UPROPERTY(Replicated)
+	uint8 win;
+
+	UPROPERTY(Replicated)
+	FVector Location;
 };

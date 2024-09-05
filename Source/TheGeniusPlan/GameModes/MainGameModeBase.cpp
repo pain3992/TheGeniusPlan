@@ -49,6 +49,26 @@ int32 AMainGameModeBase::GetCurrentRound() const
 	return CurrentRound;
 }
 
+void AMainGameModeBase::GetGameInstanceFunction()
+{
+	if (GetGameInstance())
+	{
+		UGeniusGameInstance* GameInstnace = Cast<UGeniusGameInstance>(GetGameInstance());
+		if (GameInstnace->PreGameWinner != nullptr)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Pre Game Winner is %s"), *GameInstnace->PreGameWinner->GetName());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Pre Game Winner is nullptr"), *GameInstnace->PreGameWinner->GetName());
+		}
+
+		return;
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainGameModeBase::GetGameInstanceFunction, 0.1f, false);
+}
+
 void AMainGameModeBase::BeginPlay()
 {
 	FString GameModeName = GetName();
@@ -66,7 +86,7 @@ void AMainGameModeBase::BeginPlay()
 	// TEST: 메인 게임모드 시작시, 메인매치 게임 등록 (결합게임 모드, 오픈패스 게임 모드)
 	if (PossibleGameModes.Num() == 0)
 	{
-		PossibleGameModes.Add(AEatCoinGameMode::StaticClass());
+		//PossibleGameModes.Add(AEatCoinGameMode::StaticClass());
 		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
 
 
@@ -83,8 +103,12 @@ void AMainGameModeBase::BeginPlay()
 
 =======
 
+<<<<<<< HEAD
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 60.0f, false);
 >>>>>>> 05a74a1 (Location Actor 추가)
+=======
+	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 30.0f, false);
+>>>>>>> f4ef9c8 (메인 게임 로직 수정 -> 위젯 제거, 라운드 로직 추가)
 }
 
 void AMainGameModeBase::HandleGameStart()

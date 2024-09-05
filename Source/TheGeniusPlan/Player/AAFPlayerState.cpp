@@ -14,39 +14,16 @@ void AAAFPlayerState::BeginPlay()
 }
 
 AAAFPlayerState::AAAFPlayerState()
+	: Location{ 0, 0, 0 }
 {
-	SelectedLand = ESelectedLand::None;
-}
-
-void AAAFPlayerState::OnReq_ChangeLand()
-{
-	AGeniusPlayerController* Controller = Cast<AGeniusPlayerController>(GetWorld()->GetFirstPlayerController());
-
-	if(Controller)
-	{
-		Controller->CheckPlayerAllSelected();
-	}
-
-}
-
-void AAAFPlayerState::ChangeLand_Implementation(ESelectedLand Type)
-{
-	SelectedLand = Type;
-}
-
-void AAAFPlayerState::ResetLand()
-{
-	SelectedLand = ESelectedLand::None;
-}
-
-ESelectedLand AAAFPlayerState::GetSelectedLand()
-{
-	return SelectedLand;
+	
 }
 
 void AAAFPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AAAFPlayerState, SelectedLand);
+	DOREPLIFETIME(AAAFPlayerState, Lose);
+	DOREPLIFETIME(AAAFPlayerState, Location);
+	DOREPLIFETIME(AAAFPlayerState, win);
 }

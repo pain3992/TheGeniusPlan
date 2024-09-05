@@ -24,17 +24,6 @@ public:
 
 	AAAFGameModeBase();
 
-	UFUNCTION()
-	void BindGameState();
-
-	UFUNCTION()
-	void GameStepChange(EGameStep NewStep);
-
-	FTimerHandle GameModeTimerHandle;
-
-	UFUNCTION()
-	void ChangeEndGame();
-
-	FTimerHandle GameModeSecondHandle;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
 

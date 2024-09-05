@@ -12,6 +12,7 @@ UGeniusGameInstance::UGeniusGameInstance()
 {
 	Number = 0;
 	UE_LOG(LogTemp, Error, TEXT("First : %d"), Number);
+	PreGameWinner = nullptr;
 
 }
 
