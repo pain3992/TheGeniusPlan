@@ -25,6 +25,9 @@ public:
     UFUNCTION()
     void ClickedJoinServer();
 
+	UFUNCTION()
+    void ClickedJoinRemoteServer();
+
     UFUNCTION()
     void ClickedQuit();
 
@@ -58,6 +61,9 @@ protected:
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
     TObjectPtr<class UButton> ButtonServerJoin;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    TObjectPtr<class UButton> ButtonRemoteServerJoin;
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonServerCreate;

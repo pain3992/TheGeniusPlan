@@ -44,6 +44,10 @@ void ULobbyWidget::NativeConstruct()
 	{
 		ButtonServerJoin->OnClicked.AddDynamic(this, &ULobbyWidget::ClickedJoinServer);
 	}
+	if (ButtonRemoteServerJoin)
+	{
+		ButtonRemoteServerJoin->OnClicked.AddDynamic(this, &ULobbyWidget::ClickedJoinRemoteServer);
+	}
 	if (ButtonServerCreate)
 	{
 		ButtonServerCreate->OnClicked.AddDynamic(this, &ULobbyWidget::ClickedCreate);
@@ -78,10 +82,15 @@ void ULobbyWidget::ChangeCharacterMesh()
 void ULobbyWidget::ClickedJoinServer()
 {
 	FString ServerAddress = TEXT("127.0.0.1");
-	// FString ServerAddress = TEXT("34.41.211.121");
 	GetWorld()->GetFirstPlayerController()->ClientTravel(ServerAddress, ETravelType::TRAVEL_Absolute);
-	//UGameplayStatics::OpenLevel(GetWorld(), FName("LobbyLevel"), true, "127.0.0.1");
 	
+	//UGameplayStatics::OpenLevel(GetWorld(), FName("LobbyLevel"), true, "127.0.0.1");
+}
+
+void ULobbyWidget::ClickedJoinRemoteServer()
+{
+	FString ServerAddress = TEXT("34.41.211.121:7777");
+	GetWorld()->GetFirstPlayerController()->ClientTravel(ServerAddress, ETravelType::TRAVEL_Absolute);
 }
 
 void ULobbyWidget::ClickedQuit()
