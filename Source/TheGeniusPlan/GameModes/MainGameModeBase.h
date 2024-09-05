@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
+#include "TheGeniusPlan/DefaultGameMode.h"
 #include "MainGameModeBase.generated.h"
 
 /**
@@ -11,7 +12,7 @@
  * @see 게임의 규칙과 관련된 로직이 주로 사용될 예정
  */
 UCLASS()
-class THEGENIUSPLAN_API AMainGameModeBase : public AGameMode
+class THEGENIUSPLAN_API AMainGameModeBase : public ADefaultGameMode
 {
 	GENERATED_BODY()
 public:
