@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+#include "TheGeniusPlan/GameModes/MainGameModeBase.h"
 #include "EntryGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class THEGENIUSPLAN_API AEntryGameMode : public AGameModeBase
+class THEGENIUSPLAN_API AEntryGameMode : public ADefaultGameMode
 {
 	GENERATED_BODY()
 public:

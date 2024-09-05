@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 #include "EntryPawn.generated.h"
 
 UCLASS()
