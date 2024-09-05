@@ -61,16 +61,21 @@ void UHelpUserWidget::UpdateTextBaseOnLevel()
             "가장 많은 코인을 먹은 사람이 승리!")); // EC 규칙 작성
 
         SetAwardText(TEXT("Eat Coin! \n"
-            "1등: 5점 \n"
-            "2등: 3점 \n"
-            "3등: 1점 \n"
+            "1등: 5점, 가넷 3개 \n"
+            "2등: 3점, 가넷 2개 \n"
+            "3등: 1점, 가넷 1개 \n"
             "점수는 마지막 라운드가 종료된 후, \n"
             "누적된 코인 점수에 따라 차등 지급됩니다.")); // EC 보상 작성
     }
     else if (CurrentLevelName == "AAFLevel")
     {
-        SetHintText(TEXT("This is AAF LEVEL")); // AAF 규칙 작성
-        SetAwardText(TEXT("AAF 보상을 작성해주시면 됩니다!")); // AAF 보상 작성
+        SetHintText(TEXT("가장 마지막까지 살아남으세요. \n"
+            "발로 밟은 블럭은 수초내에 사라집니다. \n"
+            "떨어지면 탈락됩니다. \n")); // AAF 규칙 작성
+        SetAwardText(TEXT("1등 : 4점, 가넷 2개 \n"
+            "2등 : 2점, 가넷 1개 \n"
+            "점수는 마지막 라운드가 종료된 후, \n"
+            "누적된 총 점수에 따라 차등 지급됩니다.\n")); // AAF 보상 작성
     }
     else
     {

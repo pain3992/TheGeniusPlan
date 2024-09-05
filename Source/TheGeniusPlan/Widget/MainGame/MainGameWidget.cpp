@@ -46,7 +46,7 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
         {
             UPlayerRankingData *PlayerRankingData = NewObject<UPlayerRankingData>(this);
             PlayerRankingData->PlayerName = PlayerState->GetPlayerName();
-            PlayerRankingData->Score = PlayerState->GetPlayerScore();
+            PlayerRankingData->Score = PlayerState->GetScore();
 
             PlayerRankingDataArray.Add(PlayerRankingData);
         }

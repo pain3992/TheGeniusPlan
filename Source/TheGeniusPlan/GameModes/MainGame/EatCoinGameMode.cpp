@@ -31,7 +31,7 @@ AEatCoinGameMode::AEatCoinGameMode()
     PlayerStateClass = AEatCoinPlayerState::StaticClass();
 
     // 총 라운드
-    TotalRound = 2;
+    TotalRound = 1;
 
     // 라운드 시간
 	CountdownTimeInSeconds = 10;
@@ -42,6 +42,9 @@ AEatCoinGameMode::AEatCoinGameMode()
 
 void AEatCoinGameMode::BeginPlay()
 {
+    FString GameModeName = GetName();
+    UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GameModeName);
+
     if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
     {
         MainGameState->SetTotalRound(TotalRound);
@@ -115,7 +118,7 @@ void AEatCoinGameMode::HandleServerTravel()
     UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
     if (GameInstance)
     {
-        GameInstance->SavedPlayerScores.Empty(); // 기존 데이터 초기화
+      //  GameInstance->SavedPlayerScores.Empty(); // 기존 데이터 초기화
 
         for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
         {
@@ -140,12 +143,9 @@ void AEatCoinGameMode::HandleServerTravel()
     FString GameModeName = TEXT("AMainGameModeBase"); // 사용할 게임 모드의 이름을 설정
 
     // ServerTravel 호출 시 게임 모드를 URL에 포함
-    FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s?listen"), *LevelName, *GameModeName);
+    FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s"), *LevelName, *GameModeName);
     GetWorld()->ServerTravel(TravelURL);
 }
-
-
-
 
 void AEatCoinGameMode::ApplySpeedBoost(ACharacter* PlayerCharacter)
 {

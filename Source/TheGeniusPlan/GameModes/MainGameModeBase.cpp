@@ -51,6 +51,9 @@ int32 AMainGameModeBase::GetCurrentRound() const
 
 void AMainGameModeBase::BeginPlay()
 {
+	FString GameModeName = GetName();
+	UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GameModeName);
+
 	Super::BeginPlay();
 	
 	// 게임 스테이트에 라운드 및 플레이 가능한 게임 모드 개수 정보 전달
@@ -66,6 +69,7 @@ void AMainGameModeBase::BeginPlay()
 		PossibleGameModes.Add(AEatCoinGameMode::StaticClass());
 		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
 
+
 		if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
 		{
 			MainGameState->SetPossibleGameModesCount(PossibleGameModes.Num());
@@ -75,6 +79,7 @@ void AMainGameModeBase::BeginPlay()
 	// 게임 시작
 	HandleGameStart();
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
+
 }
 
 void AMainGameModeBase::HandleGameStart()
@@ -162,7 +167,7 @@ void AMainGameModeBase::SetCountdownRule()
 	}
 }
 
-void AMainGameModeBase::PostLogin(APlayerController* NewPlayer)
+void AMainGameModeBase::PostLogin(APlayerController* NewPlayer) // 기존 사용하던 로직
 {
 	Super::PostLogin(NewPlayer);
 

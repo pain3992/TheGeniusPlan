@@ -18,6 +18,9 @@ public:
     UPROPERTY(Replicated, BlueprintReadWrite, Category = "PlayerData")
     FString PlayerName;
 
+    UPROPERTY(BlueprintReadWrite, Category = "PlayerData")
+    FString LoginID;
+
     int32 GetPlayerScore() const;
     void SetPlayerScore(int32 NewScore);
 

@@ -142,15 +142,25 @@ void AMainGameStateBase::OnRep_PlayingPlayers() const
 {
     for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
     {
-        if (AMainGameHUD *HUD = (*It)->GetHUD<AMainGameHUD>())
+        APlayerController* PC = It->Get();
+        if (PC)
         {
-            if (UMainGameWidget *MainGameWidget = HUD->GetMainGameWidget())
-            {
-                MainGameWidget->UpdatePlayerList(PlayingPlayers);
-            }
+            // 일정 시간 대기 후 위젯 업데이트
+            FTimerHandle TimerHandle;
+            PC->GetWorld()->GetTimerManager().SetTimer(TimerHandle, [PC, this]()
+                {
+                    if (AMainGameHUD* HUD = PC->GetHUD<AMainGameHUD>())
+                    {
+                        if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
+                        {
+                            MainGameWidget->UpdatePlayerList(PlayingPlayers);
+                        }
+                    }
+                }, 0.1f, false); // StandAlone, ListenServer로 플레이를 했을 때 딜레이 시간을 줘야 정상적으로 업데이트 됨
         }
     }
 }
+
 
 void AMainGameStateBase::UpdateCountdown()
 {

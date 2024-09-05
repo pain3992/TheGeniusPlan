@@ -21,7 +21,7 @@ void AGeniusPlayerState::AddScore(int32 Amount)
     SetScore(GetScore() + Amount);
 }
 
-void AGeniusPlayerState::OnRep_Score()
+void AGeniusPlayerState::OnRep_Score() // 원래 사용하던 함수
 {
     if (GetWorld()->GetGameState<AMainGameStateBase>())
     {
@@ -30,27 +30,9 @@ void AGeniusPlayerState::OnRep_Score()
     }
 }
 
-//void AGeniusPlayerState::OnRep_Score()
-//{
-//    if (GetWorld()->GetGameState<AMainGameStateBase>())
-//    {
-//        AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>();
-//
-//        if (MainGameState)
-//        {
-//            FTimerHandle TimerHandle;
-//            GetWorld()->GetTimerManager().SetTimer(TimerHandle, [MainGameState]()
-//                {
-//                    MainGameState->OnRep_PlayingPlayers();
-//                }, 2.0f, false); // 2초 후 호출
-//        }
-//    }
-//}
-
-
 void AGeniusPlayerState::OnRep_GarnetCount()
 {
-    // 클라이언트 측에서 2초 후에 위젯을 업데이트하도록 타이머 설정
+    // 클라이언트 측에서 0.1초 후에 위젯을 업데이트하도록 타이머 설정
     APlayerController* PC = GetPlayerController();
     if (PC)
     {
