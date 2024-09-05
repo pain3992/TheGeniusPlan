@@ -113,7 +113,6 @@ void AEatCoinGameState::StartECGameCount(int32 InitialCountdownTime)
 {
     if (HasAuthority())
     {
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("StartECCountdown"));
         ECGameCountdownTime = InitialCountdownTime;
         OnRep_ECGameCountdownTime();
 
@@ -211,13 +210,6 @@ void AEatCoinGameState::AwardTopPlayers()
         return A.GetCoinScore() > B.GetCoinScore();
         });
 
-    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
-    if (!GameInstance)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("GameInstance is null in AwardTopPlayers"));
-        return;
-    }
-
     // 상위 3명의 플레이어에게 점수 부여
     const int32 NumTopPlayers = FMath::Min(3, PlayerCoinScores.Num());
     for (int32 i = 0; i < NumTopPlayers; ++i)
@@ -226,11 +218,22 @@ void AEatCoinGameState::AwardTopPlayers()
         if (TopPlayer)
         {
             int32 ScoreToAward = 0;
+            int32 GarnetToAward = 0;
+
             switch (i)
             {
-            case 0: ScoreToAward = 5; break; // 1등
-            case 1: ScoreToAward = 3; break;  // 2등
-            case 2: ScoreToAward = 1; break;  // 3등
+            case 0: //1등
+               ScoreToAward = 5;
+               GarnetToAward = 3;
+               break;
+            case 1: //2등
+                ScoreToAward = 3;
+                GarnetToAward = 2;
+                break;
+            case 2: //3등
+                ScoreToAward = 1;
+                GarnetToAward = 1;
+                break;  
             }
 
             APlayerController* PlayerController = TopPlayer->GetPlayerController();
@@ -241,6 +244,7 @@ void AEatCoinGameState::AwardTopPlayers()
                 {
                     // GeniusPlayerState에 점수 저장. 
                     GeniusPlayerState->AddScore(ScoreToAward);
+                    GeniusPlayerState->AddGarnetCount(GarnetToAward);
             
                     for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
                     {
@@ -249,13 +253,10 @@ void AEatCoinGameState::AwardTopPlayers()
                             if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
                             {
                                 MainGameWidget->UpdatePlayerList(PlayingPlayers);
+                                MainGameWidget->UpdateGarnetCount();
                             }
                         }
                     }
-                }
-                else
-                {
-                    UE_LOG(LogTemp, Warning, TEXT("Failed to get GeniusPlayerState for player: %s"), *TopPlayer->GetPlayerName());
                 }
             }
         }

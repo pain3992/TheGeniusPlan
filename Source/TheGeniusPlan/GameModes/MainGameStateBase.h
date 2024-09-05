@@ -38,9 +38,6 @@ public:
     UFUNCTION()
     virtual void OnRep_PlayingPlayers() const;
 
- /*   UFUNCTION(NetMulticast, Reliable)
-    virtual void ShowWidgetPlayerRanking();*/
-
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
 
     virtual void CountdownFinished();
@@ -61,10 +58,14 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Game Rules")
     void SetCurrentRound(int32 NewCurrentRound);
 
-protected:
-    // Function to initialize player states, called with a delay
-  //  void InitializePlayerStates();
+    // PossibleGameModes 개수
+    UPROPERTY(ReplicatedUsing = OnRep_PossibleGameModesCount)
+    int32 PossibleGameModesCount;
 
+    // PossibleGameModes 개수 설정 함수
+    void SetPossibleGameModesCount(int32 Count);
+
+protected:
     // 카운트다운 변수가 변경될 때 클라이언트에서 호출되는 함수
     UFUNCTION()
     void OnRep_CountdownTime() const;
@@ -74,6 +75,9 @@ protected:
 
     UFUNCTION()
     void OnRep_CurrentRound() const;
+
+    UFUNCTION()
+    void OnRep_PossibleGameModesCount() const;
 
     UPROPERTY(ReplicatedUsing = OnRep_CountdownTime)
     int32 CountdownTime;

@@ -19,13 +19,9 @@ void AGeniusPlayerState::AddScore(int32 Amount)
 {
     // 점수 증가
     SetScore(GetScore() + Amount);
-
-    // 로그 출력
-    UE_LOG(LogTemp, Log, TEXT("Player %s's score increased by %d. New Score!: %d"),
-        *PlayerName, Amount, static_cast<int>(GetScore()));
 }
 
-void AGeniusPlayerState::OnRep_Score()
+void AGeniusPlayerState::OnRep_Score() // 원래 사용하던 함수
 {
     if (GetWorld()->GetGameState<AMainGameStateBase>())
     {
@@ -34,10 +30,50 @@ void AGeniusPlayerState::OnRep_Score()
     }
 }
 
+void AGeniusPlayerState::OnRep_GarnetCount()
+{
+    // 클라이언트 측에서 0.1초 후에 위젯을 업데이트하도록 타이머 설정
+    APlayerController* PC = GetPlayerController();
+    if (PC)
+    {
+        // 일정 시간 대기 후 위젯 업데이트
+        FTimerHandle TimerHandle;
+        PC->GetWorld()->GetTimerManager().SetTimer(TimerHandle, [PC]()
+            {
+                AMainGameHUD* MainHUD = PC->GetHUD<AMainGameHUD>();
+                if (MainHUD)
+                {
+                    UMainGameWidget* MainWidget = MainHUD->GetMainGameWidget();
+                    if (MainWidget)
+                    {
+                        MainWidget->UpdateGarnetCount();
+                    }
+                }
+            }, 0.1f, false); // 딜레이 없으면 업데이트 안됨
+    }
+}
+
+
+void AGeniusPlayerState::AddGarnetCount(int32 GarnetAmount)
+{
+    SetGarnetCount(GetGarnetCount() + GarnetAmount);
+}
+
+int32 AGeniusPlayerState::GetGarnetCount() const
+{
+    return GarnetCount;
+}
+
+void AGeniusPlayerState::SetGarnetCount(int32 NewGarnetCount)
+{
+    GarnetCount = NewGarnetCount;
+    OnRep_GarnetCount();
+}
+
 void AGeniusPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
     DOREPLIFETIME(AGeniusPlayerState, PlayerName);
-   // DOREPLIFETIME(AGeniusPlayerState, Score);
+    DOREPLIFETIME(AGeniusPlayerState, GarnetCount);
 }

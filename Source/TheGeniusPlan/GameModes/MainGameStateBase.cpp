@@ -10,9 +10,6 @@
 void AMainGameStateBase::BeginPlay()
 {
     Super::BeginPlay();
-
-    // Delay the player setup by a fraction of a second
-   // GetWorld()->GetTimerManager().SetTimerForNextTick(this, &AMainGameStateBase::InitializePlayerStates);
 }
 
 
@@ -51,7 +48,6 @@ void AMainGameStateBase::StartCountdown(int32 InitialCountdownTime)
 {
     if (HasAuthority())
     {
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("StartCountdown"));
         CountdownTime = InitialCountdownTime;
         OnRep_CountdownTime();
 
@@ -77,23 +73,14 @@ void AMainGameStateBase::SetCurrentRound(int32 NewCurrentRound)
     }
 }
 
-//void AMainGameStateBase::InitializePlayerStates()
-//{
-//    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
-//    if (GameInstance)
-//    {
-//        UE_LOG(LogTemp, Warning, TEXT("테스트1."));
-//        for (APlayerState* PlayerState : PlayerArray)
-//        {
-//            AGeniusPlayerState* GeniusPlayerState = Cast<AGeniusPlayerState>(PlayerState);
-//            if (GeniusPlayerState)
-//            {
-//                UE_LOG(LogTemp, Warning, TEXT("테스트2."));
-//                GeniusPlayerState->SetScore(GameInstance->SavedPlayerScore);
-//            }
-//        }
-//    }
-//}
+void AMainGameStateBase::SetPossibleGameModesCount(int32 Count)
+{
+    if (HasAuthority())
+    {
+        PossibleGameModesCount = Count;
+        OnRep_PossibleGameModesCount();
+    }
+}
 
 void AMainGameStateBase::OnRep_CountdownTime() const
 {
@@ -137,19 +124,43 @@ void AMainGameStateBase::OnRep_CurrentRound() const
     }
 }
 
-void AMainGameStateBase::OnRep_PlayingPlayers() const
+void AMainGameStateBase::OnRep_PossibleGameModesCount() const
 {
     for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
     {
-        if (AMainGameHUD *HUD = (*It)->GetHUD<AMainGameHUD>())
+        if (AMainGameHUD* HUD = (*It)->GetHUD<AMainGameHUD>())
         {
-            if (UMainGameWidget *MainGameWidget = HUD->GetMainGameWidget())
+            if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
             {
-                MainGameWidget->UpdatePlayerList(PlayingPlayers);
+                MainGameWidget->UpdatePossibleGamesDisplay(PossibleGameModesCount);
             }
         }
     }
 }
+
+void AMainGameStateBase::OnRep_PlayingPlayers() const
+{
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        APlayerController* PC = It->Get();
+        if (PC)
+        {
+            // 일정 시간 대기 후 위젯 업데이트
+            FTimerHandle TimerHandle;
+            PC->GetWorld()->GetTimerManager().SetTimer(TimerHandle, [PC, this]()
+                {
+                    if (AMainGameHUD* HUD = PC->GetHUD<AMainGameHUD>())
+                    {
+                        if (UMainGameWidget* MainGameWidget = HUD->GetMainGameWidget())
+                        {
+                            MainGameWidget->UpdatePlayerList(PlayingPlayers);
+                        }
+                    }
+                }, 0.1f, false); // StandAlone, ListenServer로 플레이를 했을 때 딜레이 시간을 줘야 정상적으로 업데이트 됨
+        }
+    }
+}
+
 
 void AMainGameStateBase::UpdateCountdown()
 {
@@ -182,4 +193,5 @@ void AMainGameStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &O
     DOREPLIFETIME(AMainGameStateBase, PlayingPlayers);
     DOREPLIFETIME(AMainGameStateBase, TotalRound);
     DOREPLIFETIME(AMainGameStateBase, CurrentRound);
+    DOREPLIFETIME(AMainGameStateBase, PossibleGameModesCount);
 }

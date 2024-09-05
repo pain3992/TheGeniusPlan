@@ -70,12 +70,4 @@ protected:
 private:
 	// EC 카운트다운 타이머 핸들러
 	FTimerHandle ECGameCountdownTimerHandle;
-
-	// 10초 후에 레벨 이동을 처리하는 함수 선언
-	void TravelToNextLevel();
-
-	// 마지막 라운드인지 여부를 체크
-	
-	// 레벨 이동 타이머 핸들러
-//	FTimerHandle ServerTravelTimerHandle;
 };

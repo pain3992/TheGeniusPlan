@@ -31,6 +31,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Game Info")
     void UpdateRoundInfo();
 
+    // PossibleGameModes 개수를 업데이트
+    UFUNCTION(BlueprintCallable, Category = "Game Info")
+    void UpdatePossibleGamesDisplay(int32 PossibleGameModesCount);
+
+    void UpdateGarnetCount();
+
 protected:
     virtual void NativeConstruct() override;
 
@@ -40,6 +46,9 @@ protected:
 
     UPROPERTY(meta = (BindWidget))
     class UButton *Button_Hint;
+
+    UPROPERTY(meta = (BindWidget))
+    UTextBlock* Text_PossibleGames;
 
     UFUNCTION()
     void OnHelpButtonClicked();
@@ -53,6 +62,9 @@ private:
 
     UPROPERTY(meta = (BindWidget))
     class UTextBlock *Text_Countdown;
+
+    UPROPERTY(meta = (BindWidget))
+    class UTextBlock* Text_GarnetCount;
 
     // 게임 모드 참조
     UPROPERTY()

@@ -10,13 +10,10 @@
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "Components/TextBlock.h"
 #include "Engine/Engine.h"
-#include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 
 void UMainGameWidget::NativeConstruct()
 {
     Super::NativeConstruct();
-    UE_LOG(LogTemp, Log, TEXT("UMainHallUserWidget::NativeConstruct called"));
-
     // 게임 모드에 대한 참조 가져오기
     if (GetWorld())
     {
@@ -40,14 +37,6 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
         UE_LOG(LogTemp, Warning, TEXT("ListView_PlayerRanking or PlayerRankingUserWidgetClass is not assigned."));
         return;
     }
-
-    UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
-    if (!GameInstance)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("GameInstance is null in AwardTopPlayers"));
-        return;
-    }
-
     // Create and add items
     TArray<UPlayerRankingData *> PlayerRankingDataArray;
 
@@ -57,8 +46,7 @@ void UMainGameWidget::UpdatePlayerList(const TArray<AGeniusPlayerState *> &Playi
         {
             UPlayerRankingData *PlayerRankingData = NewObject<UPlayerRankingData>(this);
             PlayerRankingData->PlayerName = PlayerState->GetPlayerName();
-            PlayerRankingData->Score = PlayerState->GetPlayerScore();
-            // PlayerRankingData->Score = (GameInstance->FindPlayer(PlayerState))->GetScore();
+            PlayerRankingData->Score = PlayerState->GetScore();
 
             PlayerRankingDataArray.Add(PlayerRankingData);
         }
@@ -90,7 +78,6 @@ void UMainGameWidget::UpdateCountdownDisplay(int32 CountdownTimeInSeconds)
 
 void UMainGameWidget::OnHelpButtonClicked()
 {
-    UE_LOG(LogTemp, Log, TEXT("Is Work!"));
     if (MainGameHUD)
     {
         MainGameHUD->ShowWidget(MainGameWidgetType::HelpWidget);
@@ -116,9 +103,37 @@ void UMainGameWidget::UpdateRoundInfo()
     }
 }
 
+void UMainGameWidget::UpdatePossibleGamesDisplay(int32 PossibleGameModesCount)
+{
+    if (Text_PossibleGames)
+    {
+        Text_PossibleGames->SetText(FText::FromString(FString::Printf(TEXT("%dR"), PossibleGameModesCount)));
+    }
+}
+
+void UMainGameWidget::UpdateGarnetCount()
+{
+    if (Text_GarnetCount)
+    {
+        APlayerController* PlayerController = GetOwningPlayer();
+        if (PlayerController)
+        {
+            AGeniusPlayerState* GPS = PlayerController->GetPlayerState<AGeniusPlayerState>();
+            if (GPS)
+            {
+                int32 GarnetCount = GPS->GetGarnetCount();
+                Text_GarnetCount->SetText(FText::AsNumber(GarnetCount));
+            }
+            else
+            {
+                UE_LOG(LogTemp, Error, TEXT("PlayerState is null."));
+            }
+        }
+    }
+}
+
 
 void UMainGameWidget::SetHUD(AMainGameHUD *InHUD)
 {
     MainGameHUD = InHUD;
-    UE_LOG(LogTemp, Log, TEXT("HUD successfully set in MainGameWidget."));
 }

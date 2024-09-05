@@ -183,7 +183,6 @@ void ATheGeniusPlanCharacter::Hint(const FInputActionValue &Value)
 
 	if (bIsHintPressed)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Pressed H"));
 		APlayerController *PlayerController = Cast<APlayerController>(GetController());
 		if (PlayerController)
 		{

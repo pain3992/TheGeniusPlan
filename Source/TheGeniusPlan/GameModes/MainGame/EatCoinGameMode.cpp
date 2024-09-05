@@ -31,10 +31,10 @@ AEatCoinGameMode::AEatCoinGameMode()
     PlayerStateClass = AEatCoinPlayerState::StaticClass();
 
     // 총 라운드
-    TotalRound = 3;
+    TotalRound = 1;
 
     // 라운드 시간
-	CountdownTimeInSeconds = 180;
+	CountdownTimeInSeconds = 10;
 
     // EatCoin 게임 시작까지 남은 시간
     ECGameStartCountdownTimeInSeconds = 10;
@@ -42,7 +42,9 @@ AEatCoinGameMode::AEatCoinGameMode()
 
 void AEatCoinGameMode::BeginPlay()
 {
-    UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GetClass()->GetName());
+    FString GameModeName = GetName();
+    UE_LOG(LogTemp, Error, TEXT("Current Game Mode: %s"), *GameModeName);
+
     if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
     {
         MainGameState->SetTotalRound(TotalRound);
@@ -68,8 +70,6 @@ void AEatCoinGameMode::PostLogin(APlayerController* NewPlayer)
 
 void AEatCoinGameMode::HandleGameStart()
 {
-   // Super::HandleGameStart();
-
     TransitionToNextRound();
     SetECGameStartCountdownRule();
 }
@@ -104,16 +104,12 @@ void AEatCoinGameMode::HandleRoundEnd()
                 AEatCoinHUD* EatCoinHUD = Cast<AEatCoinHUD>(PlayerController->GetHUD());
                 if (EatCoinHUD && EatCoinHUD->GetEatCoinEndWidget())
                 {
-                    UE_LOG(LogTemp, Log, TEXT("게임 종료 위젯 호출"));
                     EatCoinHUD->GetEatCoinEndWidget()->SetVisibility(ESlateVisibility::Visible);
                 }
             }
         }
-
-        // 게임 종료 처리
-        // 필요에 따라 게임 종료 후 로직 추가 (예: 게임 메인 메뉴로 돌아가기, 서버 종료 등)
         // 10초 후에 서버 트래블로 새 레벨로 이동
-        GetWorld()->GetTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameMode::HandleServerTravel, 5.0f, false);
+        GetWorld()->GetTimerManager().SetTimer(ServerTravelTimerHandle, this, &AEatCoinGameMode::HandleServerTravel, 10.0f, false);
     }
 }
 
@@ -122,7 +118,7 @@ void AEatCoinGameMode::HandleServerTravel()
     UGeniusGameInstance* GameInstance = GetGameInstance<UGeniusGameInstance>();
     if (GameInstance)
     {
-        GameInstance->SavedPlayerScores.Empty(); // 기존 데이터 초기화
+      //  GameInstance->SavedPlayerScores.Empty(); // 기존 데이터 초기화
 
         for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
         {
@@ -135,22 +131,21 @@ void AEatCoinGameMode::HandleServerTravel()
                     FPlayerScoreData ScoreData;
                     ScoreData.PlayerName = PlayerState->GetPlayerName();
                     ScoreData.Score = PlayerState->GetScore();
+                    ScoreData.GarnetCount = PlayerState->GetGarnetCount();
                     GameInstance->SavedPlayerScores.Add(ScoreData);
+ 
                 }
             }
         }
     }
 
-    FString LevelName = TEXT("MainLevel"); // 이동할 레벨의 이름을 설정
+    FString LevelName = TEXT("MainLevel");
     FString GameModeName = TEXT("AMainGameModeBase"); // 사용할 게임 모드의 이름을 설정
 
     // ServerTravel 호출 시 게임 모드를 URL에 포함
-    FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s?listen"), *LevelName, *GameModeName);
+    FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s"), *LevelName, *GameModeName);
     GetWorld()->ServerTravel(TravelURL);
 }
-
-
-
 
 void AEatCoinGameMode::ApplySpeedBoost(ACharacter* PlayerCharacter)
 {
