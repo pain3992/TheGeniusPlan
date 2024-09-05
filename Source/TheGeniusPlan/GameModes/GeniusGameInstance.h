@@ -82,15 +82,9 @@ public:
 
 	UGeniusGameInstance();
 
-<<<<<<< HEAD
-	UPROPERTY()
-	ESelectedLand GI_SelectedLand;
-
 	UPROPERTY(BlueprintReadWrite, Category = "Player")
 	FLoginInfo LoginInfo;
 
-=======
->>>>>>> f4ef9c8 (메인 게임 로직 수정 -> 위젯 제거, 라운드 로직 추가)
 	UPROPERTY(BlueprintReadWrite, Category = "Score")
 	TArray<FPlayerScoreData> SavedPlayerScores;
 

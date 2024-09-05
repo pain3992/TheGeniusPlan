@@ -98,17 +98,7 @@ void AMainGameModeBase::BeginPlay()
 
 	// 게임 시작
 	HandleGameStart();
-<<<<<<< HEAD
-	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
-
-=======
-
-<<<<<<< HEAD
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 60.0f, false);
->>>>>>> 05a74a1 (Location Actor 추가)
-=======
-	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 30.0f, false);
->>>>>>> f4ef9c8 (메인 게임 로직 수정 -> 위젯 제거, 라운드 로직 추가)
 }
 
 void AMainGameModeBase::HandleGameStart()
