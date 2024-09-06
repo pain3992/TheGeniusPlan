@@ -3,14 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GeniusPlayerController.generated.h"
+#include "GameFramework/HUD.h"
+#include "AAFHUD.generated.h"
 
-
+/**
+ * 
+ */
 UCLASS()
-class THEGENIUSPLAN_API AGeniusPlayerController : public APlayerController
+class THEGENIUSPLAN_API AAAFHUD : public AHUD
 {
 	GENERATED_BODY()
 	
-public:
-
 };

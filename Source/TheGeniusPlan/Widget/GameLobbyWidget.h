@@ -21,4 +21,6 @@ public:
 	UFUNCTION()
 	void ChangePlayerCount(int32 NewNumber);
 
+	virtual void NativeConstruct() override;
+
 };

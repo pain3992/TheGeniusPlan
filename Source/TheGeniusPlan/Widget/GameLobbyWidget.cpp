@@ -8,3 +8,8 @@ void UGameLobbyWidget::ChangePlayerCount(int32 NewNumber)
 {
 	PlayerCount->SetText(FText::AsNumber(NewNumber));
 }
+
+void UGameLobbyWidget::NativeConstruct()
+{
+	ChangePlayerCount(0);
+}

@@ -79,8 +79,8 @@ class THEGENIUSPLAN_API UGeniusGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY()
-	ESelectedLand GI_SelectedLand;
+
+	UGeniusGameInstance();
 
 	UPROPERTY(BlueprintReadWrite, Category = "Player")
 	FLoginInfo LoginInfo;
@@ -89,8 +89,21 @@ public:
 	TArray<FPlayerScoreData> SavedPlayerScores;
 
 	FOnLoginInfoUpdated OnLoginInfoUpdated;
+
 	void SetLoginInfo(const FLoginInfo& NewLoginInfo);
 	
 	UPROPERTY(BlueprintReadWrite, Category = "GameTracking")
 	TArray<FString> PlayedGameModes;
+
+	UPROPERTY()
+	uint8 Number;
+
+	UFUNCTION()
+	void SetWinnerPlayer();
+
+	UFUNCTION()
+	void PrintWinnerPlayer();
+
+	UPROPERTY()
+	TObjectPtr<APlayerController> PreGameWinner;
 };

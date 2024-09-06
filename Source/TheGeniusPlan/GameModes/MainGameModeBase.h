@@ -67,6 +67,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Rules")
 	int32 GetCurrentRound() const;
 
+	UFUNCTION()
+	void GetGameInstanceFunction();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -86,4 +89,6 @@ private:
 	// 테스트용 변수, 변경 가능한 게임모드
 	UPROPERTY(EditDefaultsOnly, Category = "GameModes")
 	TArray<TSubclassOf<AGameMode>> PossibleGameModes;
+
+	FTimerHandle TimerHandle;
 };

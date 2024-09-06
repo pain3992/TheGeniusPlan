@@ -19,9 +19,9 @@
 AMainGameModeBase::AMainGameModeBase()
 {
 	// TODO: 수정 예정, 토탈라운드와 위닝스코어 검토
-	TotalRound = 5;
+	TotalRound = 0;
 	CurrentRound = 0;
-	WinningScore = 10;
+	WinningScore = 0;
 
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Script/Engine.Blueprint'/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter_C'"));
 
@@ -36,7 +36,8 @@ AMainGameModeBase::AMainGameModeBase()
 	PlayerControllerClass = AMainHallPlayerController::StaticClass();
 
 	// 카운트다운 시간 (테스트 후 다른 시간으로 변경)
-	CountdownTimeInSeconds = 60;
+	CountdownTimeInSeconds = 30;
+	
 }
 
 int32 AMainGameModeBase::GetTotalRound() const
@@ -47,6 +48,26 @@ int32 AMainGameModeBase::GetTotalRound() const
 int32 AMainGameModeBase::GetCurrentRound() const
 {
 	return CurrentRound;
+}
+
+void AMainGameModeBase::GetGameInstanceFunction()
+{
+	if (GetGameInstance())
+	{
+		UGeniusGameInstance* GameInstnace = Cast<UGeniusGameInstance>(GetGameInstance());
+		if (GameInstnace->PreGameWinner != nullptr)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Pre Game Winner is %s"), *GameInstnace->PreGameWinner->GetName());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Pre Game Winner is nullptr"), *GameInstnace->PreGameWinner->GetName());
+		}
+
+		return;
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainGameModeBase::GetGameInstanceFunction, 0.1f, false);
 }
 
 void AMainGameModeBase::BeginPlay()
@@ -70,6 +91,7 @@ void AMainGameModeBase::BeginPlay()
 		PossibleGameModes.Add(AAAFGameModeBase::StaticClass());
 
 
+
 		if (AMainGameStateBase* MainGameState = GetWorld()->GetGameState<AMainGameStateBase>())
 		{
 			MainGameState->SetPossibleGameModesCount(PossibleGameModes.Num());
@@ -79,7 +101,6 @@ void AMainGameModeBase::BeginPlay()
 	// 게임 시작
 	HandleGameStart();
 	GetWorld()->GetTimerManager().SetTimer(GameModeHandle, this, &AMainGameModeBase::SelectNextGameMode, 10.0f, false);
-
 }
 
 void AMainGameModeBase::HandleGameStart()
@@ -197,7 +218,6 @@ void AMainGameModeBase::PostLogin(APlayerController* NewPlayer) // 기존 사용
 					NewPlayerState->SetGarnetCount(ScoreData.GarnetCount);
 					UE_LOG(LogTemp, Log, TEXT("Restored data for player %s: Score: %d, Garnet: %d"),
 						*ScoreData.PlayerName, ScoreData.Score, ScoreData.GarnetCount);
-					break;
 				}
 			}
 		}
@@ -234,17 +254,42 @@ void AMainGameModeBase::SelectNextGameMode()
 	}
 
 	// Remove already played game modes
-	PossibleGameModes.RemoveAll([&](TSubclassOf<AGameMode> Mode) {
-		return GameInstance->PlayedGameModes.Contains(Mode->GetName());
-		});
+	//PossibleGameModes.RemoveAll([&](TSubclassOf<AGameMode> Mode) {
+	//	return GameInstance->PlayedGameModes.Contains(Mode->GetName());
+	//	});
+
+	UE_LOG(LogTemp, Warning, TEXT("PlayedGameModes : %d"), GameInstance->PlayedGameModes.Num());
+	int ModeSize = PossibleGameModes.Num();
+	TArray<TSubclassOf<AGameMode>> IndicesToRemove = {};
+
+	for (int i = 0; i < PossibleGameModes.Num(); ++i)
+	{
+		for (int j = 0; j < GameInstance->PlayedGameModes.Num(); ++j)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("PlayedGameModes : %s"), *GameInstance->PlayedGameModes[j]);
+			UE_LOG(LogTemp, Warning, TEXT("PossibleGameModes : %s"), *PossibleGameModes[i]->GetName());
+
+			if(PossibleGameModes[i]->GetName() == GameInstance->PlayedGameModes[j])
+			{
+				IndicesToRemove.Add(PossibleGameModes[i]);
+				UE_LOG(LogTemp, Warning, TEXT("Remove Name : %s"), *PossibleGameModes[i]->GetName());
+			}
+		}
+	}
+
+	for (auto Index : IndicesToRemove)
+	{
+		PossibleGameModes.Remove(Index);
+	}
 
 	if (PossibleGameModes.Num() > 0)
 	{
 		int32 RandomIndex = FMath::RandRange(0, PossibleGameModes.Num() - 1);
 		TSubclassOf<AGameMode> SelectedGameMode = PossibleGameModes[RandomIndex];
-		PossibleGameModes.Remove(SelectedGameMode);
+		UE_LOG(LogTemp, Warning, TEXT("GameMode Count : %d"), PossibleGameModes.Num());
 
 		GameInstance->PlayedGameModes.Add(SelectedGameMode->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("저장된 게임모드 : %s"), *SelectedGameMode->GetName());
 
 		FString LevelName;
 
@@ -258,6 +303,11 @@ void AMainGameModeBase::SelectNextGameMode()
 		}
 
 		FString TravelURL = FString::Printf(TEXT("/Game/Levels/%s?game=/Script/TheGeniusPlan.%s"), *LevelName,*SelectedGameMode->GetName());
+		GetWorld()->ServerTravel(TravelURL);
+	}
+	else
+	{
+		FString TravelURL = FString::Printf(TEXT("/Game/Levels/EndLevel?game=/Script/TheGeniusPlan.EndGameModeBase"));
 		GetWorld()->ServerTravel(TravelURL);
 	}
 }

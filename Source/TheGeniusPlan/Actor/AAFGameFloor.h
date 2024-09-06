@@ -41,4 +41,19 @@ public:
 
 	FTimerHandle TimerHandleGameActor;
 
+	UFUNCTION()
+	void BindDispatcher();
+
+	UFUNCTION()
+	void GameStepChange(EGameStep NewStep);
+
+	FTimerHandle TimerHandletwo;
+
+	UFUNCTION()
+	void RequestSetCollision();
+	UFUNCTION(Server, Reliable)
+	void ResponseSetCollision();
+	UFUNCTION(NetMulticast, Reliable)
+	void MuliticastSetCollision();
+
 };

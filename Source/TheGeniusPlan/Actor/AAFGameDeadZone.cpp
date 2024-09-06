@@ -49,12 +49,15 @@ void AAAFGameDeadZone::OverlapEvent(UPrimitiveComponent* OverlappedComponent, AA
 	{
 		AAAFPlayerState* PlayerState = Cast<AAAFPlayerState>(OverlapActor->GetPlayerState());
 		PlayerState->Lose = true;
-
-		FVector NewLocation = {620.f, 2070.f, 0.0f };
-		OverlapActor->SetActorLocation(NewLocation);
+		OverlapActor->SetActorLocation(FVector(0.0f, 0.0f, 0.0f));
 		CheckWinner();
 		UE_LOG(LogTemp, Error, TEXT("Player Lose"));
 	}
+}
+
+void AAAFGameDeadZone::ChangeEndStep()
+{
+
 }
 
 void AAAFGameDeadZone::CheckWinner_Implementation()
@@ -84,11 +87,8 @@ void AAAFGameDeadZone::CheckWinner_Implementation()
 
 		if(LivePlayer > 1)
 		{
+			LivePlayer = 0;
 			return;
-		}
-		else if(LivePlayer < 1)
-		{
-
 		}
 		else
 		{
@@ -96,11 +96,12 @@ void AAAFGameDeadZone::CheckWinner_Implementation()
 
 			if(GameState)
 			{
-				GameState->SetGameStep(EGameStep::GameEnd);
-				UE_LOG(LogTemp, Error, TEXT("Game End"));
+				GameState->SetGameStep(EGameStep::RoundEnd);
+				UE_LOG(LogTemp, Error, TEXT("Round End"));
 
 			}
 		}
 	}
 }
+
 

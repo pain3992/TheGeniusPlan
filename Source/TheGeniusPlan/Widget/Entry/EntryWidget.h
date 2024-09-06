@@ -25,13 +25,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ClickedQuit();
 
-	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
+	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	TObjectPtr<class AEntryHUD> EntryHUD;
 
 	UPROPERTY()
 	TObjectPtr<class ULoginWidget> LoginWidget;
 protected:
-UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> ButtonGameStart;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))

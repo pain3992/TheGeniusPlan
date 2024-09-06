@@ -55,7 +55,7 @@ void UChatWidget::AddMyChatMessage(const FString& MyMessage, uint8 Type)
 {
 	UE_LOG(LogTemp, Error, TEXT("AddMyChatMessage Using Client Function"));
 
-	if (ChatRoomType == (uint8)Type)
+	if (ChatRoomType == (uint8)Type || Type == 3)
 	{
 		UTextBlock* NewTextBlock = NewObject<UTextBlock>(ScrollBox);
 		NewTextBlock->SetText(FText::FromString(MyMessage));
