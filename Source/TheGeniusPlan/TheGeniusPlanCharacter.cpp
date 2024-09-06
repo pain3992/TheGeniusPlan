@@ -25,12 +25,13 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 ATheGeniusPlanCharacter::ATheGeniusPlanCharacter()
 {
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+	
 	bReplicates = true;
 	bAlwaysRelevant = true; // if true, the correct meshes are show
 	bNetLoadOnClient = false;
 	bNetUseOwnerRelevancy = true;
-	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 
 	
 	// Set size for collision capsule
