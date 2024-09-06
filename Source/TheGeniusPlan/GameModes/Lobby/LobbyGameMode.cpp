@@ -8,6 +8,7 @@
 #include "TheGeniusPlan/HUD/MainGameLobbyHUD.h"
 #include "TheGeniusPlan/GameModes/MainGame/AAFGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 
 ALobbyGameMode::ALobbyGameMode()
 {
@@ -40,6 +41,14 @@ void ALobbyGameMode::HandleStartingNewPlayer_Implementation(APlayerController* N
 {
 	// UE_LOG(LogTemp, Warning, TEXT("PostLogin!!"));
 	Super::HandleStartingNewPlayer_Implementation(NewPlayer);
+
+	// 여기서 캐릭터의 소유권이 올바르게 설정되었는지 확인
+	ATheGeniusPlanCharacter* MyCharacter = Cast<ATheGeniusPlanCharacter>(NewPlayer->GetPawn());
+	if (MyCharacter)
+	{
+		MyCharacter->SetOwner(NewPlayer);
+		UE_LOG(LogTemp, Log, TEXT("Ownership of TheGeniusPlanCharacter set to PlayerController"));
+	}
 
 	int32 CurrentPlayerCount = GetNumPlayers();
 

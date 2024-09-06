@@ -25,13 +25,9 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 ATheGeniusPlanCharacter::ATheGeniusPlanCharacter()
 {
-	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
 	bReplicates = true;
-	bAlwaysRelevant = true; // if true, the correct meshes are show
-	bNetLoadOnClient = false;
-	bNetUseOwnerRelevancy = true;
+	ATheGeniusPlanCharacter::SetReplicateMovement(true);
 
 	
 	// Set size for collision capsule
@@ -84,10 +80,44 @@ void ATheGeniusPlanCharacter::changeCameraMode()
 	}
 }
 
+void ATheGeniusPlanCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+}
+
 void ATheGeniusPlanCharacter::BeginPlay()
 {
 	// Call the base class
 	Super::BeginPlay();
+
+	if (HasAuthority())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Character has authority on the server"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Character is replicating on the client"));
+	}
+
+	// 중요한 컴포넌트가 초기화되었는지 확인
+	if (!FollowCamera || !CameraBoom)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Camera components are not initialized"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Camera components are initialized"));
+	}
+
+	// 중요한 액션이 초기화되었는지 확인
+	if (!JumpAction || !MoveAction || !LookAction)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Input actions are not initialized"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Input actions are initialized"));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
