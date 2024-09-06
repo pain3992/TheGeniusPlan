@@ -5,10 +5,10 @@
 #include "TheGeniusPlan/Player/AAFPlayerState.h"
 #include "TheGeniusPlan/HUD/MainGameHUD.h"
 #include "Net/UnrealNetwork.h"
-#include "TheGeniusPlan/Player/GeniusPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "TheGeniusPlan/Actor/AAFLandLoction.h"
 #include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
+#include "TheGeniusPlan/Widget/MainGame/MainGameWidget.h"
 
 AAAFGameState::AAAFGameState()
 {
@@ -29,16 +29,18 @@ void AAAFGameState::SetGameStep(EGameStep NewStep)
 
 		break;
 	case EGameStep::RoundEnd:
-		if(StageCount < 3)
-		{
-			StageCount++;
-			RequestWinnerCheck();
-			RequestGameStepReset();
-		}
-		else
-		{
-			RequestGameStepEnd();
-		}
+		RequestWinnerCheck();
+		RequestGameStepEnd();
+		//if(StageCount < 1)
+		//{
+		//	StageCount++;
+		//	RequestWinnerCheck();
+		//	RequestGameStepReset();
+		//}
+		//else
+		//{
+		//	RequestGameStepEnd();
+		//}
 		break;
 	case EGameStep::GameEnd:
 		break;
@@ -105,13 +107,13 @@ void AAAFGameState::ResponsetWinnerCheck_Implementation()
 		{
 			AAAFPlayerState* CastPlayerState = Cast<AAAFPlayerState>(Client->GetOwningController()->PlayerState);
 
-			if(CastPlayerState->Lose == true)
+			if (CastPlayerState->Lose == true)
 			{
 				continue;
 			}
 
 			CastPlayerState->win += 1;
-			
+
 		}
 	}
 }
@@ -122,6 +124,9 @@ void AAAFGameState::ResponseGameStepEnd_Implementation()
 	APlayerController* Winner = nullptr;
 	uint8 WinCount = 0;
 
+
+	UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(GetGameInstance());
+
 	for (auto Client : PlayerArray)
 	{
 
@@ -129,21 +134,48 @@ void AAAFGameState::ResponseGameStepEnd_Implementation()
 		{
 			AAAFPlayerState* CastPlayerState = Cast<AAAFPlayerState>(Client->GetOwningController()->PlayerState);
 
-			if(CastPlayerState->win > WinCount)
+			if (CastPlayerState || GameInstance)
 			{
-				Winner = CastPlayerState->GetPlayerController();
-				WinCount = CastPlayerState->win;
+				if ((CastPlayerState->win) > WinCount)
+				{
+					Winner = CastPlayerState->GetPlayerController();
+				}
 			}
 		}
-
-		++i;
-
 	}
 
-	UGeniusGameInstance* GameInstance = Cast<UGeniusGameInstance>(GetGameInstance());
-	GameInstance->PreGameWinner = Winner;
+	AGeniusPlayerState* PS = Cast<AGeniusPlayerState>(Winner->PlayerState);
+	PS->Score += 10;
+	PS->GarnetCount += 10;
 
-	UE_LOG(LogTemp, Error, TEXT("ResponseGameStepEnd"));
+
+	FPlayerScoreData ScoreData;
+	ScoreData.PlayerName = PS->GetPlayerName();
+	ScoreData.Score = PS->GetScore();
+	ScoreData.GarnetCount = PS->GetGarnetCount();
+	GameInstance->SavedPlayerScores.Add(ScoreData);
+
+	//FPlayerScoreData ScoreData;
+	//ScoreData.PlayerName = Winner->PlayerState->GetPlayerName();
+	//ScoreData.Score = 10;
+	//ScoreData.GarnetCount = 10;
+	//uint8 Check = 0;
+
+	//for (auto PlayersName : GameInstance->SavedPlayerScores)
+	//{
+	//	if(PlayersName.PlayerName == Winner->PlayerState->GetPlayerName())
+	//	{
+	//		PlayersName.Score += 10;
+	//		PlayersName.GarnetCount += 10;
+	//		Check = 1;
+	//	}
+	//}
+
+	//if (Check == 0)
+	//{
+	//	GameInstance->SavedPlayerScores.Add(ScoreData);
+	//}
+
 	FString TravelURL = FString::Printf(TEXT("/Game/Levels/MainLevel?game=/Script/TheGeniusPlan.MainGameModeBase"));
 	GetWorld()->ServerTravel(TravelURL);
 }
@@ -161,7 +193,7 @@ void AAAFGameState::ResponseSetPlayerLocation_Implementation()
 	UE_LOG(LogTemp, Error, TEXT("ResponseSetPlayerLocation"));
 	if (PlayerArray.Num() > 1)
 	{
-		
+
 		TArray<AActor*> PlayerLocation;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAAFLandLoction::StaticClass(), PlayerLocation);
 

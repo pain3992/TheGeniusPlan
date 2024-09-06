@@ -25,5 +25,9 @@ public:
 	AAAFGameModeBase();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	void HandleServerTravel();
+
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 };
 

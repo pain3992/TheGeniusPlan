@@ -2,13 +2,12 @@
 
 #include "AAFGameModeBase.h"
 #include "AAFGameState.h"
-#include "TheGeniusPlan/Player/GeniusPlayerController.h"
+#include "TheGeniusPlan/Player/AAFPlayerController.h"
 #include "TheGeniusPlan/Player/AAFPlayerState.h"
 #include "TheGeniusPlan/TheGeniusPlanCharacter.h"
 #include "TheGeniusPlan/GameModes/GeniusGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
-#include "TheGeniusPlan/HUD/AAFHUD.h"
 #include "TheGeniusPlan/Actor/AAFLandLoction.h"
 #include "Net/UnrealNetwork.h"
 
@@ -16,6 +15,12 @@ void AAAFGameModeBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 }
+
+void AAAFGameModeBase::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+}
+
 
 void AAAFGameModeBase::BeginPlay()
 {
@@ -40,10 +45,9 @@ AAAFGameModeBase::AAAFGameModeBase()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
-	PlayerControllerClass = AGeniusPlayerController::StaticClass();
+	PlayerControllerClass = AAAFPlayerController::StaticClass();
 	GameStateClass = AAAFGameState::StaticClass();
 	PlayerStateClass = AAAFPlayerState::StaticClass();
-	HUDClass = AAAFHUD::StaticClass();
 }
 
 void AAAFGameModeBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
