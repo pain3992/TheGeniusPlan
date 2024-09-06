@@ -25,6 +25,11 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 ATheGeniusPlanCharacter::ATheGeniusPlanCharacter()
 {
+	bReplicates = true;
+	bAlwaysRelevant = true; // if true, the correct meshes are show
+	bNetLoadOnClient = false;
+	bNetUseOwnerRelevancy = true;
+	
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
