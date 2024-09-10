@@ -32,9 +32,9 @@ void ULoginWidget::ClickedLogin()
 	if (EntryHUD && EditableTextLoginID && EditableTextLoginPassword)
 	{
 		// 로컬 API에 연결시 (테스트용)
-		// FString Url = TEXT("http://127.0.0.1:3000/user/login");
+		FString Url = TEXT("http://127.0.0.1:3000/user/login");
 		// API 서버에 연결시 (배포용)
-		FString Url = TEXT("http://34.41.211.121:3000/user/login");
+		// FString Url = TEXT("http://11.11.111.111:3000/user/login");
 		// JSON 객체 생성
 		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
 		JsonObject->SetStringField(TEXT("login_id"), EditableTextLoginID->GetText().ToString());

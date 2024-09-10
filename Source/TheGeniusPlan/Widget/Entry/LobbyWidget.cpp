@@ -83,13 +83,11 @@ void ULobbyWidget::ClickedJoinServer()
 {
 	FString ServerAddress = TEXT("127.0.0.1");
 	GetWorld()->GetFirstPlayerController()->ClientTravel(ServerAddress, ETravelType::TRAVEL_Absolute);
-	
-	//UGameplayStatics::OpenLevel(GetWorld(), FName("LobbyLevel"), true, "127.0.0.1");
 }
 
 void ULobbyWidget::ClickedJoinRemoteServer()
 {
-	FString ServerAddress = TEXT("34.41.211.121:7777");
+	FString ServerAddress = TEXT("11.11.111.111:7777");
 	GetWorld()->GetFirstPlayerController()->ClientTravel(ServerAddress, ETravelType::TRAVEL_Absolute);
 }
 
